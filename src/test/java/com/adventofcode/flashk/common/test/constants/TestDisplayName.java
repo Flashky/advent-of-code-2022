@@ -24,10 +24,13 @@ public final class TestDisplayName {
 	public final static String DAY_16 = "Day 16";
 	public final static String DAY_17 = "Day 17";
 	public final static String DAY_18 = "Day 18";
+	public final static String DAY_19 = "Day 19";
 	public final static String DAY_20 = "Day 20";
 	public final static String DAY_21 = "Day 21";
 	public final static String DAY_22 = "Day 22";
+	public final static String DAY_23 = "Day 23";
 	public final static String DAY_24 = "Day 24";
+	public final static String DAY_25 = "Day 25";
 	
 	// Single test display name
 	public final static String PART_ONE_SAMPLE = "Part 1 - Sample data";
