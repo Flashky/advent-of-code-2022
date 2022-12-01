@@ -1,6 +1,6 @@
 # Advent of Code 2022
 
-- [Day 1](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day01)
+- [Day 1 - Calorie Counting](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day01)
 - [Day 2](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day02)
 - [Day 3](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day03)
 - [Day 4](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day04)
