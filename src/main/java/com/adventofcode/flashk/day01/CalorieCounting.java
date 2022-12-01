@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class CalorieCounting {
 
 	public int solve(List<String> calories) {
@@ -15,7 +17,7 @@ public class CalorieCounting {
 		Integer currentElveCalories = 0;
 		
 		for(String calorie : calories) {
-			if("".equals(calorie)) {
+			if(StringUtils.isBlank(calorie)) {
 				
 				if(currentElveCalories > maxCalories) {
 					maxCalories = currentElveCalories;
@@ -30,6 +32,8 @@ public class CalorieCounting {
 			}
 		}
 		
+		elvesCalories.add(currentElveCalories);
+		
 		return maxCalories;
 	}
 	
@@ -41,7 +45,7 @@ public class CalorieCounting {
 		Integer currentElveCalories = 0;
 		
 		for(String calorie : calories) {
-			if("".equals(calorie)) {
+			if(StringUtils.isBlank(calorie)) {
 				
 				if(currentElveCalories > maxCalories) {
 					maxCalories = currentElveCalories;
@@ -61,4 +65,9 @@ public class CalorieCounting {
 		
 		return sortedCalories.get(0) + sortedCalories.get(1) + sortedCalories.get(2);
 	}
+	
+	/*
+	private List<Integer> calculateElvesCalories(List<String> calories) {
+		
+	}*/
 }
