@@ -66,7 +66,8 @@ public class Day01Test extends PuzzleTest {
 		
 		CalorieCounting calorieCounting = new CalorieCounting();
 		int result = calorieCounting.solve(inputs);
-		System.out.println(result);
+		
+		assertEquals(70613, result);
 	}
 	
 	@Test
@@ -83,7 +84,6 @@ public class Day01Test extends PuzzleTest {
 		
 		CalorieCounting calorieCounting = new CalorieCounting();
 		int result = calorieCounting.solveB(inputs);
-		System.out.println(result);
 		
 		assertEquals(45000, result);
 	}
@@ -102,7 +102,8 @@ public class Day01Test extends PuzzleTest {
 		
 		CalorieCounting calorieCounting = new CalorieCounting();
 		int result = calorieCounting.solveB(inputs);
-		System.out.println(result);
+		
+		assertEquals(205805, result);
 		
 	}
 
