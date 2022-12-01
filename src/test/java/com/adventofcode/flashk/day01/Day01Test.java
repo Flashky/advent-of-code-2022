@@ -45,8 +45,8 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		CalorieCounting calorieCounting = new CalorieCounting();
-		int result = calorieCounting.solve(inputs);
+		CalorieCounting calorieCounting = new CalorieCounting(inputs);
+		int result = calorieCounting.solve(1);
 		
 		assertEquals(24000, result);
 		
@@ -64,8 +64,8 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
-		CalorieCounting calorieCounting = new CalorieCounting();
-		int result = calorieCounting.solve(inputs);
+		CalorieCounting calorieCounting = new CalorieCounting(inputs);
+		int result = calorieCounting.solve(1);
 		
 		assertEquals(70613, result);
 	}
@@ -82,8 +82,8 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		CalorieCounting calorieCounting = new CalorieCounting();
-		int result = calorieCounting.solveB(inputs);
+		CalorieCounting calorieCounting = new CalorieCounting(inputs);
+		int result = calorieCounting.solve(3);
 		
 		assertEquals(45000, result);
 	}
@@ -100,8 +100,8 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
-		CalorieCounting calorieCounting = new CalorieCounting();
-		int result = calorieCounting.solveB(inputs);
+		CalorieCounting calorieCounting = new CalorieCounting(inputs);
+		int result = calorieCounting.solve(3);
 		
 		assertEquals(205805, result);
 		
