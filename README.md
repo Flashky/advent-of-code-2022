@@ -1,5 +1,8 @@
 # Advent of Code 2022
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b0a6ffd92df74afcae4f24ab5e208edf)](https://www.codacy.com/gh/Flashky/advent-of-code-2022/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Flashky/advent-of-code-2022&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b0a6ffd92df74afcae4f24ab5e208edf)](https://www.codacy.com/gh/Flashky/advent-of-code-2022/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Flashky/advent-of-code-2022&utm_campaign=Badge_Coverage)
+
 - [Day 1 - Calorie Counting](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day01)
 - [Day 2](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day02)
 - [Day 3](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day03)
