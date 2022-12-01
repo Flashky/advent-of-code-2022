@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day01;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_01)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day01Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_01;
@@ -44,6 +45,11 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		CalorieCounting calorieCounting = new CalorieCounting();
+		int result = calorieCounting.solve(inputs);
+		
+		assertEquals(24000, result);
+		
 	}
 	
 	@Test
@@ -58,6 +64,9 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		CalorieCounting calorieCounting = new CalorieCounting();
+		int result = calorieCounting.solve(inputs);
+		System.out.println(result);
 	}
 	
 	@Test
@@ -72,6 +81,11 @@ public class Day01Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		CalorieCounting calorieCounting = new CalorieCounting();
+		int result = calorieCounting.solveB(inputs);
+		System.out.println(result);
+		
+		assertEquals(45000, result);
 	}
 	
 	@Test
@@ -85,6 +99,10 @@ public class Day01Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		CalorieCounting calorieCounting = new CalorieCounting();
+		int result = calorieCounting.solveB(inputs);
+		System.out.println(result);
 		
 	}
 
