@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day02;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_02)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day02Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_02;
@@ -43,7 +43,10 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		RockPaperScissors rockPaperScissors = new RockPaperScissors();
+		long result = rockPaperScissors.solveA(inputs);
 		
+		assertEquals(15, result);
 	}
 	
 	@Test
@@ -57,7 +60,9 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		RockPaperScissors rockPaperScissors = new RockPaperScissors();
+		long result = rockPaperScissors.solveA(inputs);
+		assertEquals(12535, result);
 	}
 	
 	@Test
@@ -71,6 +76,10 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		RockPaperScissors rockPaperScissors = new RockPaperScissors();
+		long result = rockPaperScissors.solveB(inputs);
+		
+		assertEquals(12, result);
 		
 	}
 	
@@ -85,7 +94,9 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		RockPaperScissors rockPaperScissors = new RockPaperScissors();
+		long result = rockPaperScissors.solveB(inputs);
+		assertEquals(15457, result);
 	}
 
 }
