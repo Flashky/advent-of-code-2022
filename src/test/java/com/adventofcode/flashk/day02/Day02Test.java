@@ -43,8 +43,8 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		RockPaperScissors rockPaperScissors = new RockPaperScissors();
-		long result = rockPaperScissors.solveA(inputs);
+		RockPaperScissorsStrategy strategy = new RockPaperScissorsBasicStrategy(inputs);
+		int result = strategy.solve();
 		
 		assertEquals(15, result);
 	}
@@ -60,8 +60,10 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		RockPaperScissors rockPaperScissors = new RockPaperScissors();
-		long result = rockPaperScissors.solveA(inputs);
+		
+		RockPaperScissorsStrategy strategy = new RockPaperScissorsBasicStrategy(inputs);
+		int result = strategy.solve();
+		
 		assertEquals(12535, result);
 	}
 	
@@ -76,8 +78,8 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		RockPaperScissors rockPaperScissors = new RockPaperScissors();
-		long result = rockPaperScissors.solveB(inputs);
+		RockPaperScissorsStrategy strategy = new RockPaperScissorsAdvancedStrategy(inputs);
+		int result = strategy.solve();
 		
 		assertEquals(12, result);
 		
@@ -94,8 +96,9 @@ public class Day02Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		RockPaperScissors rockPaperScissors = new RockPaperScissors();
-		long result = rockPaperScissors.solveB(inputs);
+		RockPaperScissorsStrategy strategy = new RockPaperScissorsAdvancedStrategy(inputs);
+		int result = strategy.solve();
+		
 		assertEquals(15457, result);
 	}
 
