@@ -1,9 +1,9 @@
 package com.adventofcode.flashk.day03;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -16,12 +16,10 @@ import com.adventofcode.flashk.common.test.constants.TestFilename;
 import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
-import com.adventofcode.flashk.common.test.utils.Timer;
 import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_03)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day03Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_03;
@@ -39,7 +37,10 @@ public class Day03Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		Rucksack rucksack = new Rucksack();
+		long result = rucksack.solveA(inputs);
 		
+		assertEquals(157, result);
 	}
 	
 	@Test
@@ -53,7 +54,10 @@ public class Day03Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		Rucksack rucksack = new Rucksack();
+		long result = rucksack.solveA(inputs);
 		
+		assertEquals(8185, result);
 	}
 	
 	@Test
@@ -67,7 +71,10 @@ public class Day03Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		Rucksack rucksack = new Rucksack();
+		long result = rucksack.solveB(inputs);
 		
+		assertEquals(70, result);
 	}
 	
 	@Test
@@ -81,7 +88,10 @@ public class Day03Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		Rucksack rucksack = new Rucksack();
+		long result = rucksack.solveB(inputs);
+
+		assertEquals(2817, result);
 	}
 
 }
