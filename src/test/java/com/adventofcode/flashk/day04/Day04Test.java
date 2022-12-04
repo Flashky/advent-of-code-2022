@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day04;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,14 +22,26 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_04)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day04Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_04;
-
+	
+	private static CampCleanup campCleanupSample;
+	private static CampCleanup campCleanupInput;
+	private CampCleanupStrategy basicStrategy = new CampCleanupBasicStrategy();
+	private CampCleanupStrategy advancedStrategy = new CampCleanupAdvancedStrategy();
+	
 	@BeforeAll
 	public static void beforeAll() {
 		Timer.printHeader(TestDisplayName.DAY_04);
+		
+		// Sample initialization
+		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		campCleanupSample = new CampCleanup(inputs);
+		
+		// Input initialization
+		inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		campCleanupInput = new CampCleanup(inputs);
 	}
 
 	
@@ -41,9 +54,8 @@ public class Day04Test extends PuzzleTest {
 		
 		System.out.print("1 | sample | ");
 		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
+		long result = campCleanupSample.solve(basicStrategy);
+		assertEquals(2, result);
 	}
 	
 	@Test
@@ -55,9 +67,8 @@ public class Day04Test extends PuzzleTest {
 		
 		System.out.print("1 | input  | ");
 		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		long result = campCleanupInput.solve(basicStrategy);
+		assertEquals(462, result);
 	}
 	
 	@Test
@@ -69,9 +80,8 @@ public class Day04Test extends PuzzleTest {
 		
 		System.out.print("2 | sample | ");
 		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
+		long result = campCleanupSample.solve(advancedStrategy);
+		assertEquals(4, result);
 	}
 	
 	@Test
@@ -84,8 +94,8 @@ public class Day04Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		long result = campCleanupInput.solve(advancedStrategy);
+		assertEquals(835, result);
 	}
 
 }
