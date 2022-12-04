@@ -3,7 +3,6 @@ package com.adventofcode.flashk.day04;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
