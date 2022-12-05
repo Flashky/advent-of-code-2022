@@ -19,14 +19,12 @@ public class SupplyStacks {
 		
 		for(String input : inputs) {
 			
-			if(!initStacks && StringUtils.isNotBlank(input)){
-				initialCrates.add(input);	
-			}
-			
 			if(StringUtils.isBlank(input)) {
 				initStacks = true; 
 				initializeStacks(initialCrates);
-			} else if(initStacks) {
+			} else if(!initStacks){
+				initialCrates.add(input);	
+			} else  {
 				movements.add(new Movement(input));
 			}
 
@@ -65,8 +63,6 @@ public class SupplyStacks {
 	
 	public String solve(CraneStrategy strategy) {
 		return strategy.solve(stacks, movements);
-		
-
 	}
 
 }
