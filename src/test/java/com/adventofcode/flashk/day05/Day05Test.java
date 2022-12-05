@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day05;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_05)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day05Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_05;
@@ -44,6 +45,10 @@ public class Day05Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		SupplyStacks stacks = new SupplyStacks(inputs);
+		String result = stacks.solveA();
+		
+		assertEquals("CMZ", result);
 	}
 	
 	@Test
@@ -58,6 +63,11 @@ public class Day05Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		SupplyStacks stacks = new SupplyStacks(inputs);
+		String result = stacks.solveA();
+		
+		assertEquals("QGTHFZBHV", result);
+		
 	}
 	
 	@Test
@@ -71,7 +81,9 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
+		SupplyStacks stacks = new SupplyStacks(inputs);
+		String result = stacks.solveB();
+		assertEquals("MCD", result);
 	}
 	
 	@Test
@@ -85,7 +97,11 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		SupplyStacks stacks = new SupplyStacks(inputs);
+		String result = stacks.solveB();
 		
+		System.out.println(result);
+		assertEquals("MGDMPSZTM", result);
 	}
 
 }
