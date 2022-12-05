@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -27,6 +26,9 @@ public class Day05Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_05;
 
+	private CraneStrategy basicStrategy = new CraneBasicStrategy();
+	private CraneStrategy advancedStrategy = new CraneAdvancedStrategy();
+	
 	@BeforeAll
 	public static void beforeAll() {
 		Timer.printHeader(TestDisplayName.DAY_05);
@@ -44,10 +46,8 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
-		SupplyStacks stacks = new SupplyStacks(inputs);
-		String result = stacks.solveA();
-		
+		SupplyStacks supplyStacks = new SupplyStacks(inputs);
+		String result = supplyStacks.solve(basicStrategy);
 		assertEquals("CMZ", result);
 	}
 	
@@ -62,9 +62,8 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
-		SupplyStacks stacks = new SupplyStacks(inputs);
-		String result = stacks.solveA();
+		SupplyStacks supplyStacks = new SupplyStacks(inputs);
+		String result = supplyStacks.solve(basicStrategy);
 		
 		assertEquals("QGTHFZBHV", result);
 		
@@ -81,8 +80,8 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		SupplyStacks stacks = new SupplyStacks(inputs);
-		String result = stacks.solveB();
+		SupplyStacks supplyStacks = new SupplyStacks(inputs);
+		String result = supplyStacks.solve(advancedStrategy);
 		assertEquals("MCD", result);
 	}
 	
@@ -97,10 +96,8 @@ public class Day05Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		SupplyStacks stacks = new SupplyStacks(inputs);
-		String result = stacks.solveB();
-		
-		System.out.println(result);
+		SupplyStacks supplyStacks = new SupplyStacks(inputs);
+		String result = supplyStacks.solve(advancedStrategy);
 		assertEquals("MGDMPSZTM", result);
 	}
 
