@@ -35,22 +35,23 @@ public class SupplyStacks {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	private void initializeStacks(Stack<String> initialCrates) {
 		
-		// Calculate how many stacks there are
+		// Create all the needed stacks
 		String header = initialCrates.pop();
 		header = RegExUtils.removeAll(header, StringUtils.SPACE);
-		int stacksNumber = header.length();
-		stacks = new Stack[stacksNumber];
+		stacks = new Stack[header.length()];
 		
+		// Add initial items to the stacks
 		while(!initialCrates.isEmpty()) {
 			
-			String crateLine = initialCrates.pop();
-			int currentStack = 1;
+			String currentLevel = initialCrates.pop();
+			int columnIndex = 1;
 			int currentStackIndex = 0;
-			while(currentStack < crateLine.length()) {
+			while(columnIndex < currentLevel.length()) {
 				
-				char crate = crateLine.charAt(currentStack);
+				char crate = currentLevel.charAt(columnIndex);
 				if(crate != ' ') {
 					if(stacks[currentStackIndex] == null) {
 						stacks[currentStackIndex] = new Stack<>();
@@ -58,7 +59,7 @@ public class SupplyStacks {
 					stacks[currentStackIndex].add(String.valueOf(crate));
 				}
 				
-				currentStack += 4;
+				columnIndex += 4;
 				currentStackIndex++;
 			}
 		}
