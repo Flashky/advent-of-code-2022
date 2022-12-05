@@ -1,7 +1,5 @@
 package com.adventofcode.flashk.day05;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -16,17 +14,16 @@ public class SupplyStacks {
 	
 	public SupplyStacks(List<String> inputs) {
 		
-		Deque<String> initialCrates = new ArrayDeque<>();
+		Stack<String> initialCrates = new Stack<>();
 		boolean initStacks = false;
+		
 		for(String input : inputs) {
-			
 			
 			if(!initStacks && StringUtils.isNotBlank(input)){
 				initialCrates.add(input);	
 			}
 			
 			if(StringUtils.isBlank(input)) {
-				
 				initStacks = true; 
 				initializeStacks(initialCrates);
 			} else if(initStacks) {
@@ -37,17 +34,17 @@ public class SupplyStacks {
 	}
 	
 
-	private void initializeStacks(Deque<String> initialCrates) {
+	private void initializeStacks(Stack<String> initialCrates) {
 		
 		// Calculate how many stacks there are
-		String header = initialCrates.pollLast();
+		String header = initialCrates.pop();
 		header = StringUtils.replaceAll(header, " ", "");
 		int stacksNumber = header.length();
 		stacks = new Stack[stacksNumber];
 		
 		while(!initialCrates.isEmpty()) {
 			
-			String crateLine = initialCrates.pollLast();
+			String crateLine = initialCrates.pop();
 			int currentStack = 1;
 			int currentStackIndex = 0;
 			while(currentStack < crateLine.length()) {
@@ -100,14 +97,14 @@ public class SupplyStacks {
 	private void moveCrates2(Movement movement) {
 		Stack<String> stackFrom = stacks[movement.getStackIndexFrom()];
 		Stack<String> stackTo = stacks[movement.getStackIndexTo()];
-		Deque<String> crateBlock = new LinkedList<>();
+		Stack<String> crateBlock = new Stack<>();
 		
 		for(int i = 0; i < movement.getNumberOfCrates(); i++) {
 			crateBlock.add(stackFrom.pop());
 		}
 		
 		while(!crateBlock.isEmpty()) {
-			stackTo.add(crateBlock.pollLast());
+			stackTo.add(crateBlock.pop());
 		}
 	}
 
