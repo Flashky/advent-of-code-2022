@@ -10,11 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SupplyStacks {
 
-	private Stack<String>[] stacks;
-	private Queue<Movement> movements = new LinkedList<>();
+	protected Stack<String>[] stacks;
+	protected Queue<Movement> movements = new LinkedList<>();
 	
 	public SupplyStacks(List<String> inputs) {
-		
 		Stack<String> initialCrates = new Stack<>();
 		boolean initStacks = false;
 		
@@ -34,7 +33,6 @@ public class SupplyStacks {
 		}
 	}
 	
-
 	@SuppressWarnings("unchecked")
 	private void initializeStacks(Stack<String> initialCrates) {
 		
@@ -63,62 +61,12 @@ public class SupplyStacks {
 				currentStackIndex++;
 			}
 		}
+	}
+	
+	public String solve(CraneStrategy strategy) {
+		return strategy.solve(stacks, movements);
 		
+
 	}
 
-	public String solveA() {
-		
-		while(!movements.isEmpty()) {
-			Movement movement = movements.poll();
-			moveCrates(movement);
-		}
-		
-		StringBuilder resultBuilder = new StringBuilder();
-		for(int i = 0; i < stacks.length; i++) {
-			resultBuilder.append(stacks[i].peek());
-		}
-		
-		return resultBuilder.toString();
-	}
-
-	public String solveB() {
-		
-		while(!movements.isEmpty()) {
-			Movement movement = movements.poll();
-			moveCrates2(movement);
-		}
-		
-		StringBuilder resultBuilder = new StringBuilder();
-		for(int i = 0; i < stacks.length; i++) {
-			resultBuilder.append(stacks[i].peek());
-		}
-		
-		return resultBuilder.toString();
-	}
-
-	private void moveCrates2(Movement movement) {
-		Stack<String> stackFrom = stacks[movement.getStackIndexFrom()];
-		Stack<String> stackTo = stacks[movement.getStackIndexTo()];
-		Stack<String> crateBlock = new Stack<>();
-		
-		for(int i = 0; i < movement.getNumberOfCrates(); i++) {
-			crateBlock.add(stackFrom.pop());
-		}
-		
-		while(!crateBlock.isEmpty()) {
-			stackTo.add(crateBlock.pop());
-		}
-	}
-
-
-	private void moveCrates(Movement movement) {
-		
-		Stack<String> stackFrom = stacks[movement.getStackIndexFrom()];
-		Stack<String> stackTo = stacks[movement.getStackIndexTo()];
-		
-		for(int i = 0; i < movement.getNumberOfCrates(); i++) {
-			stackTo.add(stackFrom.pop());
-		}
-		
-	}
 }
