@@ -1,9 +1,7 @@
 package com.adventofcode.flashk.day03;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,13 +12,11 @@ public class Rucksack {
 	private static final int CHARACTER_LOWER_OFFSET = 9;
 	private static final int CHARACTER_UPPER_OFFSET = 17;
 	
-	private Set<Character> countedItems = new HashSet<>();
-
 	public long solveA(List<String> inputs) {
 		
 		long totalValue = 0;
 		for (String rucksack : inputs) {
-			countedItems = new HashSet<>();
+			Set<Character> countedItems = new HashSet<>();
 			
 			String container1 = rucksack.substring(0, (rucksack.length()/2));
 			String container2 = rucksack.substring((rucksack.length()/2));
