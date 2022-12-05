@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class SupplyStacks {
@@ -38,7 +39,7 @@ public class SupplyStacks {
 		
 		// Calculate how many stacks there are
 		String header = initialCrates.pop();
-		header = StringUtils.replaceAll(header, " ", "");
+		header = RegExUtils.removeAll(header, StringUtils.SPACE);
 		int stacksNumber = header.length();
 		stacks = new Stack[stacksNumber];
 		
