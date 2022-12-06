@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day06;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,11 +22,13 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_06)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day06Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_06;
-
+	
+	private final static int START_OF_PACKET_MARKER = 4;
+	private final static int START_OF_MESSAGE_MARKER = 14;
+	
 	@BeforeAll
 	public static void beforeAll() {
 		Timer.printHeader(TestDisplayName.DAY_06);
@@ -44,6 +47,10 @@ public class Day06Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		TuningTrouble tuningTrouble = new TuningTrouble();
+		long result = tuningTrouble.solve(inputs.get(0), START_OF_PACKET_MARKER);
+		
+		assertEquals(7, result);
 	}
 	
 	@Test
@@ -57,7 +64,10 @@ public class Day06Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		TuningTrouble tuningTrouble = new TuningTrouble();
+		long result = tuningTrouble.solve(inputs.get(0), START_OF_PACKET_MARKER);
 		
+		assertEquals(1175, result);
 	}
 	
 	@Test
@@ -71,7 +81,10 @@ public class Day06Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		TuningTrouble tuningTrouble = new TuningTrouble();
+		long result = tuningTrouble.solve(inputs.get(0), START_OF_MESSAGE_MARKER);
 		
+		assertEquals(19, result);
 	}
 	
 	@Test
@@ -85,6 +98,10 @@ public class Day06Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		TuningTrouble tuningTrouble = new TuningTrouble();
+		long result = tuningTrouble.solve(inputs.get(0), START_OF_MESSAGE_MARKER);
+		
+		assertEquals(3217, result);
 		
 	}
 

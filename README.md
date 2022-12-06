@@ -8,7 +8,7 @@
 - [Day 3 - Rucksack Reorganization](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day03)
 - [Day 4 - Camp Cleanup](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day04)
 - [Day 5 - Supply Stacks](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day05)
-- [Day 6](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day06)
+- [Day 6 - Tuning Trouble](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day06)
 - [Day 7](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day07)
 - [Day 8](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day08)
 - [Day 9](https://github.com/Flashky/advent-of-code-2022/tree/master/src/main/java/com/adventofcode/flashk/day09)
