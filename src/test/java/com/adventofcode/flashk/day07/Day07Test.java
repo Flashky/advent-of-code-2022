@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day07;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_07)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day07Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_07;
@@ -44,6 +44,9 @@ public class Day07Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		DeviceSpace deviceSpace = new DeviceSpace(inputs);
+		
+		assertEquals(95437, deviceSpace.solveA());
 	}
 	
 	@Test
@@ -58,6 +61,8 @@ public class Day07Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		DeviceSpace deviceSpace = new DeviceSpace(inputs);
+		assertEquals(1517599, deviceSpace.solveA());
 	}
 	
 	@Test
@@ -71,6 +76,9 @@ public class Day07Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+	
+		DeviceSpace deviceSpace = new DeviceSpace(inputs);
+		assertEquals(24933642, deviceSpace.solveB());
 		
 	}
 	
@@ -85,6 +93,10 @@ public class Day07Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		
+		DeviceSpace deviceSpace = new DeviceSpace(inputs);
+		assertEquals(2481982, deviceSpace.solveB());
 		
 	}
 
