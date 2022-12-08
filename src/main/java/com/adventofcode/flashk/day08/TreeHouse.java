@@ -4,25 +4,20 @@ import java.util.List;
 
 public class TreeHouse {
 
-	private Integer[][] treeMap;
+	private int[][] treeMap;
 	private int cols;
 	private int rows;
 	
 	public TreeHouse(List<String> inputs) {
 		
+		// Initialize tree map values
 		cols = inputs.get(0).length();
 		rows = inputs.size();
-		
-		// Initialize tree map values
-		treeMap = new Integer[rows][cols];
+	
+		treeMap = new int[rows][cols];
 		
 		for(int row = 0; row < inputs.size(); row++) {
-			
-			char[] numbers = inputs.get(row).toCharArray();			
-			for(int col = 0; col < cols; col++) {
-				treeMap[row][col] = Character.getNumericValue(numbers[col]);
-			}
-			
+			treeMap[row] = inputs.get(row).chars().map(Character::getNumericValue).toArray();
 		}
 
 	}
@@ -32,7 +27,6 @@ public class TreeHouse {
 		
 		for(int rowIndex = 0; rowIndex < rows; rowIndex++) {
 			for(int colIndex = 0; colIndex < cols; colIndex++) {
-				
 				if(isVisible(rowIndex, colIndex)) {
 					result++;
 				}

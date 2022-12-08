@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -66,8 +65,7 @@ public class Day08Test extends PuzzleTest {
 		TreeHouse treeHouse = new TreeHouse(inputs);
 		int result = treeHouse.solveA();
 		
-		//assertEquals(21, result);
-		System.out.println(result);
+		assertEquals(1818, result);
 	}
 	
 	@Test
@@ -101,7 +99,7 @@ public class Day08Test extends PuzzleTest {
 		TreeHouse treeHouse = new TreeHouse(inputs);
 		long result = treeHouse.solveB();
 		
-		System.out.println(result);
+		assertEquals(368368, result);
 	}
 
 }
