@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day08;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_08)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day08Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_08;
@@ -44,6 +45,11 @@ public class Day08Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		TreeHouse treeHouse = new TreeHouse(inputs);
+		int result = treeHouse.solveA();
+		
+		assertEquals(21, result);
+		
 	}
 	
 	@Test
@@ -57,7 +63,11 @@ public class Day08Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		TreeHouse treeHouse = new TreeHouse(inputs);
+		int result = treeHouse.solveA();
 		
+		//assertEquals(21, result);
+		System.out.println(result);
 	}
 	
 	@Test
@@ -71,7 +81,10 @@ public class Day08Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		TreeHouse treeHouse = new TreeHouse(inputs);
+		long result = treeHouse.solveB();
 		
+		assertEquals(8, result);
 	}
 	
 	@Test
@@ -85,7 +98,10 @@ public class Day08Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		TreeHouse treeHouse = new TreeHouse(inputs);
+		long result = treeHouse.solveB();
 		
+		System.out.println(result);
 	}
 
 }
