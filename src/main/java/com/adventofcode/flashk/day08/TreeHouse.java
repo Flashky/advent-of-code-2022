@@ -79,11 +79,7 @@ public class TreeHouse {
 			return true;
 		}
 		
-		if(isVisibleBottom(rowIndex, colIndex)) {
-			return true;
-		}
-		
-		return false;
+		return isVisibleBottom(rowIndex, colIndex);
 	}
 
 	private boolean isVisibleLeft(int rowIndex, int colIndex) {
