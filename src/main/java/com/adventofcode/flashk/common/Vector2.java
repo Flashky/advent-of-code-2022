@@ -13,9 +13,6 @@ import lombok.ToString;
 @ToString
 public class Vector2 {
 
-	private int x;
-	private int y;
-	
 	// Constants
 	
 	/**
@@ -58,6 +55,9 @@ public class Vector2 {
 	 */
 	public static final Vector2 DOWN_LEFT = new Vector2(-1,-1);
 	
+	private int x;
+	private int y;
+	
 	public void transform(Vector2 vector) {
 		this.x += vector.x;
 		this.y += vector.y;
@@ -88,16 +88,47 @@ public class Vector2 {
 		
 	}
 	
+	/**
+	 * Modifies this vector to have a magnitude of 1.
+	 * 
+	 * <p>This function <strong>will modify</strong> the current vector.
+	 * Use {@link #normalized()} if you want to keep current vector unchanged.<p>
+	 */
 	public void normalize() {
 		
 		double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		
-		if(length != 0) {
-			double s = 1 / length;
-			x = (int) Math.round(x * s);
-			y = (int) Math.round(y * s);
+		if(length == 0) {
+			throw new IllegalStateException("A zero vector (0,0) cannot be normalized");
 		}
 		
+		double s = 1 / length;
+		x = (int) Math.round(x * s);
+		y = (int) Math.round(y * s);
+				
+	}
+	
+	/**
+	 * Returns a copy of this vector with a magnitude of 1.
+	 * <p>
+	 * This function <strong>will NOT modify</strong> the current vector.
+	 * Use {@link #normalize()} if you want to modify the current vector.
+	 * </p>
+	 * @return a normalized version of the current vector.
+	 */
+	public Vector2 normalized() {
+		
+		double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+		
+		if(length == 0) {
+			throw new IllegalStateException("A zero vector (0,0) cannot be normalized");
+		}
+		
+		double s = 1 / length;
+		int newX = (int) Math.round(x * s);
+		int newY = (int) Math.round(y * s);
+		
+		return new Vector2(newX, newY);
 	}
 	
 	// Static operations
