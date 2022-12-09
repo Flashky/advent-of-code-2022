@@ -1,7 +1,9 @@
 package com.adventofcode.flashk.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -214,10 +216,132 @@ class Vector2Test {
 	void testNormalizeOrigin() {
 		
 		Vector2 vector = new Vector2(0,0);
-		vector.normalize();
 		
-		assertEquals(0,  vector.getX());
+		assertThrows(IllegalStateException.class, () -> vector.normalize());
+	
+	}
+	
+	//----------------------
+	
+	@Test
+	void testNormalizedLeft() {
+		
+		Vector2 vector = new Vector2(-5,0);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(-1,  anotherVector.getX());
+		assertEquals(0, anotherVector.getY());
+		assertEquals(-5, vector.getX());
 		assertEquals(0, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedRight() {
+		
+		Vector2 vector = new Vector2(5,0);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(1,  anotherVector.getX());
+		assertEquals(0, anotherVector.getY());
+		assertEquals(5,  vector.getX());
+		assertEquals(0, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedUp() {
+		
+		Vector2 vector = new Vector2(0,5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(0,  anotherVector.getX());
+		assertEquals(1, anotherVector.getY());
+		assertEquals(0,  vector.getX());
+		assertEquals(5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedDown() {
+		
+		Vector2 vector = new Vector2(0,-5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(0,  anotherVector.getX());
+		assertEquals(-1, anotherVector.getY());
+		assertEquals(0,  vector.getX());
+		assertEquals(-5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+
+	@Test
+	void testNormalizedUpRight() {
+		
+		Vector2 vector = new Vector2(5,5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(1,  anotherVector.getX());
+		assertEquals(1, anotherVector.getY());
+		assertEquals(5,  vector.getX());
+		assertEquals(5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedDownRight() {
+		
+		Vector2 vector = new Vector2(5,-5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(1,  anotherVector.getX());
+		assertEquals(-1, anotherVector.getY());
+		assertEquals(5,  vector.getX());
+		assertEquals(-5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedUpLeft() {
+		
+		Vector2 vector = new Vector2(-5,5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(-1,  anotherVector.getX());
+		assertEquals(1, anotherVector.getY());
+		assertEquals(-5,  vector.getX());
+		assertEquals(5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedDownLeft() {
+		
+		Vector2 vector = new Vector2(-5,-5);
+		Vector2 anotherVector = vector.normalized();
+		
+		assertEquals(-1,  anotherVector.getX());
+		assertEquals(-1, anotherVector.getY());
+		assertEquals(-5,  vector.getX());
+		assertEquals(-5, vector.getY());
+		
+		assertNotSame(anotherVector, vector);
+	}
+	
+	@Test
+	void testNormalizedOrigin() {
+		
+		Vector2 vector = new Vector2(0,0);
+		
+		assertThrows(IllegalStateException.class, () -> vector.normalized());
+	
 	}
 
 }
