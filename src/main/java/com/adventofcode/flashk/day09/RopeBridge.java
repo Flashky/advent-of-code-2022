@@ -1,10 +1,8 @@
 package com.adventofcode.flashk.day09;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.adventofcode.flashk.common.Vector2;
@@ -32,22 +30,8 @@ public class RopeBridge {
 		passedCoordinates.add(new Vector2(0,0));
 		
 	}
-	
-	
-	public long solveA() {
-		
-		tailKnots.add(new Knot(headKnot));
-		
-		for(Movement movement : movements) {
-			
-			performMovement(movement);
 
-		}
-		
-		return passedCoordinates.size();
-	}
-
-	public long solveB(int numberOfKnots) {
+	public long solve(int numberOfKnots) {
 		
 		
 		Knot lastTailKnot = null;
@@ -105,8 +89,6 @@ public class RopeBridge {
 				tail.transform(new Vector2(-1,0));
 			}
 			
-			//tail.transform(movement.getDirection());
-			
 			if(tailKnot.isLast()) {
 				passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 			}
@@ -115,16 +97,13 @@ public class RopeBridge {
 		} else if((distance.getX() == 0) && (distance.getY() > 1)) {
 			
 			// Up & Down
-			//distance.normalize();
 			
-			// Who is up and who is down?
 			if(head.getY() > tail.getY()) {
 				tail.transform(new Vector2(0,1));
 			} else {
 				tail.transform(new Vector2(0,-1));
 			}
-			
-			//tail.transform(movement.getDirection()); // Error.  Imagina que el movimiento va a la derecha pero debes moverte hacia abajo.
+
 			if(tailKnot.isLast()) {
 				passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 			}
