@@ -65,16 +65,14 @@ public class RopeBridge {
 			head.transform(movement.getDirection());
 		
 			for(Knot tailKnot : tailKnots) {
-				moveTailKnot(movement, tailKnot);
+				moveTailKnot(tailKnot);
 			}
 		}
-		
-		System.out.println("end step");
 		
 	}
 
 
-	private void moveTailKnot(Movement movement, Knot tailKnot) {
+	private void moveTailKnot(Knot tailKnot) {
 		
 		Vector2 head = tailKnot.getNext().getPos();
 		Vector2 tail = tailKnot.getPos();
@@ -84,9 +82,9 @@ public class RopeBridge {
 			
 			// Left & Right
 			if(head.getX() > tail.getX()) {
-				tail.transform(new Vector2(1,0));
+				tail.transform(Vector2.RIGHT);
 			} else {
-				tail.transform(new Vector2(-1,0));
+				tail.transform(Vector2.LEFT);
 			}
 			
 			if(tailKnot.isLast()) {
@@ -99,9 +97,9 @@ public class RopeBridge {
 			// Up & Down
 			
 			if(head.getY() > tail.getY()) {
-				tail.transform(new Vector2(0,1));
+				tail.transform(Vector2.UP);
 			} else {
-				tail.transform(new Vector2(0,-1));
+				tail.transform(Vector2.DOWN);
 			}
 
 			if(tailKnot.isLast()) {
@@ -115,12 +113,12 @@ public class RopeBridge {
 				// Diagonal up
 				
 				if(head.getX() > tail.getX()) {
-					tail.transform(new Vector2(1,1)); // Diagonal up right
+					tail.transform(Vector2.UP_RIGHT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
 				} else if (head.getX() < tail.getX()) {
-					tail.transform(new Vector2(-1,1)); // Diagonal up left
+					tail.transform(Vector2.UP_LEFT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
@@ -131,12 +129,12 @@ public class RopeBridge {
 				// Diagonal down
 				
 				if(head.getX() > tail.getX()) {
-					tail.transform(new Vector2(1,-1)); // Diagonal up right
+					tail.transform(Vector2.DOWN_RIGHT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
 				} else if (head.getX() < tail.getX()) {
-					tail.transform(new Vector2(-1,-1)); // Diagonal up left
+					tail.transform(Vector2.DOWN_LEFT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}

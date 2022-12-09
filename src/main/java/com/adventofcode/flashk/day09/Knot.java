@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class Knot {
 
-	private Vector2 pos = new Vector2(0,0);
+	private Vector2 pos = new Vector2();
 	private Knot next;
 	private boolean isLast = true;
 	
