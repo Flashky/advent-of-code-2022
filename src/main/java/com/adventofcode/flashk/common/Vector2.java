@@ -3,9 +3,11 @@ package com.adventofcode.flashk.common;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -13,6 +15,48 @@ public class Vector2 {
 
 	private int x;
 	private int y;
+	
+	// Constants
+	
+	/**
+	 * Shorthand for Vector2(-1,0)
+	 */
+	public static final Vector2 LEFT = new Vector2(-1,0);
+	
+	/**
+	 * Shorthand for Vector2(1,0)
+	 */
+	public static final Vector2 RIGHT = new Vector2(1,0);
+	
+	/**
+	 * Shorthand for Vector2(0,1)
+	 */
+	public static final Vector2 UP = new Vector2(0,1);
+	
+	/**
+	 * Shorthand for Vector2(0,-1)
+	 */
+	public static final Vector2 DOWN = new Vector2(0,-1);
+	
+	/**
+	 * Shorthand for Vector2(1,1)
+	 */
+	public static final Vector2 UP_RIGHT = new Vector2(1,1);
+	
+	/**
+	 * Shorthand for Vector2(-1,1)
+	 */
+	public static final Vector2 UP_LEFT = new Vector2(-1,1);
+	
+	/**
+	 * Shorthand for Vector2(1,-1)
+	 */
+	public static final Vector2 DOWN_RIGHT = new Vector2(1,-1);
+	
+	/**
+	 * Shorthand for Vector2(-1,-1)
+	 */
+	public static final Vector2 DOWN_LEFT = new Vector2(-1,-1);
 	
 	public void transform(Vector2 vector) {
 		this.x += vector.x;
