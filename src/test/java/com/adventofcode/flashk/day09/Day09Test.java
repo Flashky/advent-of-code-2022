@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day09;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_09)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day09Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_09;
@@ -44,6 +44,10 @@ public class Day09Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		RopeBridge ropeBridge = new RopeBridge(inputs);
+		long result = ropeBridge.solveA();
+		
+		assertEquals(13, result);
 	}
 	
 	@Test
@@ -57,7 +61,11 @@ public class Day09Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		RopeBridge ropeBridge = new RopeBridge(inputs);
+		long result = ropeBridge.solveA();
 		
+		//assertEquals(13, result);
+		System.out.println(result);
 	}
 	
 	@Test
