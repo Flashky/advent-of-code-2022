@@ -45,7 +45,7 @@ public class Day09Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		RopeBridge ropeBridge = new RopeBridge(inputs);
-		long result = ropeBridge.solveA();
+		long result = ropeBridge.solveB(2);
 		
 		assertEquals(13, result);
 	}
@@ -62,10 +62,9 @@ public class Day09Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		RopeBridge ropeBridge = new RopeBridge(inputs);
-		long result = ropeBridge.solveA();
+		long result = ropeBridge.solveB(2);
 		
-		//assertEquals(13, result);
-		System.out.println(result);
+		assertEquals(6486, result);
 	}
 	
 	@Test
@@ -79,11 +78,31 @@ public class Day09Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		RopeBridge ropeBridge = new RopeBridge(inputs);
 		
+		long result = ropeBridge.solveB(10);
+		assertEquals(1, result);
 	}
 	
 	@Test
-	@Order(4)
+	@Order(3)
+	@Tag(TestTag.PART_TWO)
+	@Tag(TestTag.SAMPLE)
+	@DisplayName("Part 2 - Sample data 2")
+	public void testSolvePart2Sample2() {
+		
+		System.out.print("2 | sample 2 | ");
+		
+		// Read input file
+		List<String> inputs = Util.readStringLines(INPUT_FOLDER, "sample_2.input");
+		RopeBridge ropeBridge = new RopeBridge(inputs);
+		
+		long result = ropeBridge.solveB(10);
+		assertEquals(36, result);
+	}
+	
+	@Test
+	@Order(5)
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
@@ -93,7 +112,13 @@ public class Day09Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		RopeBridge ropeBridge = new RopeBridge(inputs);
 		
+		long result = ropeBridge.solveB(10);
+		assertEquals(2678, result);
+
 	}
+
+
 
 }
