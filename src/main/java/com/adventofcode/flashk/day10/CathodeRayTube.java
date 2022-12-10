@@ -49,9 +49,7 @@ public class CathodeRayTube {
 		
 		for(Instruction instruction : instructions) {
 			
-			int waitCycles = instruction.getCycles();
-			
-			for(int i = 0; i < waitCycles; i++) {
+			for(int i = 0; i < instruction.getCycles(); i++) {
 				
 				if(interestingSignalStrengths.contains(currentCycle)) {
 					result += x * currentCycle;
