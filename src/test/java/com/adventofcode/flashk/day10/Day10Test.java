@@ -46,7 +46,7 @@ public class Day10Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		CathodeRayTube cathodeRayTube = new CathodeRayTube(inputs);
-		long result = cathodeRayTube.solveA();
+		long result = cathodeRayTube.solve();
 		
 		assertEquals(13140, result);
 		
@@ -64,7 +64,7 @@ public class Day10Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		CathodeRayTube cathodeRayTube = new CathodeRayTube(inputs);
-		long result = cathodeRayTube.solveA();
+		long result = cathodeRayTube.solve();
 		
 		assertEquals(14540, result);
 		
@@ -75,12 +75,10 @@ public class Day10Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.SAMPLE)
 	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
+	@Disabled
 	public void testSolvePart2Sample() {
 		
-		System.out.print("2 | sample | ");
-		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		// DOES NOT APPLY FOR THIS PUZZLE
 		
 	}
 	
@@ -91,10 +89,7 @@ public class Day10Test extends PuzzleTest {
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
 	public void testSolvePart2Input() {
 		
-		System.out.print("2 | input  | ");
-		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		// DOES NOT APPLY FOR THIS PUZZLE
 		
 	}
 
