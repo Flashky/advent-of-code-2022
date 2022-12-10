@@ -26,6 +26,8 @@ public class Movement {
 			case "L": direction = new Vector2(-1,0); break;
 			case "U": direction = new Vector2(0,1); break;
 			case "D": direction = new Vector2(0,-1); break;
+			default:
+				throw new UnsupportedOperationException("Unsupported movement type: "+matcher.group(1));
 		}
 		
 		steps = Integer.parseInt(matcher.group(2));
