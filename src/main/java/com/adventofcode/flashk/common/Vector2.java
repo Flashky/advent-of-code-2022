@@ -123,6 +123,12 @@ public class Vector2 {
 		
 	}
 	
+	public static Vector2 substract(Vector2 leftOperand, Vector2 rightOperand) {
+		int x = leftOperand.x - rightOperand.x;
+		int y = leftOperand.y - rightOperand.y;
+		return new Vector2(x,y);
+	}
+	
 	/**
 	 * Shorthand for <code>Vector2(1,0)</code>.
 	 * @return A unitary vector that points to the right.
@@ -131,6 +137,13 @@ public class Vector2 {
 		return new Vector2(1,0);
 	}
 	
+	public static double distance(Vector2 a, Vector2 b) {
+		
+		int xDiff = b.x - a.x;
+		int yDiff = b.y - a.y;
+		
+		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+	}
 	/**
 	 * Shorthand for <code>Vector2(-1,0)</code>.
 	 * @return A unitary vector that points to the left.
