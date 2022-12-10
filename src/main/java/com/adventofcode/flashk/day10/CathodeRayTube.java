@@ -12,6 +12,7 @@ public class CathodeRayTube {
 	private static final int CRT_HEIGHT = 6;
 	private static final char LIT = '#';
 	private static final char DARK = '.';
+	private static final int SPRITE_WIDTH = 3;
 	
 	// Problem input
 	private List<Instruction> instructions;
@@ -91,8 +92,8 @@ public class CathodeRayTube {
 			spriteBar[i] = DARK;
 		}
 		
-		int startPos = x-1;
-		int endPos = startPos+3;
+		int startPos = x - 1;
+		int endPos = startPos + SPRITE_WIDTH;
 
 		// Check out of bounds
 		if(startPos < 0) {
@@ -103,7 +104,7 @@ public class CathodeRayTube {
 			endPos = CRT_WIDTH - 1;
 		}
 		
-		// Redraw sprite
+		// Redraw sprite in bar
 		for(int i = startPos; i < endPos; i++) {
 			spriteBar[i] = LIT;
 		}
@@ -113,12 +114,10 @@ public class CathodeRayTube {
 	private void drawPixel() {
 		int spriteBarIndex = (currentCycle-1) % CRT_WIDTH;
 		
-		// Check to update rowIndex and colIndex
-		// rowIndex depende del ciclo y a su vez la columna
 		crt[rowIndex][colIndex] = spriteBar[spriteBarIndex];
 		
 		colIndex++;
-		if(colIndex == 40) {
+		if(colIndex == CRT_WIDTH) {
 			colIndex = 0;
 			rowIndex++;
 		}
