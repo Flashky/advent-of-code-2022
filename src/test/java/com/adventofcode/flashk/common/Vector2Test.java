@@ -343,5 +343,77 @@ class Vector2Test {
 		assertThrows(IllegalStateException.class, () -> vector.normalized());
 	
 	}
+	
+	@Test 
+	void testRight(){
+		
+		Vector2 vector = Vector2.right();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(0, vector.getY());
+	}
+	
+	@Test 
+	void testLeft(){
+		
+		Vector2 vector = Vector2.left();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(0, vector.getY());
+	}
+	
+	@Test 
+	void testUp(){
+		
+		Vector2 vector = Vector2.up();
+		
+		assertEquals(0, vector.getX());
+		assertEquals(1, vector.getY());
+	}
+	
+	@Test 
+	void testDown(){
+		
+		Vector2 vector = Vector2.down();
+		
+		assertEquals(0, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
+	@Test 
+	void testUpRight(){
+		
+		Vector2 vector = Vector2.upRight();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(1, vector.getY());
+	}
 
+	@Test 
+	void testUpLeft(){
+		
+		Vector2 vector = Vector2.upLeft();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(1, vector.getY());
+	}
+	
+	@Test 
+	void testUpDownRight(){
+		
+		Vector2 vector = Vector2.downRight();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
+	@Test 
+	void testUpDownLeft(){
+		
+		Vector2 vector = Vector2.downLeft();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
 }

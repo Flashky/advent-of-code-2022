@@ -13,50 +13,13 @@ import lombok.ToString;
 @ToString
 public class Vector2 {
 
-	// Constants
-	
-	/**
-	 * Shorthand for Vector2(-1,0)
-	 */
-	public static final Vector2 LEFT = new Vector2(-1,0);
-	
-	/**
-	 * Shorthand for Vector2(1,0)
-	 */
-	public static final Vector2 RIGHT = new Vector2(1,0);
-	
-	/**
-	 * Shorthand for Vector2(0,1)
-	 */
-	public static final Vector2 UP = new Vector2(0,1);
-	
-	/**
-	 * Shorthand for Vector2(0,-1)
-	 */
-	public static final Vector2 DOWN = new Vector2(0,-1);
-	
-	/**
-	 * Shorthand for Vector2(1,1)
-	 */
-	public static final Vector2 UP_RIGHT = new Vector2(1,1);
-	
-	/**
-	 * Shorthand for Vector2(-1,1)
-	 */
-	public static final Vector2 UP_LEFT = new Vector2(-1,1);
-	
-	/**
-	 * Shorthand for Vector2(1,-1)
-	 */
-	public static final Vector2 DOWN_RIGHT = new Vector2(1,-1);
-	
-	/**
-	 * Shorthand for Vector2(-1,-1)
-	 */
-	public static final Vector2 DOWN_LEFT = new Vector2(-1,-1);
-	
 	private int x;
 	private int y;
+	
+	public Vector2(Vector2 anotherVector) {
+		this.x = anotherVector.x;
+		this.y = anotherVector.y;
+	}
 	
 	public void transform(Vector2 vector) {
 		this.x += vector.x;
@@ -160,5 +123,68 @@ public class Vector2 {
 		
 	}
 	
+	/**
+	 * Shorthand for <code>Vector2(1,0)</code>.
+	 * @return A unitary vector that points to the right.
+	 */
+	public static Vector2 right() {
+		return new Vector2(1,0);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector2(-1,0)</code>.
+	 * @return A unitary vector that points to the left.
+	 */
+	public static Vector2 left() {
+		return new Vector2(-1,0);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector2(0,1)</code>.
+	 * @return A unitary vector that points up.
+	 */
+	public static Vector2 up() {
+		return new Vector2(0,1);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector2(0,-1)</code>.
+	 * @return A unitary vector that points down.
+	 */
+	public static Vector2 down() {
+		return new Vector2(0,-1);
+	}
+
+	/**
+	 * Shorthand for <code>Vector2(1,1)</code>.
+	 * @return A unitary vector that points to the up right diagonal.
+	 */
+	public static Vector2 upRight() {
+		return new Vector2(1,1);
+	}
+
+	/**
+	 * Shorthand for <code>Vector2(-1,1)</code>.
+	 * @return A unitary vector that points to the up left diagonal.
+	 */
+	public static Vector2 upLeft() {
+		return new Vector2(-1,1);
+	}
+
+	/**
+	 * Shorthand for <code>Vector2(1,-1)</code>.
+	 * @return A unitary vector that points to the down right diagonal.
+	 */
+	public static Vector2 downRight() {
+		return new Vector2(1,-1);
+	}
+
+	/**
+	 * Shorthand for <code>Vector2(-1,-1)</code>.
+	 * @return A unitary vector that points to the down left diagonal.
+	 */
+	public static Vector2 downLeft() {
+		return new Vector2(-1,-1);
+	}
 	
 }
