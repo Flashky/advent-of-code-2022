@@ -24,7 +24,7 @@ public class CathodeRayTube {
 	
 	// Drawing CRT variables
 	private char[][] crt = new char[CRT_HEIGHT][CRT_WIDTH];
-	private char[] spriteBar = new char[40];
+	private char[] spriteBar = new char[CRT_WIDTH];
 	private int rowIndex = 0;
 	private int colIndex = 0;
 	
@@ -44,16 +44,17 @@ public class CathodeRayTube {
 	}
 
 	public int solve() {
+		
 		int result = 0;
 		
 		for(Instruction instruction : instructions) {
+			
 			int waitCycles = instruction.getCycles();
 			
 			for(int i = 0; i < waitCycles; i++) {
 				
 				if(interestingSignalStrengths.contains(currentCycle)) {
-					int signalStrength = x*currentCycle;
-					result += signalStrength;
+					result += x * currentCycle;
 				}
 				
 				drawPixel();			
@@ -63,8 +64,6 @@ public class CathodeRayTube {
 			
 			if(Instruction.ADDX_INSTRUCTION.equals(instruction.getAction())) {
 				x += instruction.getValue();
-				
-				// Update sprite position
 				updateSpritePosition();
 			}
 		}
@@ -95,14 +94,9 @@ public class CathodeRayTube {
 		int startPos = x - 1;
 		int endPos = startPos + SPRITE_WIDTH;
 
-		// Check out of bounds
-		if(startPos < 0) {
-			startPos = 0;
-		}
-		
-		if(endPos >= CRT_WIDTH) {
-			endPos = CRT_WIDTH - 1;
-		}
+		// Adjust limits to avoid out of bounds exception 
+		startPos = Math.max(startPos, 0);
+		endPos = Math.min(endPos, CRT_WIDTH - 1);
 		
 		// Redraw sprite in bar
 		for(int i = startPos; i < endPos; i++) {
@@ -121,5 +115,6 @@ public class CathodeRayTube {
 			colIndex = 0;
 			rowIndex++;
 		}
+		
 	}
 }
