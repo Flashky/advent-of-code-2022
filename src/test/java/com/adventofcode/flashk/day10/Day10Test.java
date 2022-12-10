@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day10;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_10)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day10Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_10;
@@ -44,6 +45,11 @@ public class Day10Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		CathodeRayTube cathodeRayTube = new CathodeRayTube(inputs);
+		long result = cathodeRayTube.solveA();
+		
+		assertEquals(13140, result);
+		
 	}
 	
 	@Test
@@ -57,6 +63,10 @@ public class Day10Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		CathodeRayTube cathodeRayTube = new CathodeRayTube(inputs);
+		long result = cathodeRayTube.solveA();
+		
+		assertEquals(14540, result);
 		
 	}
 	
