@@ -20,7 +20,7 @@ public class Instruction {
 	
 	public Instruction(String input) {
 		
-		if("noop".equals(input)) {
+		if(NOOP_INSTRUCTION.equals(input)) {
 			this.action = input;
 			this.cycles = 1;
 		} else {
