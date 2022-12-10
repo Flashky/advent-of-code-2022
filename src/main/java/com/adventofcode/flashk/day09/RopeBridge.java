@@ -9,6 +9,15 @@ import com.adventofcode.flashk.common.Vector2;
 
 public class RopeBridge {
 
+	// Constant vectors to avoid build the same vectors again
+	private static final Vector2 RIGHT = Vector2.right();
+	private static final Vector2 LEFT = Vector2.left();
+	private static final Vector2 UP = Vector2.up();
+	private static final Vector2 DOWN = Vector2.down();
+	private static final Vector2 UP_RIGHT = Vector2.upRight();
+	private static final Vector2 UP_LEFT = Vector2.upLeft();
+	private static final Vector2 DOWN_RIGHT = Vector2.downRight();
+	private static final Vector2 DOWN_LEFT = Vector2.downLeft();
 	
 	private Set<Vector2> passedCoordinates = new HashSet<>();
 	
@@ -20,6 +29,8 @@ public class RopeBridge {
 	private Vector2 diagonalDirectionA = new Vector2(1,2);
 	private Vector2 diagonalDirectionB = new Vector2(2,1);
 	private Vector2 diagonalDirectionC = new Vector2(2,2);
+	
+	
 	
 	public RopeBridge(List<String> inputs) {
 		
@@ -61,7 +72,7 @@ public class RopeBridge {
 		Vector2 head = headKnot.getPos();
 		
 		for(int steps = 0; steps < movement.getSteps(); steps++) {
-			
+
 			head.transform(movement.getDirection());
 		
 			for(Knot tailKnot : tailKnots) {
@@ -82,9 +93,9 @@ public class RopeBridge {
 			
 			// Left & Right
 			if(head.getX() > tail.getX()) {
-				tail.transform(Vector2.RIGHT);
+				tail.transform(RIGHT);
 			} else {
-				tail.transform(Vector2.LEFT);
+				tail.transform(LEFT);
 			}
 			
 			if(tailKnot.isLast()) {
@@ -97,9 +108,9 @@ public class RopeBridge {
 			// Up & Down
 			
 			if(head.getY() > tail.getY()) {
-				tail.transform(Vector2.UP);
+				tail.transform(UP);
 			} else {
-				tail.transform(Vector2.DOWN);
+				tail.transform(DOWN);
 			}
 
 			if(tailKnot.isLast()) {
@@ -113,12 +124,12 @@ public class RopeBridge {
 				// Diagonal up
 				
 				if(head.getX() > tail.getX()) {
-					tail.transform(Vector2.UP_RIGHT);
+					tail.transform(UP_RIGHT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
 				} else if (head.getX() < tail.getX()) {
-					tail.transform(Vector2.UP_LEFT);
+					tail.transform(UP_LEFT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
@@ -129,12 +140,12 @@ public class RopeBridge {
 				// Diagonal down
 				
 				if(head.getX() > tail.getX()) {
-					tail.transform(Vector2.DOWN_RIGHT);
+					tail.transform(DOWN_RIGHT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}
 				} else if (head.getX() < tail.getX()) {
-					tail.transform(Vector2.DOWN_LEFT);
+					tail.transform(DOWN_LEFT);
 					if(tailKnot.isLast()) {
 						passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 					}

@@ -13,6 +13,11 @@ public class Movement {
 	private final static String MOVEMENT_REGEX = "(R|L|U|D) ([0-9]*)";
 	private final static Pattern MOVEMENT_PATTERN = Pattern.compile(MOVEMENT_REGEX);
 	
+	private final static String RIGHT = "R";
+	private final static String LEFT = "L";
+	private final static String UP = "U";
+	private final static String DOWN = "D";
+	
 	private Vector2 direction;
 	private int steps;
 	
@@ -22,10 +27,10 @@ public class Movement {
 		matcher.find();
 		
 		switch(matcher.group(1)) {
-			case "R": direction = new Vector2(1,0); break;
-			case "L": direction = new Vector2(-1,0); break;
-			case "U": direction = new Vector2(0,1); break;
-			case "D": direction = new Vector2(0,-1); break;
+			case RIGHT: direction = Vector2.right(); break;
+			case LEFT: direction = Vector2.left(); break;
+			case UP: direction = Vector2.up(); break;
+			case DOWN: direction = Vector2.down(); break;
 			default:
 				throw new UnsupportedOperationException("Unsupported movement type: "+matcher.group(1));
 		}
