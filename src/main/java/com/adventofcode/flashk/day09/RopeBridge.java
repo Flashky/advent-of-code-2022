@@ -88,9 +88,11 @@ public class RopeBridge {
 		
 		Vector2 head = tailKnot.getNext().getPos();
 		Vector2 tail = tailKnot.getPos();
-		//Vector2 distanceOld = Vector2.substractAbs(head, tail);
+		
+		/*
 		int distance = (int) Vector2.distance(head, tail);
 		
+
 		if(distance > 1) {
 			
 			// Dados os puntos P = (p1,p2) y Q = (q1,q2)
@@ -114,10 +116,10 @@ public class RopeBridge {
 				passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
 			}
 		}
-		
+		*/
 
 		
-		/*
+		Vector2 distance = Vector2.substractAbs(head, tail);
 		if((distance.getX() > 1) && (distance.getY() == 0)) {
 			
 			distance.normalize();
@@ -186,7 +188,7 @@ public class RopeBridge {
 				
 			}
 			
-		}*/
+		}
 	}
 
 }
