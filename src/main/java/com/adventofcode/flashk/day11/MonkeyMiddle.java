@@ -38,11 +38,10 @@ public class MonkeyMiddle {
 	public long solve(int rounds, boolean useRelief) {
 		
 		for(int i = 0; i < rounds; i++) {
-			displayCount(i);
 			for(int monkeyIndex = 0; monkeyIndex < monkeys.length; monkeyIndex++) {
 				Monkey currentMonkeyTurn = monkeys[monkeyIndex];
 				while(currentMonkeyTurn.hasItems()) {
-					Pair<Integer,Integer> result = currentMonkeyTurn.throwItem(useRelief);
+					Pair<Integer,Long> result = currentMonkeyTurn.throwItem(useRelief);
 					monkeys[result.getFirst()].getItems().add(result.getSecond());
 				}
 			}
@@ -50,35 +49,13 @@ public class MonkeyMiddle {
 			
 		}
 		
-		displayCount(rounds);
-		
 		// 1. Listar los monos ordenando por countedItems, 
 		// 2. Limitar el resultado a los dos monos con un valor más alto
 		// 3. Multiplicar el valor de ambos monos de countedItems
 		// 4. Devolver resultado.
-		
 
 		List<Monkey> monkeyBusinessList = Arrays.stream(monkeys).sorted(Comparator.reverseOrder()).limit(2).collect(Collectors.toList());
 		return monkeyBusinessList.get(0).getCountedItems()*monkeyBusinessList.get(1).getCountedItems();
-	}
-
-	private void displayCount(int round) {
-		
-		if(round != 1 && 
-				round != 20 && 
-				round != 1000 && 
-				round != 2000) {
-			return;
-		}
-		
-		String phrase = "Monkey %s inspected items %s times.";
-		if(round == 1 || round == 20) {
-			System.out.println("== After round "+ String.valueOf(round));
-			for(int i = 0; i < monkeys.length; i++) {
-				System.out.println(String.format(phrase, i, monkeys[i].getCountedItems()));
-			}
-					
-		}
 	}
 	
 	

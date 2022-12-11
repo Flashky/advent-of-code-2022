@@ -30,7 +30,7 @@ public class Monkey implements Comparable<Monkey> {
 	
 	private static final char MULTIPLY = '*';
 	
-	private Queue<Integer> items = new LinkedList<>();
+	private Queue<Long> items = new LinkedList<>();
 
 	private char operation;
 	private boolean operandOld;
@@ -40,24 +40,16 @@ public class Monkey implements Comparable<Monkey> {
 	private int trueMonkey;
 	private int falseMonkey;
 	
-	private int countedItems;
+	private long countedItems;
 	
 	@Setter
-	private int lcm;
+	private long lcm;
 	
 	public Monkey(List<String> inputs) {		
-		
-		// Starting items: 1
-		// Operation: 2
-		// Test: 3
-		// True monkey: 4
-		// False monkey: 5
 		
 		initializeItems(inputs.get(1));
 		initializeOperation(inputs.get(2));
 		initializeTest(inputs);
-		
-		System.out.println("test");
 
 	}
 
@@ -66,7 +58,7 @@ public class Monkey implements Comparable<Monkey> {
 		Matcher matcher = ITEMS_PATTERN.matcher(inputItems);
 		
 		while(matcher.find()) {
-			items.add(Integer.parseInt(matcher.group(1)));
+			items.add(Long.parseLong(matcher.group(1)));
 		}
 		
 	}
@@ -109,10 +101,10 @@ public class Monkey implements Comparable<Monkey> {
 		return !this.items.isEmpty();
 	}
 	
-	public Pair<Integer,Integer> throwItem(boolean useRelief) {
+	public Pair<Integer,Long> throwItem(boolean useRelief) {
 		
 		// Inspect item
-		Integer worryLevel = items.poll();
+		long worryLevel = items.poll();
 		countedItems++;
 		
 		// Calculate worry level
@@ -136,20 +128,22 @@ public class Monkey implements Comparable<Monkey> {
 		// 60 -> 60 / 3  = 20
 		if(useRelief) {
 			worryLevel = worryLevel / 3;
+		} else {
+			worryLevel = worryLevel % lcm;
 		}
 		
 		// Test
 		long test = worryLevel % divisor;
 		if(test == 0) {
-			return new Pair<Integer,Integer>(trueMonkey, worryLevel);
+			return new Pair<Integer,Long>(trueMonkey, worryLevel);
 		} else {
-			return new Pair<Integer,Integer>(falseMonkey, worryLevel);
+			return new Pair<Integer,Long>(falseMonkey, worryLevel);
 		}
 
 	}
 
 	@Override
 	public int compareTo(Monkey another) {
-		return Integer.compare(this.countedItems, another.countedItems);
+		return Long.compare(this.countedItems, another.countedItems);
 	}
 }
