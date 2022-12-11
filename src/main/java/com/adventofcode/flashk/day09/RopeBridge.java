@@ -10,6 +10,7 @@ import com.adventofcode.flashk.common.Vector2;
 public class RopeBridge {
 
 	// Constant vectors to avoid build the same vectors again
+	
 	private static final Vector2 RIGHT = Vector2.right();
 	private static final Vector2 LEFT = Vector2.left();
 	private static final Vector2 UP = Vector2.up();
@@ -87,11 +88,43 @@ public class RopeBridge {
 		
 		Vector2 head = tailKnot.getNext().getPos();
 		Vector2 tail = tailKnot.getPos();
-		Vector2 distance = Vector2.substractAbs(head, tail);
+		//Vector2 distanceOld = Vector2.substractAbs(head, tail);
+		int distance = (int) Vector2.distance(head, tail);
 		
+		if(distance > 1) {
+			
+			// Dados os puntos P = (p1,p2) y Q = (q1,q2)
+			// El vector que une a ambos puntos (P -> Q) es:
+			// Q - P =(q1-p1, q2-p2)
+
+			// Aplicado a nuestro caso:
+			// P = tail
+			// Q = head
+			
+			// Por lo que :
+			// 1. Restaríamos para obtener el vector dirección: head - tail
+			// 2. Normalizamos el vector dirección.
+			// 3. Transformamos la posición de tail en función del vector dirección 
+			
+			Vector2 direction = Vector2.substract(head, tail);
+			direction.normalize();
+			tail.transform(direction);
+			
+			if(tailKnot.isLast()) {
+				passedCoordinates.add(new Vector2(tail.getX(), tail.getY()));
+			}
+		}
+		
+
+		
+		/*
 		if((distance.getX() > 1) && (distance.getY() == 0)) {
 			
+			distance.normalize();
+			//tail.transform(distance);
+			
 			// Left & Right
+			
 			if(head.getX() > tail.getX()) {
 				tail.transform(RIGHT);
 			} else {
@@ -153,7 +186,7 @@ public class RopeBridge {
 				
 			}
 			
-		}
+		}*/
 	}
 
 }
