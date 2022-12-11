@@ -102,7 +102,8 @@ public class Day11Test extends PuzzleTest {
 		MonkeyMiddle monkeyMiddle = new MonkeyMiddle(inputs);
 		long result = monkeyMiddle.solve(10000 , false);
 		
-		System.out.println(result);
+		assertEquals(21800916620L, result);
+		
 	}
 
 }
