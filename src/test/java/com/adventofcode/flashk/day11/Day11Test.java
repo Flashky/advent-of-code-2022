@@ -99,6 +99,10 @@ public class Day11Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		MonkeyMiddle monkeyMiddle = new MonkeyMiddle(inputs);
+		long result = monkeyMiddle.solve(10000 , false);
+		
+		System.out.println(result);
 	}
 
 }
