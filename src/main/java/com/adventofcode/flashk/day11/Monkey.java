@@ -1,6 +1,5 @@
 package com.adventofcode.flashk.day11;
 
-import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -12,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.adventofcode.flashk.common.Pair;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Monkey implements Comparable<Monkey> {
@@ -41,6 +41,9 @@ public class Monkey implements Comparable<Monkey> {
 	private int falseMonkey;
 	
 	private int countedItems;
+	
+	@Setter
+	private int lcm;
 	
 	public Monkey(List<String> inputs) {		
 		
