@@ -13,8 +13,8 @@ public class Rope {
 	public Rope(int numberOfKnots) {
 	
 		for(int i = 0; i < numberOfKnots; i++) {
-			
-			if(i == 0) {
+
+			if(head == null) {
 				// Create head knot
 				head = new Knot();
 				tail = head;

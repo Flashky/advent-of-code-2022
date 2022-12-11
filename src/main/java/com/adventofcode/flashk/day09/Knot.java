@@ -16,10 +16,6 @@ public class Knot {
 	private Vector2 pos = new Vector2();
 	private Knot next;
 	private Knot prev;
-	
-	public Knot(Knot next) {
-		this.next = next;
-	}
 
 	/** 
 	 * Recursively applies a movement on the current knot and its sucessors.
@@ -28,30 +24,31 @@ public class Knot {
 	 */
 	public Vector2 move(Vector2 direction) {
 		
+		// Head knot
 		if(prev == null) {
-			// Head knot
 			pos.transform(direction);
-		} else {
-			// Any tail knots
-			Vector2 head = prev.getPos();
-			Vector2 tail = this.getPos();
-			int distance = (int) Vector2.distance(head, tail);
+		}
+		
+		// Tail knots
+		// There are no cases for just 1 knot at the puzzle, so there will be always at least one next.
+		return next.move();
+	}
+	
+	private Vector2 move() {
+	
+		Vector2 previousKnotPos = prev.getPos();
+		int distance = (int) Vector2.distance(previousKnotPos, pos);
 
-			if(distance > 1) {
-				
-				// Override head direction with tail direction
-				direction = Vector2.substract(head, tail);
-				direction.normalize();
-				tail.transform(direction);
-			}
-
+		if(distance > 1) {
+			Vector2 direction = Vector2.substract(previousKnotPos, pos);
+			direction.normalize();
+			pos.transform(direction);
 		}
 		
 		if(next == null) {
-			// Tail - Finished movement
-			return new Vector2(pos);
+			return new Vector2(pos); // Finished movement
 		} else {
-			return next.move(direction);
+			return next.move();
 		}
 	}
 }
