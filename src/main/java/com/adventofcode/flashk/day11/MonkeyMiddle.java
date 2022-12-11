@@ -3,7 +3,7 @@ package com.adventofcode.flashk.day11;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.adventofcode.flashk.common.Pair;
 import com.google.common.collect.Lists;
@@ -54,8 +54,13 @@ public class MonkeyMiddle {
 		// 3. Multiplicar el valor de ambos monos de countedItems
 		// 4. Devolver resultado.
 
-		List<Monkey> monkeyBusinessList = Arrays.stream(monkeys).sorted(Comparator.reverseOrder()).limit(2).collect(Collectors.toList());
-		return monkeyBusinessList.get(0).getCountedItems()*monkeyBusinessList.get(1).getCountedItems();
+		AtomicLong monkeyBusinessCount = new AtomicLong();
+		Arrays.stream(monkeys)
+				.sorted(Comparator.reverseOrder()).limit(2)
+				.map(monkey -> monkey.getCountedItems())
+				.forEach(monkeyBusinessCount::getAndAdd);
+		
+		return monkeyBusinessCount.get();
 	}
 	
 	
