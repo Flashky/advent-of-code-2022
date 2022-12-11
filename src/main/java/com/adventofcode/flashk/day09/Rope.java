@@ -31,8 +31,8 @@ public class Rope {
 	
 	/**
 	 * Moves the rope.
-	 * @param direction the direction where the head should move.
-	 * @return a set of positions where the tail has passed
+	 * @param movement the direction where the rope should move.
+	 * @return The set of positions where the tail has passed.
 	 */
 	public Set<Vector2> move(Movement movement) {
 		
