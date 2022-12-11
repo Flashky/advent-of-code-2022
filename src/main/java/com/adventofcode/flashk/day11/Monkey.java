@@ -16,25 +16,20 @@ import lombok.Setter;
 @Getter
 public class Monkey implements Comparable<Monkey> {
 
-	private static final String ITEMS_REGEX = "(\\d+)";
-	private final static Pattern ITEMS_PATTERN  = Pattern.compile(ITEMS_REGEX);
+	private static final String NUMBER_REGEX = "(\\d+)";
+	private final static Pattern NUMBER_PATTERN  = Pattern.compile(NUMBER_REGEX);
 	
 	private static final String OPERATION_REGEX = "Operation: new = old (\\+|\\*) (\\d*)|(old)";
 	private final static Pattern OPERATION_PATTERN  = Pattern.compile(OPERATION_REGEX);
 	
-	private static final String TEST_DIVISIBLE_REGEX = "Test: divisible by (\\d+)";
-	private final static Pattern TEST_DIVISIBLE_PATTERN  = Pattern.compile(TEST_DIVISIBLE_REGEX);
-	
-	private static final String MONKEY_REGEX = "(\\d+)";
-	private final static Pattern MONKEY_PATTERN  = Pattern.compile(MONKEY_REGEX);
-	
 	private static final char MULTIPLY = '*';
+	private static final int BASIC_RELIEF = 3;
 	
 	private Queue<Long> items = new LinkedList<>();
 
 	private char operation;
-	private boolean operandOld;
-	private int operand;
+	private boolean selfOperand;
+	private long operand;
 	
 	private int divisor;
 	private int trueMonkey;
@@ -52,10 +47,56 @@ public class Monkey implements Comparable<Monkey> {
 		initializeTest(inputs);
 
 	}
+	
+	public boolean hasItems() {
+		return !this.items.isEmpty();
+	}
+	
+	public Pair<Integer,Long> throwItem(boolean useRelief) {
+		
+		// Inspect item
+		long worryLevel = items.poll();
+		countedItems++;
+		
+		// Calculate worry level
+		if(selfOperand) {
+			operand = worryLevel;
+		}
+		
+		if(operation == MULTIPLY) {
+			worryLevel *= operand;
+		} else {
+			worryLevel += operand;
+		}
 
+		// Apply relief
+		if(useRelief) {
+			worryLevel = worryLevel / BASIC_RELIEF;
+		} else {
+			worryLevel = worryLevel % lcm;
+		}
+		
+		// Test
+		long test = worryLevel % divisor;
+		
+		if(test == 0) {
+			return new Pair<Integer,Long>(trueMonkey, worryLevel);
+		} else {
+			return new Pair<Integer,Long>(falseMonkey, worryLevel);
+		}
+
+	}
+
+	@Override
+	public int compareTo(Monkey another) {
+		return Long.compare(this.countedItems, another.countedItems);
+	}
+	
+	// Initialization functions
+	
 	private void initializeItems(String inputItems) {
 		
-		Matcher matcher = ITEMS_PATTERN.matcher(inputItems);
+		Matcher matcher = NUMBER_PATTERN.matcher(inputItems);
 		
 		while(matcher.find()) {
 			items.add(Long.parseLong(matcher.group(1)));
@@ -71,17 +112,17 @@ public class Monkey implements Comparable<Monkey> {
 		String operandValue = matcher.group(2);
 		
 		if(StringUtils.isNotBlank(operandValue)) {
-			operandOld = false;
+			selfOperand = false;
 			operand = Integer.parseInt(operandValue);
 		} else {
-			operandOld = true;
+			selfOperand = true;
 		}
 
 	}
 	
 	private void initializeTest(List<String> inputs) {
 		
-		Matcher matcher = TEST_DIVISIBLE_PATTERN.matcher(inputs.get(3));
+		Matcher matcher = NUMBER_PATTERN.matcher(inputs.get(3));
 		matcher.find();
 		
 		divisor = Integer.parseInt(matcher.group(1));
@@ -91,59 +132,9 @@ public class Monkey implements Comparable<Monkey> {
 	}
 	
 	private int getMonkeyValue(String monkeyInput) {
-		Matcher matcher = MONKEY_PATTERN.matcher(monkeyInput);
+		Matcher matcher = NUMBER_PATTERN.matcher(monkeyInput);
 		matcher.find();
 		
 		return Integer.parseInt(matcher.group(1));
-	}
-	
-	public boolean hasItems() {
-		return !this.items.isEmpty();
-	}
-	
-	public Pair<Integer,Long> throwItem(boolean useRelief) {
-		
-		// Inspect item
-		long worryLevel = items.poll();
-		countedItems++;
-		
-		// Calculate worry level
-		if(!operandOld) {
-			if(operation == MULTIPLY) {
-				worryLevel *= operand;
-			} else {
-				worryLevel += operand;
-			}
-		} else {
-			if(operation == MULTIPLY) {
-				worryLevel *= worryLevel;
-			} else {
-				worryLevel += worryLevel;
-			}
-		}
-		
-		// Relief
-		 // TODO Atención, debe redondearse al entero más cercano
-		// 1501 -> 1501 / 3 = 500
-		// 60 -> 60 / 3  = 20
-		if(useRelief) {
-			worryLevel = worryLevel / 3;
-		} else {
-			worryLevel = worryLevel % lcm;
-		}
-		
-		// Test
-		long test = worryLevel % divisor;
-		if(test == 0) {
-			return new Pair<Integer,Long>(trueMonkey, worryLevel);
-		} else {
-			return new Pair<Integer,Long>(falseMonkey, worryLevel);
-		}
-
-	}
-
-	@Override
-	public int compareTo(Monkey another) {
-		return Long.compare(this.countedItems, another.countedItems);
 	}
 }
