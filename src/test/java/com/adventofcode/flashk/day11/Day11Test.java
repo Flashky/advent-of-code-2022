@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day11;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_11)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day11Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_11;
@@ -44,6 +44,11 @@ public class Day11Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		MonkeyMiddle monkeyMiddle = new MonkeyMiddle(inputs);
+		long result = monkeyMiddle.solve(20, true);
+		
+		assertEquals(10605, result);
+		
 	}
 	
 	@Test
@@ -57,6 +62,10 @@ public class Day11Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		MonkeyMiddle monkeyMiddle = new MonkeyMiddle(inputs);
+		long result = monkeyMiddle.solve(20, true);
+		
+		assertEquals(66802, result);
 		
 	}
 	
@@ -72,6 +81,10 @@ public class Day11Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		MonkeyMiddle monkeyMiddle = new MonkeyMiddle(inputs);
+		long result = monkeyMiddle.solve(10000 , false);
+		
+		assertEquals(2713310158L, result);
 	}
 	
 	@Test
