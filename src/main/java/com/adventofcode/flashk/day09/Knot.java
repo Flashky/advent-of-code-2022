@@ -23,8 +23,8 @@ public class Knot {
 
 	/** 
 	 * Recursively applies a movement on the current knot and its sucessors.
-	 * @param direction
-	 * @return
+	 * @param direction the direction where the head must move
+	 * @return The position where the tail has passed.
 	 */
 	public Vector2 move(Vector2 direction) {
 		

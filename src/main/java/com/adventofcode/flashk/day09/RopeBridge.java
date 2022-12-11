@@ -1,35 +1,31 @@
 package com.adventofcode.flashk.day09;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Vector2;
 
 public class RopeBridge {
 
-	private Set<Vector2> passedCoordinates = new HashSet<>();
-	private List<Movement> movements = new ArrayList<>();
+	private List<Movement> movements;
 
 	public RopeBridge(List<String> inputs) {
 		
-		for(String input : inputs) {
-			movements.add(new Movement(input));
-		}
-		
-		passedCoordinates.add(new Vector2(0,0));
+		// Initialize list of movements
+		movements = inputs.stream().map(Movement::new).collect(Collectors.toList());
 		
 	}
 
 	public long solve(int numberOfKnots) {
 		
+		Set<Vector2> passedCoordinates = new HashSet<>();
 		Rope rope = new Rope(numberOfKnots);
-		for(Movement movement : movements) {
-			Set<Vector2> tailPositions = rope.move(movement);
-			passedCoordinates.addAll(tailPositions);
-		}
 		
+		// Apply all movements and recollect all tail coordinates
+		movements.stream().map(rope::move).forEach(passedCoordinates::addAll);
+
 		return passedCoordinates.size();
 	}
 	
