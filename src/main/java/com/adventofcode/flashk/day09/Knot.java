@@ -24,13 +24,10 @@ public class Knot {
 	 */
 	public Vector2 move(Vector2 direction) {
 		
-		// Head knot
-		if(prev == null) {
-			pos.transform(direction);
-		}
+		// Move head knot
+		pos.transform(direction);
 		
-		// Tail knots
-		// There are no cases for just 1 knot at the puzzle, so there will be always at least one next.
+		// Move tail knots
 		return next.move();
 	}
 	
