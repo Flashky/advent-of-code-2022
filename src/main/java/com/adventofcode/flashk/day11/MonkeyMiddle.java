@@ -53,12 +53,13 @@ public class MonkeyMiddle {
 		// 2. Limitar el resultado a los dos monos con un valor más alto
 		// 3. Multiplicar el valor de ambos monos de countedItems
 		// 4. Devolver resultado.
-
-		AtomicLong monkeyBusinessCount = new AtomicLong();
+		//ai.accumulateAndGet(y, (x, y) -> x * y);
+		AtomicLong monkeyBusinessCount = new AtomicLong(1);
+	
 		Arrays.stream(monkeys)
 				.sorted(Comparator.reverseOrder()).limit(2)
 				.map(monkey -> monkey.getCountedItems())
-				.forEach(monkeyBusinessCount::getAndAdd);
+				.forEach(countedItems -> monkeyBusinessCount.set(monkeyBusinessCount.get()*countedItems));
 		
 		return monkeyBusinessCount.get();
 	}
