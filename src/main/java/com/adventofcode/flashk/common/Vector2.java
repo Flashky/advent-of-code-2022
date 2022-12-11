@@ -26,7 +26,6 @@ public class Vector2 {
 		this.y += vector.y;
 	}
 	
-	
 	/**
 	 * Substracts the right operand vector to the left operand vector, applying absolute value to the result.
 	 *  
@@ -66,8 +65,15 @@ public class Vector2 {
 		}
 		
 		double s = 1 / length;
-		x = (int) Math.round(x * s);
-		y = (int) Math.round(y * s);
+		double xs = x * s;
+		double ys = y * s;
+		
+		// Use ceil for positive numbers and floor for negative numbers:
+		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
+		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
+		
+		x = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
+		y = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
 				
 	}
 	
@@ -88,8 +94,15 @@ public class Vector2 {
 		}
 		
 		double s = 1 / length;
-		int newX = (int) Math.round(x * s);
-		int newY = (int) Math.round(y * s);
+		double xs = x * s;
+		double ys = y * s;
+		
+		// Use ceil for positive numbers and floor for negative numbers:
+		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
+		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
+		
+		int newX = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
+		int newY = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
 		
 		return new Vector2(newX, newY);
 	}
@@ -123,6 +136,23 @@ public class Vector2 {
 		
 	}
 	
+	/**
+	 * Substracts the right operand vector to the left operand vector.
+	 * <p>
+	 * Examples <code>(x,y)</code>:
+	 * </p>
+	 * <pre>
+	 * (0,14) - (0,7) = <b>(0,7)</b>
+	 * (0,7) - (0,14) = <b>(0,-7)</b>
+	 * (11,0) - (5,0) = <b>(6,0)</b>
+	 * (5,0) - (11,0) = <b>(-6,0)</b>
+	 * </code>
+	 *  
+	 * </p>
+	 * @param leftOperand Vector2 to substract from.
+	 * @param rightOperand substracting Vector2.
+	 * @return a new Vector2
+	 */
 	public static Vector2 substract(Vector2 leftOperand, Vector2 rightOperand) {
 		int x = leftOperand.x - rightOperand.x;
 		int y = leftOperand.y - rightOperand.y;
