@@ -13,7 +13,6 @@ import com.adventofcode.flashk.common.Pair;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 public class Monkey implements Comparable<Monkey> {
 
 	private static final String NUMBER_REGEX = "(\\d+)";
@@ -25,20 +24,25 @@ public class Monkey implements Comparable<Monkey> {
 	private static final char MULTIPLY = '*';
 	private static final int BASIC_RELIEF = 3;
 	
+	@Getter
 	private Queue<Long> items = new LinkedList<>();
-
-	private char operation;
-	private boolean selfOperand;
-	private long operand;
 	
-	private int divisor;
-	private int trueMonkey;
-	private int falseMonkey;
-	
+	@Getter
 	private long countedItems;
+	
+	@Getter
+	private int divisor;
 	
 	@Setter
 	private long lcm;
+	
+	private char operation;
+	private boolean selfOperand;
+	private long operand;
+	private int trueMonkey;
+	private int falseMonkey;
+	
+
 	
 	public Monkey(List<String> inputs) {		
 		
