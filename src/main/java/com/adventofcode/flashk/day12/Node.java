@@ -15,7 +15,6 @@ public class Node implements Comparable<Node> {
 	private int totalSteps = Integer.MAX_VALUE;
 	private int step = 1;
 	
-	private Node parent = null;
 	private boolean visited = false;
 	
 	public Node(int row, int col, char height) {
