@@ -1,16 +1,16 @@
 package com.adventofcode.flashk.day04;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CampCleanup {
 
-	private List<ElvePair> elvePairs = new ArrayList<>();
+	private List<ElvePair> elvePairs;
 	
 	public CampCleanup(List<String> inputs) {
-		for(String input : inputs) {
-			elvePairs.add(new ElvePair(input));
-		}
+		
+		elvePairs = inputs.stream().map(ElvePair::new).collect(Collectors.toList());
+
 	}
 	
 	public int solve(CampCleanupStrategy strategy) {
