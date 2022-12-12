@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ClimbingAlgorithm {
 
@@ -91,7 +92,7 @@ public class ClimbingAlgorithm {
 			Node minNode = queue.poll();
 			minNode.setVisited(true);
 
-			Set<Node> adjacentNodes = getAdjacentNodesFromArray(minNode);
+			Set<Node> adjacentNodes = getAdjacentNodes(minNode);
 			
 			for(Node adjacentNode : adjacentNodes) {
 				if(!adjacentNode.isVisited()) {
@@ -137,14 +138,12 @@ public class ClimbingAlgorithm {
 		}
 	}
 	
-	private Set<Node> getAdjacentNodesFromArray(Node node) {
-		
-		// Seleccionar únicamente nodos tal que la diferencia de altura sea 1 positivo
+	private Set<Node> getAdjacentNodes(Node fromNode) {
 		
 		Set<Node> adjacentNodes = new HashSet<>();
 		
-		int rowIndex = node.getRow();
-		int colIndex = node.getCol();
+		int rowIndex = fromNode.getRow();
+		int colIndex = fromNode.getCol();
 		
 		int right = colIndex+1;
 		int left = colIndex-1;
@@ -152,35 +151,23 @@ public class ClimbingAlgorithm {
 		int down = rowIndex+1;
 		
 		if(!isOutOfBounds(rowIndex, right)) {
-			Node to = heightMap[rowIndex][right];
-			if(heightDifference(node, to) <= 1) {
-				adjacentNodes.add(to);
-			}
+			adjacentNodes.add(heightMap[rowIndex][right]);
 		}
 		
 		if(!isOutOfBounds(rowIndex, left)) {
-			Node to = heightMap[rowIndex][left];
-			if(heightDifference(node, to) <= 1) {
-				adjacentNodes.add(to);
-			}
-
+			adjacentNodes.add(heightMap[rowIndex][left]);
 		}
 		
 		if(!isOutOfBounds(up, colIndex)) {
-			Node to = heightMap[up][colIndex];
-			if(heightDifference(node, to) <= 1) {
-				adjacentNodes.add(to);
-			}
+			adjacentNodes.add(heightMap[up][colIndex]);
 		}
 		
 		if(!isOutOfBounds(down, colIndex)) {
-			Node to = heightMap[down][colIndex];
-			if(heightDifference(node, to) <= 1) {
-				adjacentNodes.add(to);
-			}
+			adjacentNodes.add(heightMap[down][colIndex]);
 		}
 		
-		return adjacentNodes;
+		// Keep only adjacent nodes that height difference is 1 or less.
+		return adjacentNodes.stream().filter(toNode -> heightDifference(fromNode, toNode) <= 1).collect(Collectors.toSet());
 	}
 	
 	private boolean isOutOfBounds(int rowIndex, int colIndex) {
