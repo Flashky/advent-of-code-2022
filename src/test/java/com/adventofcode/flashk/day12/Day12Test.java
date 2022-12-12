@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day12;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_12)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day12Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_12;
@@ -44,6 +44,11 @@ public class Day12Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		ClimbingAlgorithm climbingAlgorithm = new ClimbingAlgorithm(inputs);
+		
+		long result = climbingAlgorithm.solveA();
+		assertEquals(31, result);
+		
 	}
 	
 	@Test
@@ -58,6 +63,10 @@ public class Day12Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		ClimbingAlgorithm climbingAlgorithm = new ClimbingAlgorithm(inputs);
+		long result = climbingAlgorithm.solveA();
+
+		assertEquals(497, result);
 	}
 	
 	@Test
@@ -72,6 +81,10 @@ public class Day12Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		ClimbingAlgorithm climbingAlgorithm = new ClimbingAlgorithm(inputs);
+		long result = climbingAlgorithm.solveB();
+
+		assertEquals(29, result);
 	}
 	
 	@Test
@@ -86,6 +99,11 @@ public class Day12Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		ClimbingAlgorithm climbingAlgorithm = new ClimbingAlgorithm(inputs);
+		long result = climbingAlgorithm.solveB();
+		
+		assertEquals(492, result);
+	
 	}
 
 }
