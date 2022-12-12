@@ -118,14 +118,16 @@ public class ClimbingAlgorithm {
 	public long solveB() {
 		
 		List<Long> results = new ArrayList<>();
+		
+		// Apply Dijkstra algorithm from all possible starts
 		for(Node possibleStart : possibleStarts) {
 			origin = possibleStart;
 			results.add(solveA());
 			reset();
 		}
 		
-		List<Long> sorted = results.stream().sorted().collect(Collectors.toList());
-		return sorted.get(0);
+		return results.stream().sorted().findFirst().get();
+		
 	}
 	
 	private void reset() {
