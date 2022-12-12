@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ClimbingAlgorithm {
 
