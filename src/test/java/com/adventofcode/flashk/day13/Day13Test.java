@@ -80,7 +80,11 @@ public class Day13Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		//assertEquals(0,0);
+		DistressSignal distressSignal = new DistressSignal(inputs);
+		long result = distressSignal.solveB();
+		
+		assertEquals(140,result);
+
 	}
 	
 	@Test
@@ -95,8 +99,10 @@ public class Day13Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
-		System.out.println();
-		//assertEquals(0,0);
+		DistressSignal distressSignal = new DistressSignal(inputs);
+		long result = distressSignal.solveB();
+		
+		assertEquals(25792, result);
 		
 	}
 
