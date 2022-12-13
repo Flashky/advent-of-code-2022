@@ -2,58 +2,44 @@ package com.adventofcode.flashk.day13;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class Packet {
+public class Packet implements Comparable<Packet> {
 
-	private static final char OPEN_BRACKET = '[';
-	private static final char CLOSE_BRACKET = ']';
-	private static final char SEPARATOR = ',';
-	
 	private static final int OK = 1;
 	private static final int UNDETERMINED = 0;
 	private static final int NOT_OK = -1;
 	
-	private String DIGIT_REGEX = "(\\d*)[,\\]]";
-	private Pattern DIGIT_PATTERN = Pattern.compile(DIGIT_REGEX);
+	private JsonNode root;
+	private String packetCode;
 	
-	private JsonNode rootLeft;
-	private JsonNode rootRight;
-
-	public Packet(List<String> inputs) {
-		rootLeft = buildTree(inputs.get(0));
-		rootRight = buildTree(inputs.get(1));
-		
+	@Setter
+	private int packetIndex;
+	
+	public Packet(String input) {
+		root = buildTree(input);
+		packetCode = input;
 	}
 	
 	/**
-	 * Compares the left and right side of the packet.
-	 * @return true if left side is smaller than right side. Returns false otherwise.
+	 * Compares left tree node with right tree node
+	 * @param left the left side tree node
+	 * @param right the right side tree node
+	 * @return An integer indicating the comparison result between left and right: 
+	 * <ul>
+	 * 	<li><code> 1</code>: if <code>left</code> is smaller than <code>right</code>.</li> 
+	 * 	<li><code>-1</code>: if <code>left</code> is bigger than <code>right></code>.</li>
+	 * 	<li><code>0</code>: if undetermined or equal.</li>
+	 * </ul>
 	 */
-	public boolean compare() {
-		int result = compare(rootLeft, rootRight);
-		
-		if(result >= 0) {
-			return true;
-		}
-		
-		return false; 
-
-	}
-	
-	// 1 ok
-	// 0 undetermined
-	// -1 not ok
 	private int compare(JsonNode left, JsonNode right) {
 		
 		// Both nodes are numbers
@@ -70,7 +56,7 @@ public class Packet {
 			}
 			
 			// Otherwise, the inputs are the same integer; continue checking the next part of the input.
-			return UNDETERMINED; // Go to the next recursive call, but for now keep it as valid
+			return UNDETERMINED;
 			
 		}
 
@@ -104,8 +90,6 @@ public class Packet {
 	
 
 	private int compareArray(Iterator<JsonNode> leftElements, Iterator<JsonNode> rightElements) {
-		
-		//int lastComparison = UNDETERMINED;
 		
 		// Compare the first value of each list, then the second value, and so on.
 		while(leftElements.hasNext()) {
@@ -149,6 +133,16 @@ public class Packet {
 		
 		return null;
 	}
-	
+
+	@Override
+	public int compareTo(Packet other) {
+		return compare(root, other.root);
+	}
+
+
+	@Override
+	public String toString() {
+		return "Packet [packetCode=" + packetCode + "]";
+	}
 
 }
