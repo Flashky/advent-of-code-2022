@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day13;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_13)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day13Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_13;
@@ -44,6 +44,10 @@ public class Day13Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		DistressSignal distressSignal = new DistressSignal(inputs);
+		long result = distressSignal.solveA();
+		
+		assertEquals(13,result);
 	}
 	
 	@Test
@@ -58,6 +62,10 @@ public class Day13Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		DistressSignal distressSignal = new DistressSignal(inputs);
+		long result = distressSignal.solveA();
+		
+		assertEquals(5208,result);
 	}
 	
 	@Test
@@ -72,6 +80,7 @@ public class Day13Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		//assertEquals(0,0);
 	}
 	
 	@Test
@@ -85,6 +94,9 @@ public class Day13Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		System.out.println();
+		//assertEquals(0,0);
 		
 	}
 
