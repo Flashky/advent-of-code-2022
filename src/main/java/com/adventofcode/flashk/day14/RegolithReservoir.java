@@ -37,52 +37,49 @@ public class RegolithReservoir {
 
 	}
 	
-	
-	public long solveA() {
+	public int solve(boolean includeFloor) {
 		
-		long sandUnits = 0;
-		Vector2 sandUnit = null;
-	
-		do {
-			
-			sandUnit = new Vector2(SAND_START);
-			sandUnits++;
-			
-			while(move(sandUnit)) {}
-			
-		} while(sandUnit.getY() < maxOverflowY);
+		if(includeFloor) {
+			// Draw floor
+			maxOverflowY += 2;
+			Vector2 floorStart = new Vector2(0, maxOverflowY);
+			Vector2 floorEnd = new Vector2(cols-1,maxOverflowY);
+			drawRockLine(floorStart, floorEnd);
+		}
 		
-		return sandUnits-1;
-	}
-	
-	public long solveB() {
-		
-		maxOverflowY += 2;
-		Vector2 floorStart = new Vector2(0, maxOverflowY);
-		Vector2 floorEnd = new Vector2(cols-1,maxOverflowY);
-		
-		// Draw floor
-		drawRockLine(floorStart, floorEnd);
-		
-		// Fill
-		long sandUnits = 0;
-		Vector2 sandUnit = null;
-	
-		do {
-			//drawMap(sandUnits); // Enable DEBUG if needed and uncomment method
-			sandUnit = new Vector2(SAND_START);
-			sandUnits++;
-			
-			while(move(sandUnit)) {}
-			
-		} while(!SAND_START.equals(sandUnit));
-		
-		return sandUnits;
+		return moveSand();
 	}
 
+	/**
+	 * Drop sand units until the sand blocks the entrance or overflows.
+	 * 
+	 * @return generated sand unit units <i>(excluding overflowed sand unit)</i>.
+	 */
+	private int moveSand() {
+		
+		int sandUnits = 0;
+		Vector2 sandUnit = null;
+	
+		do {
+			
+			sandUnit = new Vector2(SAND_START);
+			sandUnits++;
+			
+			while(move(sandUnit)) {}
+			
+		} while ((!SAND_START.equals(sandUnit)) && !overflows(sandUnit));
+		
+		return overflows(sandUnit) ? --sandUnits : sandUnits;
+	}
+	
+	/**
+	 * Attempts to move a sand unit one position.
+	 * @param sandUnit the sand unit to move
+	 * @return a boolean meaning <code>true</code> if the sand unit has moved, <code>false</code> if sand cannot move.
+	 */
 	private boolean move(Vector2 sandUnit) {
 		
-		if(sandUnit.getY() >= maxOverflowY) {
+		if(overflows(sandUnit)) {
 			return false;
 		}
 		
@@ -110,12 +107,15 @@ public class RegolithReservoir {
 		return false;
 	}
 
+	
+	private boolean overflows(Vector2 sandUnit) {
+		return sandUnit.getY() >= maxOverflowY;
+	}
 
 	private boolean isEmpty(Vector2 position) {
 		return caveMap[position.getY()][position.getX()] == AIR;
 
 	}
-
 
 	private void initializeCaveMap(List<Path> paths) {
 		
@@ -126,13 +126,14 @@ public class RegolithReservoir {
 			}
 		}
 		
+		// Draw all rock lines
 		for(Path path : paths) {
 			List<Vector2> points = path.getPoints();
 			
 			Vector2 start = null;
 			for(Vector2 end : points) {
 				if(start != null) {
-					// Calcula el mínimo y
+					// Actualiza la distancia de la roca más baja
 					maxOverflowY = Math.max(maxOverflowY, end.getY());
 					
 					// Rellena los huecos en el array

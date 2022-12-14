@@ -45,9 +45,9 @@ public class Day14Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		long result = reservoir.solveA();
+		int result = reservoir.solve(false);
 		
-		assertEquals(24,result); 
+		assertEquals(24, result); 
 	}
 	
 	@Test
@@ -63,9 +63,9 @@ public class Day14Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		long result = reservoir.solveA();
+		int result = reservoir.solve(false);
 		
-		assertEquals(1016,result); 
+		assertEquals(1016, result); 
 	}
 	
 	@Test
@@ -81,9 +81,9 @@ public class Day14Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		long result = reservoir.solveB();
+		int result = reservoir.solve(true);
 
-		assertEquals(93,result);
+		assertEquals(93, result);
 	}
 	
 	@Test
@@ -99,9 +99,9 @@ public class Day14Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		long result = reservoir.solveB();
+		int result = reservoir.solve(true);
 		
-		assertEquals(25402,result);
+		assertEquals(25402, result);
 		
 	}
 
