@@ -57,10 +57,9 @@ public class RegolithReservoir {
 	
 	public long solveB() {
 		
-		int floorY = maxOverflowY + 2;
-		maxOverflowY = floorY;
-		Vector2 floorStart = new Vector2(0, floorY);
-		Vector2 floorEnd = new Vector2(cols-1,floorY);
+		maxOverflowY += 2;
+		Vector2 floorStart = new Vector2(0, maxOverflowY);
+		Vector2 floorEnd = new Vector2(cols-1,maxOverflowY);
 		
 		// Draw floor
 		drawRockLine(floorStart, floorEnd);
