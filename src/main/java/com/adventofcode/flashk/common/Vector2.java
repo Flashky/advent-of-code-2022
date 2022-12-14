@@ -26,6 +26,14 @@ public class Vector2 {
 		this.y += vector.y;
 	}
 	
+	public static Vector2 transform(Vector2 start, Vector2 end) {
+	
+		int x = start.x + end.x;
+		int y = start.y + end.y;
+		
+		return new Vector2(x,y);
+	}
+	
 	/**
 	 * Substracts the right operand vector to the left operand vector, applying absolute value to the result.
 	 *  
