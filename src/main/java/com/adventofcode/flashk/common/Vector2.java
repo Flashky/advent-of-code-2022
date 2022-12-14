@@ -21,10 +21,31 @@ public class Vector2 {
 		this.y = anotherVector.y;
 	}
 	
+	/**
+	 * Accepts coordinates in String format as "x,y" and creates a Vector2 from it.
+	 * <pre>
+	 * Vector2 vector1 = new Vector2("4,2");
+	 * Vector2 vector2 = new Vector2(4,2);
+	 * 
+	 * vector1.equals(vector2) // true
+	 * </pre>
+	 * @param coordinates
+	 * @return
+	 */
+	public Vector2(String coordinates) {
+		
+		String[] values = coordinates.split(",");
+		
+		this.x = Integer.parseInt(values[0]);
+		this.y = Integer.parseInt(values[1]);
+		
+	}
+	
 	public void transform(Vector2 vector) {
 		this.x += vector.x;
 		this.y += vector.y;
 	}
+	
 	
 	public static Vector2 transform(Vector2 start, Vector2 end) {
 	

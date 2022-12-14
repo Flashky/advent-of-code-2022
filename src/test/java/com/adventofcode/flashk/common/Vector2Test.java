@@ -11,6 +11,125 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 class Vector2Test {
 	
+	// Constructors tests
+	
+	@Test
+	void testVector2() {
+		Vector2 result = new Vector2();
+		
+		assertEquals(0, result.getX());
+		assertEquals(0, result.getY());
+	}
+	
+	@Test
+	void testVector2Vector2() {
+		Vector2 expected = new Vector2(2,3);
+		Vector2 result = new Vector2(expected);
+		
+		assertEquals(expected, result);
+		assertNotSame(expected, result);
+	}
+	
+	@Test
+	void testVector2String() {
+		Vector2 result = new Vector2("2,3");
+		
+		assertEquals(2, result.getX());
+		assertEquals(3, result.getY());
+	}
+	
+	@Test
+	void testVector2StringZero() {
+		Vector2 result = new Vector2("0,0");
+		
+		assertEquals(0, result.getX());
+		assertEquals(0, result.getY());
+	}
+	
+	@Test
+	void testVector2StringNegatives() {
+		Vector2 result = new Vector2("-20,-367");
+		
+		assertEquals(-20, result.getX());
+		assertEquals(-367, result.getY());
+	}
+	
+	// Unitary vectors creation tests
+	
+	@Test 
+	void testRight(){
+		
+		Vector2 vector = Vector2.right();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(0, vector.getY());
+	}
+	
+	@Test 
+	void testLeft(){
+		
+		Vector2 vector = Vector2.left();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(0, vector.getY());
+	}
+	
+	@Test 
+	void testUp(){
+		
+		Vector2 vector = Vector2.up();
+		
+		assertEquals(0, vector.getX());
+		assertEquals(1, vector.getY());
+	}
+	
+	@Test 
+	void testDown(){
+		
+		Vector2 vector = Vector2.down();
+		
+		assertEquals(0, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
+	@Test 
+	void testUpRight(){
+		
+		Vector2 vector = Vector2.upRight();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(1, vector.getY());
+	}
+
+	@Test 
+	void testUpLeft(){
+		
+		Vector2 vector = Vector2.upLeft();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(1, vector.getY());
+	}
+	
+	@Test 
+	void testUpDownRight(){
+		
+		Vector2 vector = Vector2.downRight();
+		
+		assertEquals(1, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
+	@Test 
+	void testUpDownLeft(){
+		
+		Vector2 vector = Vector2.downLeft();
+		
+		assertEquals(-1, vector.getX());
+		assertEquals(-1, vector.getY());
+	}
+	
+	// Transform tests
+	
 	@Test
 	void testTransform() {
 		
@@ -132,6 +251,8 @@ class Vector2Test {
 			.verify();
 	}
 	
+	// Normalization tests - normalize()
+	
 	@Test
 	void testNormalizeLeft() {
 		
@@ -221,7 +342,7 @@ class Vector2Test {
 	
 	}
 	
-	//----------------------
+	// Normalization tests - normalized()
 	
 	@Test
 	void testNormalizedLeft() {
@@ -342,78 +463,6 @@ class Vector2Test {
 		
 		assertThrows(IllegalStateException.class, () -> vector.normalized());
 	
-	}
-	
-	@Test 
-	void testRight(){
-		
-		Vector2 vector = Vector2.right();
-		
-		assertEquals(1, vector.getX());
-		assertEquals(0, vector.getY());
-	}
-	
-	@Test 
-	void testLeft(){
-		
-		Vector2 vector = Vector2.left();
-		
-		assertEquals(-1, vector.getX());
-		assertEquals(0, vector.getY());
-	}
-	
-	@Test 
-	void testUp(){
-		
-		Vector2 vector = Vector2.up();
-		
-		assertEquals(0, vector.getX());
-		assertEquals(1, vector.getY());
-	}
-	
-	@Test 
-	void testDown(){
-		
-		Vector2 vector = Vector2.down();
-		
-		assertEquals(0, vector.getX());
-		assertEquals(-1, vector.getY());
-	}
-	
-	@Test 
-	void testUpRight(){
-		
-		Vector2 vector = Vector2.upRight();
-		
-		assertEquals(1, vector.getX());
-		assertEquals(1, vector.getY());
-	}
-
-	@Test 
-	void testUpLeft(){
-		
-		Vector2 vector = Vector2.upLeft();
-		
-		assertEquals(-1, vector.getX());
-		assertEquals(1, vector.getY());
-	}
-	
-	@Test 
-	void testUpDownRight(){
-		
-		Vector2 vector = Vector2.downRight();
-		
-		assertEquals(1, vector.getX());
-		assertEquals(-1, vector.getY());
-	}
-	
-	@Test 
-	void testUpDownLeft(){
-		
-		Vector2 vector = Vector2.downLeft();
-		
-		assertEquals(-1, vector.getX());
-		assertEquals(-1, vector.getY());
 	}
 	
 }
