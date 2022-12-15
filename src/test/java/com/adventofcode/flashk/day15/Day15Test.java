@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -102,16 +101,8 @@ public class Day15Test extends PuzzleTest {
 
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveB3(4000000L);
-
-		System.out.println(result);
-
-		// Right Answer: 13134039205729
-		// Calculando en excel pude ver que el resultado real era 13134039205729.
-		// Sin embargo, por algún tipo de desbordamiento, el resultado que está dando es: 29214561
-		// Hay que revisar a ver por qué pasa
 		
-		
-		//assertEquals(13134039205729L,result); // TODO update with real test
+		assertEquals(13134039205729L, result);
 	}
 
 }

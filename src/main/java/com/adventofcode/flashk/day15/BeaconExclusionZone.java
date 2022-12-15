@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Vector2;
 
@@ -15,28 +16,11 @@ public class BeaconExclusionZone {
 	
 	private List<Sensor> sensors = new ArrayList<>(); // Sensor-Beacon map
 	
-	//private int minX = Integer.MAX_VALUE;
-	//private int maxX = Integer.MIN_VALUE;
-	//private int minY = Integer.MAX_VALUE;
-	//private int maxY = Integer.MIN_VALUE;
-	
 	private Set<Vector2> lastScanLinePoints;
 	
 	public BeaconExclusionZone(List<String> inputs) {
 		
-		
-		for(String input : inputs) {
-			sensors.add(new Sensor(input));
-			
-			// Update min and max dimensions of the map
-			//minX = Math.min(minX, sensor.getPosition().getX()); 
-			//maxX = Math.max(maxX, sensor.getPosition().getX());
-			//minY = Math.min(minY, sensor.getPosition().getY());
-			//maxY = Math.max(maxY, sensor.getPosition().getY());
-		}
-		
-		System.out.println("test");
-		
+		sensors = inputs.stream().map(Sensor::new).collect(Collectors.toList());
 		
 	}
 	
@@ -116,9 +100,9 @@ public class BeaconExclusionZone {
 	
 		}
 		
-		System.out.println("Candidate: " + lostBeaconPosition);
+		//System.out.println("Candidate: " + lostBeaconPosition);
 		
-		return lostBeaconPosition.getX() * DISTRESS_BEACON_MAX + lostBeaconPosition.getY();
+		return (long) lostBeaconPosition.getX() * DISTRESS_BEACON_MAX + lostBeaconPosition.getY();
 
 	}
 	
