@@ -1,8 +1,6 @@
 package com.adventofcode.flashk.day15;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,10 +14,27 @@ public class Sensor {
 	private static final String SENSOR_BEACON_REGEX = "Sensor at x=(-?\\d*), y=(-?\\d*): closest beacon is at x=(-?\\d*), y=(-?\\d*)";
 	private static final Pattern SEASON_BEACON_PATTERN = Pattern.compile(SENSOR_BEACON_REGEX);
 	
+	private static final Vector2 UP_RIGHT = Vector2.downRight();
+	private static final Vector2 DOWN_RIGHT = Vector2.upRight();
+	private static final Vector2 DOWN_LEFT = Vector2.upLeft();
+	private static final Vector2 UP_LEFT = Vector2.downLeft();
+	
 	private Vector2 position;
 	private Vector2 beaconPosition;
-	private int distance;
-	private Set<Vector2> externalEdge = new HashSet<>();
+	private long manhattanDistance;
+	
+	// For iterating border part 2
+	private int evaluatedCandidates = 0;
+	private Vector2 left;
+	private Vector2 right;
+	private Vector2 top;
+	private Vector2 bottom;
+	private Vector2 currentBorderPos = null;
+	
+	private boolean leftReached = false;
+	private boolean topReached = false;
+	private boolean rightReached = false;
+	private boolean bottomReached = false;
 	
 	public Sensor(String input) {
 		
@@ -34,82 +49,103 @@ public class Sensor {
 		
 		position = new Vector2(sensorX, sensorY);
 		beaconPosition = new Vector2(beaconX, beaconY);
-		calculateManhattanDistance();
-		calculateEdge();
+		manhattanDistance = Vector2.manhattanDistance(position, beaconPosition);
+
+		// Sensor out of range limits
+		int edgeDistance = (int) manhattanDistance + 1;
+		left =  Vector2.transform(position, new Vector2(-edgeDistance,0));
+		right = Vector2.transform(position, new Vector2(edgeDistance,0));
+		top = Vector2.transform(position, new Vector2(0,-edgeDistance));
+		bottom = Vector2.transform(position, new Vector2(0,edgeDistance));
+		currentBorderPos = new Vector2(left); // start at left
+
 	}
 	
-	private void calculateEdge() {
+	public Optional<Vector2> nextBorderPos(long maxRange) {
+	
+		// Iterador de posiciones
+		// Si genero todas las posiciones de golpe, peto la memoria.
 		
-		// Number of edge points must be = (manhattanDistance + 1) * 4
-		int edgeDistance = distance + 1;
+		// Nos vamos moviendo por el perímetro del sensor hasta encontrar una posición válida dentro del rango
 		
-		Vector2 leftLimit = Vector2.transform(position, new Vector2(-edgeDistance,0));
-		Vector2 rightLimit = Vector2.transform(position, new Vector2(edgeDistance,0));
-		Vector2 upLimit = Vector2.transform(position, new Vector2(0,-edgeDistance));
-		Vector2 downLimit = Vector2.transform(position, new Vector2(0,edgeDistance));
-		
-		// Start at the left edge
-		Vector2 currentPos = new Vector2(leftLimit);
-		
-		// Go diagonal up right
-		Vector2 direction = Vector2.downRight();
-		do {
-			externalEdge.add(new Vector2(currentPos));
-			currentPos.transform(direction);
-		} while(!currentPos.equals(upLimit));
-		
-		// Go diagonal down right
-		direction = Vector2.upRight();
-		do {
-			externalEdge.add(currentPos);
-			currentPos.transform(direction);
-		} while(!currentPos.equals(rightLimit));
-		
-		// Go diagonal down left
-		direction = Vector2.upLeft();
-		do {
-			externalEdge.add(currentPos);
-			currentPos.transform(direction);
-		} while(!currentPos.equals(downLimit));
-		
-		// Go diagonal up left
-		direction = Vector2.downLeft();
-		do {
-			externalEdge.add(currentPos);
-			currentPos.transform(direction);
-		}while(!currentPos.equals(leftLimit));
-		
-		externalEdge.add(currentPos);
-		System.out.println("Finished edge");
-	}
+		boolean isCandidate = true;
 
-	/*
-	public boolean collide(Sensor other) {
+
+		// Start at left border and go to top
+		while(!topReached) {
+			currentBorderPos.transform(UP_RIGHT); // (1,-1) ya que la y disminuye hacia arriba
+			topReached = currentBorderPos.equals(top);
+			
+			isCandidate = inRange(maxRange);
+			
+			if(isCandidate) {
+				return Optional.of(currentBorderPos);
+			}
+			
+		}
 		
-		boolean collide = false;
-		Iterator<Vector2> edgeIterator = externalEdge.iterator();
-		
-		while((!collide) && edgeIterator.hasNext()) {
-			if(other.externalEdge.contains(edgeIterator.next())) {
-				collide = true;
+		// Go from top to right side
+		while(!rightReached) {
+			currentBorderPos.transform(DOWN_RIGHT);
+			rightReached = currentBorderPos.equals(right);
+			
+			isCandidate = inRange(maxRange);
+			
+			if(isCandidate) {
+				return Optional.of(currentBorderPos);
 			}
 		}
 		
-		return collide;
-	}*/
-	public boolean isInRange(int y) {
+		// Go to right side to bottom
+		while(!bottomReached) {
+			currentBorderPos.transform(DOWN_LEFT);
+			bottomReached = currentBorderPos.equals(bottom);
+			
+			isCandidate = inRange(maxRange);
+			
+			if(isCandidate) {
+				return Optional.of(currentBorderPos);
+			}
+		}
+		
+		// Go to bottom to left
+		while(!leftReached) {
+			currentBorderPos.transform(UP_LEFT);
+			leftReached = currentBorderPos.equals(left);
+			
+			isCandidate = inRange(maxRange);
+			
+			if(isCandidate) {
+				return Optional.of(currentBorderPos);
+			}
+		}
+		
+		
+		return Optional.empty();
+		
+	}
+
+	private boolean inRange(long maxRange) {
+		return currentBorderPos.getX() >= 0 && currentBorderPos.getX() <= maxRange && currentBorderPos.getY() >= 0 && currentBorderPos.getY() <= maxRange;
+	}
+
+	public boolean isInRange(Vector2 point) {
+		return manhattanDistance >= Vector2.manhattanDistance(position, point);
+	}
+	
+	private boolean isInRange(int y) {
 		
 		if(position.getY() == y) {
 			return true;
 		}
 		
 		if(position.getY() < y) {
-			int maxY = position.getY() + distance;
+			long maxY = position.getY() + manhattanDistance;
 			return maxY >= y;
 		}
 		
 		// position.y > y
-		int minY = position.getY() - distance;
+		long minY = position.getY() - manhattanDistance;
 		return minY <= y;
 	}
 	
@@ -125,12 +161,14 @@ public class Sensor {
 		return (int) distance;
 	}
 	
+	/*
 	private void calculateManhattanDistance() {
 		
 		// (x1,y1) and (x2,y2) = |x1-x2| + |y1-y2|
 		int xDistance = Math.abs(position.getX()-beaconPosition.getX());
 		int yDistance = Math.abs(position.getY()-beaconPosition.getY());
 		
-		distance = xDistance + yDistance;
-	}
+		manhattanDistance = xDistance + yDistance;
+	}*/
+
 }
