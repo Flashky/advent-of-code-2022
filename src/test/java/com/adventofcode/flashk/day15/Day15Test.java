@@ -65,9 +65,8 @@ public class Day15Test extends PuzzleTest {
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveA(2000000); 
-		
-		System.out.println(result);
-		//assertEquals(0,result); // TODO update with real test
+
+		assertEquals(5083287,result);
 	}
 	
 	@Test
