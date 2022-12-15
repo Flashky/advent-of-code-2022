@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day15;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_15)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day15Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_15;
@@ -44,6 +45,10 @@ public class Day15Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
+		long result = beaconExclusionZone.solveA(10); 
+	
+		assertEquals(26, result);
 	}
 	
 	@Test
@@ -58,6 +63,11 @@ public class Day15Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
+		long result = beaconExclusionZone.solveA(2000000); 
+		
+		System.out.println(result);
+		//assertEquals(0,result); // TODO update with real test
 	}
 	
 	@Test
@@ -65,12 +75,18 @@ public class Day15Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.SAMPLE)
 	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
+	@Disabled
 	public void testSolvePart2Sample() {
 		
 		System.out.print("2 | sample | ");
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
+		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
+		long result = beaconExclusionZone.solveB();
+
+		assertEquals(56000011, result); // TODO update with real test
 		
 	}
 	
@@ -79,6 +95,7 @@ public class Day15Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+	@Disabled
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
@@ -86,6 +103,10 @@ public class Day15Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		long result = 0;
+		System.out.println(result);
+		
+		assertEquals(0,result); // TODO update with real test
 	}
 
 }
