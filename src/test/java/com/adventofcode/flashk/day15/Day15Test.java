@@ -83,9 +83,9 @@ public class Day15Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
-		long result = beaconExclusionZone.solveB();
+		long result = beaconExclusionZone.solveB2();
 
-		assertEquals(56000011, result); // TODO update with real test
+		assertEquals(56000011, result);
 		
 	}
 	
@@ -102,10 +102,12 @@ public class Day15Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
-		long result = 0;
+		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
+		long result = beaconExclusionZone.solveB();
+
 		System.out.println(result);
 		
-		assertEquals(0,result); // TODO update with real test
+		//assertEquals(0,result); // TODO update with real test
 	}
 
 }
