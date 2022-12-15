@@ -2,52 +2,37 @@ package com.adventofcode.flashk.day15;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
+import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Vector2;
 
 public class BeaconExclusionZone {
 
-	private static final String SENSOR_BEACON_REGEX = "Sensor at x=(-?\\d*), y=(-?\\d*): closest beacon is at x=(-?\\d*), y=(-?\\d*)";
-	private static final Pattern SEASON_BEACON_PATTERN = Pattern.compile(SENSOR_BEACON_REGEX);
-	private static final int DISTRESS_BEACON_MAX= 4000000;
+	private static final int DISTRESS_BEACON_MAX = 4000000;
 	
 	private List<Sensor> sensors = new ArrayList<>(); // Sensor-Beacon map
 	
-	private int minX = Integer.MAX_VALUE;
-	private int maxX = Integer.MIN_VALUE;
-	private int minY = Integer.MAX_VALUE;
-	private int maxY = Integer.MIN_VALUE;
+	//private int minX = Integer.MAX_VALUE;
+	//private int maxX = Integer.MIN_VALUE;
+	//private int minY = Integer.MAX_VALUE;
+	//private int maxY = Integer.MIN_VALUE;
 	
-	Set<Vector2> lastScanLinePoints;
-	private Set<Vector2> scanMap = new HashSet<>();
-	
-	private Line scanLine;
+	private Set<Vector2> lastScanLinePoints;
 	
 	public BeaconExclusionZone(List<String> inputs) {
 		
 		
 		for(String input : inputs) {
-			Sensor sensor = new Sensor(input);
 			sensors.add(new Sensor(input));
 			
 			// Update min and max dimensions of the map
-			//int x = Math.min(sensor.getPosition().getX(), sensor.getBeaconPosition().getX());
-			minX = Math.min(minX, sensor.getPosition().getX()); 
-			
-			//x = Math.max(sensor.getPosition().getX(), sensor.getBeaconPosition().getX());
-			maxX = Math.max(maxX, sensor.getPosition().getX());
-			
-//			//int y = Math.min(sensor.getPosition().getY(), sensor.getBeaconPosition().getY());
-			minY = Math.min(minY, sensor.getPosition().getY());
-			
-			//y = Math.max(sensor.getPosition().getY(), sensor.getBeaconPosition().getY());
-			maxY = Math.max(maxY, sensor.getPosition().getY());
+			//minX = Math.min(minX, sensor.getPosition().getX()); 
+			//maxX = Math.max(maxX, sensor.getPosition().getX());
+			//minY = Math.min(minY, sensor.getPosition().getY());
+			//maxY = Math.max(maxY, sensor.getPosition().getY());
 		}
 		
 		System.out.println("test");
@@ -62,17 +47,11 @@ public class BeaconExclusionZone {
 			
 			int distanceToY = sensor.distanceTo(y);
 
-			// Sensor reaches scanline
+			// Sensor is in range of scanline
 			if(distanceToY >= 0) {
 
-				int manhattanDistance = sensor.getDistance();
-				int missingDistance = manhattanDistance - distanceToY;
-				/*
-				System.out.println("- Sensor: "+sensor.getPosition());
-				System.out.println("Manhattan distance: "+manhattanDistance);
-				System.out.println("Missing distance: "+missingDistance);
-				System.out.println();
-				*/
+				int manhattanDistance = (int) sensor.getManhattanDistance();
+				int missingDistance = (int) manhattanDistance - distanceToY;
 				
 				int xLeft = sensor.getPosition().getX() - missingDistance;
 				int xRight = sensor.getPosition().getX() + missingDistance;
@@ -87,98 +66,60 @@ public class BeaconExclusionZone {
 		
 		return lastScanLinePoints.size() - 1;
 	}
-	
-	public long solveB() {
-		
 
-		// Create scan map
-		// Problema: no cabe una lista tan grande en memoria
+	public long solveB3(long maxRange) {
 		
-		/*
-		List<Vector2> scanMap = new ArrayList<>();
-		for(int x = minX; x <= maxX; x++) {
-			for(int y = minY; y <= maxY; y++) {
-				scanMap.add(new Vector2(x,y));
-			}
-		}*/
+		Vector2 lostBeaconPosition = null;
+		boolean found = false;
+		Iterator<Sensor> candidateSensors = sensors.iterator();
 		
-		
-		//List<Vector2> scanMap = new ArrayList<>();
-		// Perform scan on y
-		List<Vector2> scanMap = null;
-		for(int y = minY; y <= maxY; y++) {
-			solveA(y);
+		while(!found && candidateSensors.hasNext()) {
 			
-			scanMap = new ArrayList<>();
-			for(int x = minX; x <= maxX; x++) {
-				scanMap.add(new Vector2(x,y));
-			}
-			//System.out.println("y = "+y+" | Scanned points: "+lastScanLinePoints.size());
-			lastScanLinePoints = lastScanLinePoints.stream().filter(p -> p.getX() >= minX && p.getX() <= maxX).collect(Collectors.toSet());
-			//System.out.println("y = "+y+" | Scanned points in range: "+lastScanLinePoints.size());
+			// Elegimos un sensor a evaluar
+			Sensor currentSensor = candidateSensors.next();
 			
-			if(lastScanLinePoints.size() == maxX) {
-				for(Vector2 scannedPoint : lastScanLinePoints) {
-					scanMap.remove(scannedPoint);
-				}
+			// Escogemos una posición candidata para la baliza.
+			// Las posiciones candidatas se situan en el perímetro del sensor (mhd + 1)
+			Optional<Vector2> candidate = currentSensor.nextBorderPos(maxRange);
+			while(!found && candidate.isPresent()) {
+
+				boolean isCandidate = true;
 				
-				if(!scanMap.isEmpty()) {
-					break;
-				}
-			}
-			
-		}
-		
-		// TODO crear algún tipo de intersección que permita ver
-		//Optional<Vector2> uniquePos = scanLinePoints.stream().filter(point -> !scanLinePoints.contains(point)).findFirst();
-		
-		
-
-		Vector2 unique = scanMap.get(0);
-
-		// Given a single vector position p, result is: p.x * DISTRESS_BEACON_MAX * p.y
-		long result = unique.getX() * DISTRESS_BEACON_MAX + unique.getY();
-		
-		return result;
-	}
-
-	public long solveB2() {
-		long result = 0;
-		
-		Queue<Sensor> sensorQueue = new LinkedList<>();
-		sensorQueue.addAll(sensors);
-		
-		while(!sensorQueue.isEmpty()) {
-			Sensor sensor = sensorQueue.poll();
-			System.out.println("- Sensor: "+sensor.getPosition());
-			for(Vector2 edgePos : sensor.getExternalEdge()) {
-
-				// Comparar con los sensores restantes
-				
-				boolean coincidence = false;
-				for(Sensor sensor2 : sensorQueue) {
-					if(sensor2.getExternalEdge().contains(edgePos)) {
-						coincidence = true;
-						break;
+				// El candidato deberá estar fuera de rango de todos los sensores
+				Iterator<Sensor> testSensors = sensors.iterator();
+				while(isCandidate && testSensors.hasNext()) {
+					
+					// Siguiente sensor y posición a comparar
+					Sensor testSensor = testSensors.next();
+					Vector2 testCandidate = candidate.get();
+					
+					// Evitamos comparar un sensor consigo mismo
+					if(currentSensor != testSensor) {
+						
+						// Si el sensor está en rango al candidato, entonces no es una posición válida para la baliza
+						if(testSensor.isInRange(testCandidate)) {
+							
+							// Calculate next candidate
+							isCandidate = false;
+							candidate = currentSensor.nextBorderPos(maxRange);
+						}
 					}
 				}
 				
-				if(!coincidence) {
-					System.out.println(edgePos);
-					break;
+				// Si el sensor sigue siendo candidato tras testear contra todos los sensores, esa es la posición de la baliza
+				if(isCandidate) {
+					found = true;
+					lostBeaconPosition = candidate.get();
 				}
-			}
+	
+			} // while
+	
 		}
 		
-		return result;
+		System.out.println("Candidate: " + lostBeaconPosition);
 		
+		return lostBeaconPosition.getX() * DISTRESS_BEACON_MAX + lostBeaconPosition.getY();
+
 	}
-	public int calculateManhattanDistance(Vector2 origin, Vector2 destination) {
-		
-		// (x1,y1) and (x2,y2) = |x1-x2| + |y1-y2|
-		int xDistance = Math.abs(origin.getX()-destination.getX());
-		int yDistance = Math.abs(origin.getY()-destination.getY());
-		
-		return xDistance + yDistance;
-	}
+	
 }

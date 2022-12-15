@@ -74,7 +74,6 @@ public class Day15Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.SAMPLE)
 	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
-	@Disabled
 	public void testSolvePart2Sample() {
 		
 		System.out.print("2 | sample | ");
@@ -83,7 +82,7 @@ public class Day15Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
-		long result = beaconExclusionZone.solveB2();
+		long result = beaconExclusionZone.solveB3(20);
 
 		assertEquals(56000011, result);
 		
@@ -94,20 +93,25 @@ public class Day15Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
-	@Disabled
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
-		long result = beaconExclusionZone.solveB();
+		long result = beaconExclusionZone.solveB3(4000000L);
 
 		System.out.println(result);
+
+		// Right Answer: 13134039205729
+		// Calculando en excel pude ver que el resultado real era 13134039205729.
+		// Sin embargo, por algún tipo de desbordamiento, el resultado que está dando es: 29214561
+		// Hay que revisar a ver por qué pasa
 		
-		//assertEquals(0,result); // TODO update with real test
+		
+		//assertEquals(13134039205729L,result); // TODO update with real test
 	}
 
 }

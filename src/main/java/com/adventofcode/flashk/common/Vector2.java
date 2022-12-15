@@ -203,6 +203,17 @@ public class Vector2 {
 		
 		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 	}
+	
+	public static long manhattanDistance(Vector2 a, Vector2 b) {
+		
+		// Given (x1,y1) and (x2,y2): 
+		// Manhattan distance = |x1-x2| + |y1-y2|
+		long xDistance = Math.abs(a.getX()-b.getX());
+		long yDistance = Math.abs(a.getY()-b.getY());
+		
+		return xDistance + yDistance;
+	}
+	
 	/**
 	 * Shorthand for <code>Vector2(-1,0)</code>.
 	 * @return A unitary vector that points to the left.
