@@ -52,11 +52,11 @@ public class Sensor {
 		manhattanDistance = Vector2.manhattanDistance(position, beaconPosition);
 
 		// Sensor out of range limits
-		int edgeDistance = (int) manhattanDistance + 1;
-		left =  Vector2.transform(position, new Vector2(-edgeDistance,0));
-		right = Vector2.transform(position, new Vector2(edgeDistance,0));
-		top = Vector2.transform(position, new Vector2(0,-edgeDistance));
-		bottom = Vector2.transform(position, new Vector2(0,edgeDistance));
+		int borderDistance = (int) manhattanDistance + 1;
+		left =  Vector2.transform(position, new Vector2(-borderDistance,0));
+		right = Vector2.transform(position, new Vector2(borderDistance,0));
+		top = Vector2.transform(position, new Vector2(0,-borderDistance));
+		bottom = Vector2.transform(position, new Vector2(0,borderDistance));
 		currentBorderPos = new Vector2(left); // start at left
 
 	}
@@ -160,15 +160,5 @@ public class Sensor {
 		
 		return (int) distance;
 	}
-	
-	/*
-	private void calculateManhattanDistance() {
-		
-		// (x1,y1) and (x2,y2) = |x1-x2| + |y1-y2|
-		int xDistance = Math.abs(position.getX()-beaconPosition.getX());
-		int yDistance = Math.abs(position.getY()-beaconPosition.getY());
-		
-		manhattanDistance = xDistance + yDistance;
-	}*/
 
 }
