@@ -19,9 +19,7 @@ public class BeaconExclusionZone {
 	private Set<Vector2> lastScanLinePoints;
 	
 	public BeaconExclusionZone(List<String> inputs) {
-		
 		sensors = inputs.stream().map(Sensor::new).collect(Collectors.toList());
-		
 	}
 	
 	public long solveA(int y) {
@@ -96,11 +94,9 @@ public class BeaconExclusionZone {
 					lostBeaconPosition = candidate.get();
 				}
 	
-			} // while
+			}
 	
 		}
-		
-		//System.out.println("Candidate: " + lostBeaconPosition);
 		
 		return (long) lostBeaconPosition.getX() * DISTRESS_BEACON_MAX + lostBeaconPosition.getY();
 
