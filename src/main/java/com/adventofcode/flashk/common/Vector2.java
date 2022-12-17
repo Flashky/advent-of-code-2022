@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString
 public class Vector2 {
 
-	private int x;
-	private int y;
+	private long x;
+	private long y;
 	
 	public Vector2(Vector2 anotherVector) {
 		this.x = anotherVector.x;
@@ -41,6 +41,19 @@ public class Vector2 {
 		
 	}
 	
+	public void transform(int scalar) {
+		this.x += scalar;
+		this.y += scalar;
+	}
+	
+	public void transformX(int scalar) {
+		this.x += scalar;
+	}
+	
+	public void transformY(int scalar) {
+		this.y += scalar;
+	}
+	
 	public void transform(Vector2 vector) {
 		this.x += vector.x;
 		this.y += vector.y;
@@ -49,8 +62,8 @@ public class Vector2 {
 	
 	public static Vector2 transform(Vector2 start, Vector2 end) {
 	
-		int x = start.x + end.x;
-		int y = start.y + end.y;
+		long x = start.x + end.x;
+		long y = start.y + end.y;
 		
 		return new Vector2(x,y);
 	}
@@ -101,8 +114,8 @@ public class Vector2 {
 		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
 		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
 		
-		x = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
-		y = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
+		x = (xs >= 0) ? (long) Math.ceil(xs) : (long) Math.floor(xs);
+		y = (ys >= 0) ? (long) Math.ceil(ys) : (long) Math.floor(ys);
 				
 	}
 	
@@ -130,8 +143,8 @@ public class Vector2 {
 		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
 		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
 		
-		int newX = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
-		int newY = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
+		long newX = (xs >= 0) ? (long) Math.ceil(xs) : (long) Math.floor(xs);
+		long newY = (ys >= 0) ? (long) Math.ceil(ys) : (long) Math.floor(ys);
 		
 		return new Vector2(newX, newY);
 	}
@@ -158,8 +171,8 @@ public class Vector2 {
 	 */
 	public static Vector2 substractAbs(Vector2 leftOperand, Vector2 rightOperand) {
 		
-		int x = Math.abs(leftOperand.x - rightOperand.x);
-		int y = Math.abs(leftOperand.y - rightOperand.y);
+		long x = Math.abs(leftOperand.x - rightOperand.x);
+		long y = Math.abs(leftOperand.y - rightOperand.y);
 		
 		return new Vector2(x,y);
 		
@@ -183,8 +196,8 @@ public class Vector2 {
 	 * @return a new Vector2
 	 */
 	public static Vector2 substract(Vector2 leftOperand, Vector2 rightOperand) {
-		int x = leftOperand.x - rightOperand.x;
-		int y = leftOperand.y - rightOperand.y;
+		long x = leftOperand.x - rightOperand.x;
+		long y = leftOperand.y - rightOperand.y;
 		return new Vector2(x,y);
 	}
 	
@@ -198,8 +211,8 @@ public class Vector2 {
 	
 	public static double distance(Vector2 a, Vector2 b) {
 		
-		int xDiff = b.x - a.x;
-		int yDiff = b.y - a.y;
+		long xDiff = b.x - a.x;
+		long yDiff = b.y - a.y;
 		
 		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 	}
