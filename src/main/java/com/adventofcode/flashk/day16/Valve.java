@@ -34,8 +34,10 @@ public class Valve {
 		initializeValve(inputSplit[0]);
 		initializeLeadingCaves(inputSplit[1]);
 	}
-	public List<String> getLeadingValves() {
+	public List<String> getLeadingValves(String previousValveName) {
+		// Evitamos incluir las válvulas de las que acabemos de proceder.
 		return leadingValves.keySet().stream().collect(Collectors.toList());
+		//return leadingValves.keySet().stream().filter(name -> !name.equals(previousValveName)).collect(Collectors.toList());
 	}
 	
 	public List<String> getUnvisitedNeighbours() {

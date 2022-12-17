@@ -1,9 +1,9 @@
 package com.adventofcode.flashk.day17;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +21,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_17)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day17Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_17;
@@ -43,6 +42,11 @@ public class Day17Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
+		
+		
+		long result = pyroclasticFlow.solveA(2022);
+		assertEquals(3068, result);
 		
 	}
 	
@@ -57,7 +61,10 @@ public class Day17Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
+		long result = pyroclasticFlow.solveA(2022);
 		
+		System.out.println(result);
 	}
 	
 	@Test
@@ -71,7 +78,10 @@ public class Day17Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
+		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
+		long result = pyroclasticFlow.solveA(1000000000000L);
+
+		assertEquals(1514285714288L, result);
 	}
 	
 	@Test
@@ -85,7 +95,8 @@ public class Day17Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		long result = 0;
+		System.out.println(result);
 	}
 
 }

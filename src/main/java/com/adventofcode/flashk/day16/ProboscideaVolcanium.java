@@ -92,15 +92,51 @@ public class ProboscideaVolcanium {
 		 * J es visitado 1 veces. J tiene 1 vecinos.
 		 */
 		
-		// Un nodo es visitado como mucho, tantas veces como vecinos tenga.
+		/* Ruta completa del ejemplo:
+
+			AA -> DD (open)
+			DD -> CC
+			CC -> BB (open)
+			BB -> AA 
+			AA -> II
+			II -> JJ (open)
+			JJ -> II
+			II -> AA
+			AA -> DD (REPEATED STEP) -> Puedes caminar dos veces por la misma tubería visitada.
+			DD -> EE
+			EE -> FF
+			FF -> GG
+			GG -> HH (open)
+			HH -> GG
+			GG -> FF
+			FF -> EE (open)
+			EE -> DD 
+			DD -> CC (open) (REPETEAD STEP) 
+			Stay in CC from minutes 24 to 30: 81*6 = 486 presión adicional en esos minutos
+			
+		 */
 		
-		maxPressure(origin, 0, 0, 0);
+		
+		/*
+			Premisas falsas:
+			- Un nodo es visitado como mucho, tantas veces como vecinos tenga.
+
+			Premisas verdaderas:
+			- Un nodo puede visitarse múltiples veces, y es posible realizar un mismo camino varias veces si es una solución óptima.
+				- En el ejemplo, se repiten dos veces el paso AA -> DD y el paso DD -> CC
+				
+		 */
+		
+
+		
+		
+		maxPressure(origin, null, 0, 0, 0);
 		
 		return maxReleasedPressure;
 	}
 	
-	private void maxPressure(Valve currentValve, int totalMinutes, int totalReleasedPressure, int totalFlow) {
-		
+	private void maxPressure(Valve currentValve, String previousValveName, int totalMinutes, int totalReleasedPressure, int totalFlow) {
+		//System.out.println(currentValve.getName() + " - minutes: "+totalMinutes);
 		if(totalMinutes >= MAX_TIME) {
 			// Case base - Max time reached	
 
@@ -118,9 +154,9 @@ public class ProboscideaVolcanium {
 			
 			int remainingMinutes = MAX_TIME - totalMinutes;
 			int estimatedTotalReleasedPressure = totalReleasedPressure + (remainingMinutes * totalFlow);
-			maxPressure(currentValve, MAX_TIME, estimatedTotalReleasedPressure, totalFlow);
+			maxPressure(currentValve, previousValveName, MAX_TIME, estimatedTotalReleasedPressure, totalFlow);
 			
-		} else if (!currentValve.isOpen() && currentValve.getFlow() > 0) {
+		} else {
 
 			// Recursive case 2 - Open an openable valve that has flow greater than 0
 			
@@ -132,44 +168,54 @@ public class ProboscideaVolcanium {
 			/// Finalmente, la válvula pasa a estar abierta y actualizamos el contador de válvulas abiertas.
 			
 			// Open valve
-			currentValve.setOpen(true);
-			openedValves++;
-			
-			// You spend 1 minute opening the valve, update total minutes and total released pressure before calling recursive method
-			int nextTotalMinutes = totalMinutes+1;
-			int nextTotalReleasedPressure = totalReleasedPressure + totalFlow;
-			int nextTotalFlow = totalFlow + currentValve.getFlow();
-			maxPressure(currentValve, nextTotalMinutes, nextTotalReleasedPressure, nextTotalFlow);
-			
-			// Backtrack - Close valve
-			currentValve.setOpen(false);
-			openedValves--;
-			
-		} else {
-			
-			// Recursive case 3 - Move to other valve
-			
-			// Puesto que lleva 1 minuto moverse a otra válvula, para la siguiente llamada recursiva:
-			// - Incrementamos el minuto en 1.
-			// - Incrementamos la presión liberada con el totalFlow adicional generado en ese minuto.
-			// - El flujo total permanece igual, no hemos abierto nada.
-		
-			List<String> leadingValves = currentValve.getUnvisitedNeighbours();
-			//List<String> leadingValves = currentValve.getLeadingValves();
-			
-			for(String valveName : leadingValves) {
-
-				// Obtain next valve to evaluate
-				//Valve nextValve = valves.stream().filter(v -> valveName.equals(v.getName())).findFirst().get();
-				Valve nextValve = valvesByName.get(valveName);
+			if (!currentValve.isOpen() && currentValve.getFlow() > 0) {
+				currentValve.setOpen(true);
+				openedValves++;
 				
-				// Move to next valve
-				currentValve.visitNeighbour(valveName);
-				maxPressure(nextValve, totalMinutes+1, totalReleasedPressure+totalFlow, totalFlow);
-				currentValve.unvisitNeighbour(valveName);
+				// You spend 1 minute opening the valve, update total minutes and total released pressure before calling recursive method
+				maxPressure(currentValve, previousValveName, totalMinutes + 1, totalReleasedPressure + totalFlow, totalFlow + currentValve.getFlow());
 				
-				
+				// Backtrack - Close valve
+				currentValve.setOpen(false);
+				openedValves--;
 			}
+			
+			// Recursive case 3
+			// Después de explorar la opción de abrir la válvula, habría que explorar la opción de ignorarla y moverse a la siguiente.
+			visitNeighbours(currentValve, previousValveName, totalMinutes, totalReleasedPressure, totalFlow);
+		}
+
+	}
+
+	private void visitNeighbours(Valve currentValve, String previousValveName, int totalMinutes,
+			int totalReleasedPressure, int totalFlow) {
+		// Recursive case 3 - Move to other valve
+		
+		// Premisas:
+		// - Podemos repetir nodos ya visitados previamente.
+		
+		// Problemas:
+		// - Stack overflow. Es debido a la existencia de ciclos
+		
+		// Puesto que lleva 1 minuto moverse a otra válvula, para la siguiente llamada recursiva:
+		// - Incrementamos el minuto en 1.
+		// - Incrementamos la presión liberada con el totalFlow adicional generado en ese minuto.
+		// - El flujo total permanece igual, no hemos abierto nada.
+
+		//List<String> leadingValves = currentValve.getUnvisitedNeighbours();
+		List<String> leadingValves = currentValve.getLeadingValves(previousValveName);
+		
+		for(String valveName : leadingValves) {
+
+			// Obtain next valve to evaluate
+			//Valve nextValve = valves.stream().filter(v -> valveName.equals(v.getName())).findFirst().get();
+			Valve nextValve = valvesByName.get(valveName);
+			
+			// Move to next valve
+			currentValve.visitNeighbour(valveName);
+			maxPressure(nextValve, currentValve.getName(), totalMinutes + 1, totalReleasedPressure + totalFlow, totalFlow);
+			currentValve.unvisitNeighbour(valveName);
+			
 			
 		}
 	}
