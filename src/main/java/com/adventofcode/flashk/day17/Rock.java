@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.adventofcode.flashk.common.Collider2D;
-import com.adventofcode.flashk.common.Vector2;
+import com.adventofcode.flashk.common.Vector2L;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,16 +25,16 @@ public abstract class Rock {
 	private boolean moving = true;
 	
 	@Getter
-	protected Vector2 position;
+	protected Vector2L position;
 	
 	@Getter
 	protected Set<Collider2D> colliders = new HashSet<>();
     
-	public Rock(Vector2 initialPosition) {
+	public Rock(Vector2L initialPosition) {
 		position = initialPosition;
 	}
 	
-	public void move(Vector2 direction) {
+	public void move(Vector2L direction) {
 		
 		// Only move one unit at once updating both rock position and colliders positions
 		direction.normalize(); 

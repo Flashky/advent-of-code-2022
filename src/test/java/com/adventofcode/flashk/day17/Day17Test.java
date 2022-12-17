@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,6 +22,7 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_17)
 @TestMethodOrder(OrderAnnotation.class)
+@Disabled
 public class Day17Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_17;
@@ -64,7 +66,7 @@ public class Day17Test extends PuzzleTest {
 		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
 		long result = pyroclasticFlow.solveA(2022);
 		
-		System.out.println(result);
+		assertEquals(3227, result);
 	}
 	
 	@Test

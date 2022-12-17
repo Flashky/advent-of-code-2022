@@ -1,11 +1,11 @@
 package com.adventofcode.flashk.day17;
 
 import com.adventofcode.flashk.common.Collider2D;
-import com.adventofcode.flashk.common.Vector2;
+import com.adventofcode.flashk.common.Vector2L;
 
 public class SquareRock extends Rock {
 
-	public SquareRock(Vector2 initialPosition) {
+	public SquareRock(Vector2L initialPosition) {
 		
 		super(initialPosition);
 		
@@ -15,14 +15,14 @@ public class SquareRock extends Rock {
 		// x#
 	
 		// Square lower row collider
-		Vector2 start = new Vector2(position);
-		Vector2 end = Vector2.transform(start, Vector2.right());
+		Vector2L start = new Vector2L(position);
+		Vector2L end = Vector2L.transform(start, Vector2L.right());
 	
 		colliders.add(new Collider2D(start,end));
 		
 		// Square upper row collider
-		start = Vector2.transform(start, Vector2.up());
-		end = Vector2.transform(start,Vector2.right());
+		start = Vector2L.transform(start, Vector2L.up());
+		end = Vector2L.transform(start,Vector2L.right());
 		
 		colliders.add(new Collider2D(start, end));
 		
