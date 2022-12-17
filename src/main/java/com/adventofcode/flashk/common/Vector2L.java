@@ -11,12 +11,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Vector2 {
+public class Vector2L {
 
-	private int x;
-	private int y;
+	private long x;
+	private long y;
 	
-	public Vector2(Vector2 anotherVector) {
+	public Vector2L(Vector2L anotherVector) {
 		this.x = anotherVector.x;
 		this.y = anotherVector.y;
 	}
@@ -32,7 +32,7 @@ public class Vector2 {
 	 * @param coordinates
 	 * @return
 	 */
-	public Vector2(String coordinates) {
+	public Vector2L(String coordinates) {
 		
 		String[] values = coordinates.split(",");
 		
@@ -54,18 +54,18 @@ public class Vector2 {
 		this.y += scalar;
 	}
 	
-	public void transform(Vector2 vector) {
+	public void transform(Vector2L vector) {
 		this.x += vector.x;
 		this.y += vector.y;
 	}
 	
 	
-	public static Vector2 transform(Vector2 start, Vector2 end) {
+	public static Vector2L transform(Vector2L start, Vector2L end) {
 	
-		int x = start.x + end.x;
-		int y = start.y + end.y;
+		long x = start.x + end.x;
+		long y = start.y + end.y;
 		
-		return new Vector2(x,y);
+		return new Vector2L(x,y);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class Vector2 {
 	 * @param other substracting Vector2.
 	 * @return a new Vector2
 	 */
-	public void substractAbs(Vector2 other) {
+	public void substractAbs(Vector2L other) {
 		
 		this.x = Math.abs(this.x - other.x);
 		this.y = Math.abs(this.y - other.y);
@@ -114,8 +114,8 @@ public class Vector2 {
 		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
 		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
 		
-		x = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
-		y = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
+		x = (xs >= 0) ? (long) Math.ceil(xs) : (long) Math.floor(xs);
+		y = (ys >= 0) ? (long) Math.ceil(ys) : (long) Math.floor(ys);
 				
 	}
 	
@@ -127,7 +127,7 @@ public class Vector2 {
 	 * </p>
 	 * @return a normalized version of the current vector.
 	 */
-	public Vector2 normalized() {
+	public Vector2L normalized() {
 		
 		double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		
@@ -143,10 +143,10 @@ public class Vector2 {
 		// - Positive numbers such as 0.44 or 0.67 must be rounded to the highest integer (1) that means ceil.
 		// - Negative numbers such as -0,44 or -0,67 must be rounded to the lowest integer (-1), that means floor.
 		
-		int newX = (xs >= 0) ? (int) Math.ceil(xs) : (int) Math.floor(xs);
-		int newY = (ys >= 0) ? (int) Math.ceil(ys) : (int) Math.floor(ys);
+		long newX = (xs >= 0) ? (long) Math.ceil(xs) : (long) Math.floor(xs);
+		long newY = (ys >= 0) ? (long) Math.ceil(ys) : (long) Math.floor(ys);
 		
-		return new Vector2(newX, newY);
+		return new Vector2L(newX, newY);
 	}
 	
 	// Static operations
@@ -169,12 +169,12 @@ public class Vector2 {
 	 * @param rightOperand substracting Vector2.
 	 * @return a new Vector2
 	 */
-	public static Vector2 substractAbs(Vector2 leftOperand, Vector2 rightOperand) {
+	public static Vector2L substractAbs(Vector2L leftOperand, Vector2L rightOperand) {
 		
-		int x = Math.abs(leftOperand.x - rightOperand.x);
-		int y = Math.abs(leftOperand.y - rightOperand.y);
+		long x = Math.abs(leftOperand.x - rightOperand.x);
+		long y = Math.abs(leftOperand.y - rightOperand.y);
 		
-		return new Vector2(x,y);
+		return new Vector2L(x,y);
 		
 	}
 	
@@ -195,34 +195,34 @@ public class Vector2 {
 	 * @param rightOperand substracting Vector2.
 	 * @return a new Vector2
 	 */
-	public static Vector2 substract(Vector2 leftOperand, Vector2 rightOperand) {
-		int x = leftOperand.x - rightOperand.x;
-		int y = leftOperand.y - rightOperand.y;
-		return new Vector2(x,y);
+	public static Vector2L substract(Vector2L leftOperand, Vector2L rightOperand) {
+		long x = leftOperand.x - rightOperand.x;
+		long y = leftOperand.y - rightOperand.y;
+		return new Vector2L(x,y);
 	}
 	
 	/**
 	 * Shorthand for <code>Vector2(1,0)</code>.
 	 * @return A unitary vector that points to the right.
 	 */
-	public static Vector2 right() {
-		return new Vector2(1,0);
+	public static Vector2L right() {
+		return new Vector2L(1,0);
 	}
 	
-	public static double distance(Vector2 a, Vector2 b) {
+	public static double distance(Vector2L a, Vector2L b) {
 		
-		int xDiff = b.x - a.x;
-		int yDiff = b.y - a.y;
+		long xDiff = b.x - a.x;
+		long yDiff = b.y - a.y;
 		
 		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 	}
 	
-	public static int manhattanDistance(Vector2 a, Vector2 b) {
+	public static long manhattanDistance(Vector2L a, Vector2L b) {
 		
 		// Given (x1,y1) and (x2,y2): 
 		// Manhattan distance = |x1-x2| + |y1-y2|
-		int xDistance = Math.abs(a.getX()-b.getX());
-		int yDistance = Math.abs(a.getY()-b.getY());
+		long xDistance = Math.abs(a.getX()-b.getX());
+		long yDistance = Math.abs(a.getY()-b.getY());
 		
 		return xDistance + yDistance;
 	}
@@ -231,56 +231,56 @@ public class Vector2 {
 	 * Shorthand for <code>Vector2(-1,0)</code>.
 	 * @return A unitary vector that points to the left.
 	 */
-	public static Vector2 left() {
-		return new Vector2(-1,0);
+	public static Vector2L left() {
+		return new Vector2L(-1,0);
 	}
 	
 	/**
 	 * Shorthand for <code>Vector2(0,1)</code>.
 	 * @return A unitary vector that points up.
 	 */
-	public static Vector2 up() {
-		return new Vector2(0,1);
+	public static Vector2L up() {
+		return new Vector2L(0,1);
 	}
 	
 	/**
 	 * Shorthand for <code>Vector2(0,-1)</code>.
 	 * @return A unitary vector that points down.
 	 */
-	public static Vector2 down() {
-		return new Vector2(0,-1);
+	public static Vector2L down() {
+		return new Vector2L(0,-1);
 	}
 
 	/**
 	 * Shorthand for <code>Vector2(1,1)</code>.
 	 * @return A unitary vector that points to the up right diagonal.
 	 */
-	public static Vector2 upRight() {
-		return new Vector2(1,1);
+	public static Vector2L upRight() {
+		return new Vector2L(1,1);
 	}
 
 	/**
 	 * Shorthand for <code>Vector2(-1,1)</code>.
 	 * @return A unitary vector that points to the up left diagonal.
 	 */
-	public static Vector2 upLeft() {
-		return new Vector2(-1,1);
+	public static Vector2L upLeft() {
+		return new Vector2L(-1,1);
 	}
 
 	/**
 	 * Shorthand for <code>Vector2(1,-1)</code>.
 	 * @return A unitary vector that points to the down right diagonal.
 	 */
-	public static Vector2 downRight() {
-		return new Vector2(1,-1);
+	public static Vector2L downRight() {
+		return new Vector2L(1,-1);
 	}
 
 	/**
 	 * Shorthand for <code>Vector2(-1,-1)</code>.
 	 * @return A unitary vector that points to the down left diagonal.
 	 */
-	public static Vector2 downLeft() {
-		return new Vector2(-1,-1);
+	public static Vector2L downLeft() {
+		return new Vector2L(-1,-1);
 	}
 	
 }

@@ -9,22 +9,22 @@ public class Collider2D {
 
 	// Reference for ideas: https://stackoverflow.com/questions/907390/how-can-i-tell-if-a-point-belongs-to-a-certain-line
 
-	private Vector2 start;
-	private Vector2 end;
+	private Vector2L start;
+	private Vector2L end;
 	
 	private long minX;
 	private long maxX;
 	private long minY;
 	private long maxY;
 	
-	public Collider2D(Vector2 start, Vector2 end) {
-		this.start = new Vector2(start);
-		this.end = new Vector2(end);
+	public Collider2D(Vector2L start, Vector2L end) {
+		this.start = new Vector2L(start);
+		this.end = new Vector2L(end);
 	
 		calculateMinAndMax(start, end);
 	}
 	
-	public boolean intersects(Vector2 point) {
+	public boolean collidesWith(Vector2L point) {
 		
 		if(point.equals(start) || point.equals(end)) {
 			return true;
@@ -47,7 +47,7 @@ public class Collider2D {
 		return reference == aTanTest;
 	}
 	
-	public void transform(Vector2 vector) {
+	public void transform(Vector2L vector) {
 		start.transform(vector);
 		end.transform(vector);
 		calculateMinAndMax(start, end);
@@ -57,7 +57,7 @@ public class Collider2D {
 		 return this.minX <= other.maxX && this.maxX >= other.minX && this.minY <= other.maxY && this.maxY >= other.minY;
 	}
 
-	private void calculateMinAndMax(Vector2 start, Vector2 end) {
+	private void calculateMinAndMax(Vector2L start, Vector2L end) {
 		this.minX = Math.min(start.getX(), end.getX());
 		this.maxX = Math.max(start.getX(), end.getX());
 		this.minY = Math.min(start.getY(), end.getY());

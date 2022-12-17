@@ -1,13 +1,13 @@
 package com.adventofcode.flashk.day17;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Collider2D;
-import com.adventofcode.flashk.common.Vector2;
+import com.adventofcode.flashk.common.Vector2L;
 
 public class PyroclasticFlow {
 
@@ -17,10 +17,10 @@ public class PyroclasticFlow {
 	private static final int SPAWN_OFFSET_Y = 3;
 	
 	// Movement directions
-	private static final Vector2 UP = Vector2.up();
-	private static final Vector2 DOWN = Vector2.down();
-	private static final Vector2 LEFT = Vector2.left();
-	private static final Vector2 RIGHT = Vector2.right();
+	private static final Vector2L UP = Vector2L.up();
+	private static final Vector2L DOWN = Vector2L.down();
+	private static final Vector2L LEFT = Vector2L.left();
+	private static final Vector2L RIGHT = Vector2L.right();
 	
 	private char[] jetMovements;
 	private int nextJetMovementIndex = 0;
@@ -29,21 +29,24 @@ public class PyroclasticFlow {
 	private char[] rockShapeOrder = { Rock.HORIZONTAL_BAR, Rock.CROSS, Rock.CORNER, Rock.VERTICAL_BAR, Rock.SQUARE };
 	private int nextRockIndex = 0;
 	private long maxY = 0;
-	
+	private long minY = 1; // Purge bar
 
 	// Collider manager
 	private Set<Collider2D> colliders = new HashSet<>();
+	
+	// Part 2
+	//private Set<Vector2L> min
 	
 	public PyroclasticFlow(String input) {
 		jetMovements = input.toCharArray();
 		
 		// Initialize map colliders
-		Vector2 start = new Vector2();
-		Vector2 end = new Vector2(8,0);
+		Vector2L start = new Vector2L();
+		Vector2L end = new Vector2L(8,0);
 		
 		colliders.add(new Collider2D(start,end)); // Floor
-		colliders.add(new Collider2D(start, new Vector2(0, Integer.MAX_VALUE))); // Left border
-		colliders.add(new Collider2D(end, new Vector2(end.getX(), Integer.MAX_VALUE))); // Right border
+		colliders.add(new Collider2D(start, new Vector2L(0, Integer.MAX_VALUE))); // Left border
+		colliders.add(new Collider2D(end, new Vector2L(end.getX(), Integer.MAX_VALUE))); // Right border
 		
 		
 	}
@@ -92,7 +95,7 @@ public class PyroclasticFlow {
 					// Apply horizontal movement
 					
 					// 1. Obtain direction
-					Vector2 direction = getHorizontalDirection();
+					Vector2L direction = getHorizontalDirection();
 					
 					// 2. Attempt to move
 					nextRock.move(direction);
@@ -151,9 +154,62 @@ public class PyroclasticFlow {
 			// TODO borrador de colliders inactivos
 			// Un collider es inactivo si es imposible que nada choque contra él (hay una barra horizontal bloqueando por encima de él)
 			// Solo podemos borrar colliders que estén a 5 unidades por debajo de la barra de corte
+			cleanColliderPool();
 		}
 		
 		return maxY;
+		
+	}
+
+	private void cleanColliderPool() {
+		
+		boolean found = false;
+		long y = minY;
+		
+		Set<Vector2L> collisionPoints = new HashSet<>(); // TODO igual esto debería empezar en la última barra de bloqueo siempre
+		// Inicialmente la barra de bloqueo se empieza a evaluar para y = 0
+		// cuando se encuentre un bloqueo, se puede actualizar para y = y barra bloqueo
+		
+		collisionPoints.add(new Vector2L(1,y));
+		collisionPoints.add(new Vector2L(2,y));
+		collisionPoints.add(new Vector2L(3,y));
+		collisionPoints.add(new Vector2L(4,y));
+		collisionPoints.add(new Vector2L(5,y));
+		collisionPoints.add(new Vector2L(6,y));
+		collisionPoints.add(new Vector2L(7,y));
+		
+		while(!found && y < maxY) {
+			
+			Iterator<Vector2L> pointIterator = collisionPoints.iterator();
+			int collisionCount = 0;
+			while(collisionCount < 7 && pointIterator.hasNext()) {
+				
+				Vector2L point = pointIterator.next();
+				Optional<Collider2D> collider = colliders.stream().filter(c -> c.collidesWith(point)).findAny();
+				
+				if(collider.isPresent()) {
+					collisionCount++;
+				}
+			}
+			
+			// Si tras haber recorrido todos los puntos, todos tenían colisión:
+			if(collisionCount == 7) {
+				
+				found = true;
+				maxY = y;
+				
+				// TODO Borrar todos los colliders por debajo de y - 5
+				long cutOffsetY = y - 5;
+				colliders = colliders.stream().filter(c -> c.getMinY() > cutOffsetY).collect(Collectors.toSet());
+			} else {
+				// Pasamos a evaluar la siguiente fila
+				y++;
+				collisionPoints.stream().forEach(p -> p.transformY(1));
+			}
+		
+		}
+		// Cuidado: los colliders del lateral y de abajo no se deben borrar.
+		// Comparar colliders
 		
 	}
 
@@ -165,10 +221,10 @@ public class PyroclasticFlow {
 
 	}
 
-	private Vector2 getHorizontalDirection() {
+	private Vector2L getHorizontalDirection() {
 		
 		// Obtain next jet movement
-		Vector2 direction = jetMovements[nextJetMovementIndex] == JET_LEFT ? LEFT : RIGHT;
+		Vector2L direction = jetMovements[nextJetMovementIndex] == JET_LEFT ? LEFT : RIGHT;
 		
 		// Obtain next circular index
 		nextJetMovementIndex = (nextJetMovementIndex+1) % jetMovements.length;
@@ -184,7 +240,7 @@ public class PyroclasticFlow {
 		
 		// Calculate the rock position: 2 units to left side and 3 units above
 		// Add 1 to both x and y as the real position of the object is on over that position
-		Vector2 position = new Vector2(SPAWN_OFFSET_X + 1, maxY + SPAWN_OFFSET_Y + 1);
+		Vector2L position = new Vector2L(SPAWN_OFFSET_X + 1, maxY + SPAWN_OFFSET_Y + 1);
 		
 		Rock spawnedRock = null;
 		switch(rockShapeOrder[nextRockIndex]) {
