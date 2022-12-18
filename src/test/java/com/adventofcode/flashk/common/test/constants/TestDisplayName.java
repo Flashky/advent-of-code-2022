@@ -34,6 +34,7 @@ public final class TestDisplayName {
 	
 	// Single test display name
 	public final static String PART_ONE_SAMPLE = "Part 1 - Sample data";
+	public final static String PART_ONE_SINGLE_SAMPLE = "Part 1 - Single sample data";
 	public final static String PART_ONE_INPUT = "Part 1 - Input data";
 	public final static String PART_ONE_DEBUG = "Part 1 - Debug";
 	public final static String PART_TWO_SAMPLE = "Part 2 - Sample data";
