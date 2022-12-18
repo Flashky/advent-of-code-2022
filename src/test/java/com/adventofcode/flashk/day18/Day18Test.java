@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day18;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_18)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day18Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_18;
@@ -31,6 +32,24 @@ public class Day18Test extends PuzzleTest {
 		Timer.printHeader(TestDisplayName.DAY_18);
 	}
 
+	
+	@Test
+	@Order(0)
+	@Tag(TestTag.PART_ONE)
+	@Tag(TestTag.SAMPLE)
+	@DisplayName(TestDisplayName.PART_ONE_SINGLE_SAMPLE)
+	public void testSolvePart1SingleSample() {
+		
+		System.out.print("1 | sample | ");
+		
+		// Read input file
+		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
+		
+		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
+		long result = boilingBoulders.solveA();
+		
+		assertEquals(10, result);
+	}
 	
 	@Test
 	@Order(1)
@@ -43,6 +62,11 @@ public class Day18Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
+		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
+		long result = boilingBoulders.solveA();
+		
+		assertEquals(64, result);
 		
 	}
 	
@@ -58,6 +82,11 @@ public class Day18Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
+		long result = boilingBoulders.solveA();
+
+		assertEquals(4282, result);
+
 	}
 	
 	@Test
