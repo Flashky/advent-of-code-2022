@@ -38,38 +38,26 @@ public class BoilingBoulders {
 
 	public long solveB() {
 		
-		// Calculate initial position
-		//solveA();
-		
 		// Calculate max dimensions
 		calculateLimits();
 		
-		// TODO punto de entrada del método recursivo que deberá verificar para cada cubo si su cara es externa o interna
-		excludeInnerSides();
-		solveA();
+		// Fill with air cubes
+		fillWithAirCubes();
 		
-		System.out.println("inner");
-		AtomicLong result = new AtomicLong(0L);
-		lavaDroplets.stream().forEach(c -> result.getAndAdd(c.getOpenSides()));
-		
-		return result.get();
+		// Recalculate open sides
+		return solveA();
 	}
 	
-	private void excludeInnerSides() {
+	private void fillWithAirCubes() {
 		for(int x = minX; x <= maxX; x++) {
 			for(int y = minY; y <= maxY; y++) {
 				for(int z = minZ; z <= maxZ; z++) {
 					Cube cube = getOrCreate(new Vector3(x,y,z));
 					dfs(cube);
+					
 				}
 			}
 		}
-		
-		
-		/*
-		for(Cube lavaDroplet : lavaDroplets) {
-			dfs(lavaDroplet); // TODO cuidado, esto va a caer directamente en el caso base
-		}*/
 		
 	}
 
@@ -95,14 +83,10 @@ public class BoilingBoulders {
 		if(cube.isPresent()) {
 			return cube.get();
 		} else {
+			// Create an air cube
 			return new Cube(pos, false);
 		}
 
-	}
-
-
-	private boolean cubeExists(Vector3 pos) {
-		return lavaDroplets.stream().filter(c -> c.getPos().equals(pos)).findFirst().isPresent();
 	}
 	
 	private boolean dfs(Cube cube) {
@@ -128,6 +112,10 @@ public class BoilingBoulders {
 			return true;
 		}
 		
+		if(cube.isVisited()) {
+			return true;
+		}
+		
 		// Caso base - Out of Range
 		if(cube.getPos().getX() < minX 
 				|| cube.getPos().getX() > maxX
@@ -140,7 +128,10 @@ public class BoilingBoulders {
 			return false;
 		}
 
-		
+		// El cubo a evaluar es un cubo de aire (si no, se saldría por el CB)
+		// Lo añadimos como posible cubo solución
+		lavaDroplets.add(cube); 
+		cube.setVisited(true);
 		
 		// Calculamos adyacentes, sean de lava o de aire
 		Queue<Cube> adjacents = getAdjacents(cube);
@@ -149,7 +140,6 @@ public class BoilingBoulders {
 		// También añadimos el cubo actual a la solución
 		Set<Cube> airCubes = new HashSet<>();
 		airCubes.add(cube);
-		lavaDroplets.add(cube);
 		
 		boolean isSolution = true;
 		while(isSolution && !adjacents.isEmpty()) {
@@ -169,6 +159,7 @@ public class BoilingBoulders {
 		
 		if(!isSolution) {
 			lavaDroplets.removeAll(airCubes);
+			cube.setVisited(false);
 			return false;
 		}
 		
