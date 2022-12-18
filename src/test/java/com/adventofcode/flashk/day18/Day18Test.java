@@ -101,6 +101,11 @@ public class Day18Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
+		long result = boilingBoulders.solveB();
+		
+
+		assertEquals(58, result);
 	}
 	
 	@Test
@@ -115,6 +120,10 @@ public class Day18Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
+		long result = boilingBoulders.solveB();
+		System.out.println();
+		System.out.println(result);
 	}
 
 }
