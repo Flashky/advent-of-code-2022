@@ -16,12 +16,12 @@ public class Vector3 {
 	private int z;
 	
 	/**
-	 * Accepts coordinates in String format as "x,y" and creates a Vector2 from it.
+	 * Accepts coordinates in String format as "x,y,z" and creates a Vector3 from it.
 	 * <pre>
-	 * Vector2 vector1 = new Vector2("4,2");
-	 * Vector2 vector2 = new Vector2(4,2);
+	 * Vector3 vector1 = new Vector2("4,2,1");
+	 * Vector3 vector2 = new Vector2(4,2,1);
 	 * 
-	 * vector1.equals(vector2) // true
+	 * vector.equals(vector2) // true
 	 * </pre>
 	 * @param coordinates
 	 * @return
