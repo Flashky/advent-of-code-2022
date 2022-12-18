@@ -122,8 +122,8 @@ public class Day18Test extends PuzzleTest {
 		
 		BoilingBoulders boilingBoulders = new BoilingBoulders(inputs);
 		long result = boilingBoulders.solveB();
-		System.out.println();
-		System.out.println(result);
+		
+		assertEquals(2452, result);
 	}
 
 }

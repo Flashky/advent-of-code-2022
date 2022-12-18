@@ -14,6 +14,9 @@ public class Cube {
 	private int openSides = 6;
 	private boolean lava = true;
 	
+	@Setter
+	private boolean visited = false;
+	
 	public Cube(String input) {
 		this.pos = new Vector3(input);
 	}
