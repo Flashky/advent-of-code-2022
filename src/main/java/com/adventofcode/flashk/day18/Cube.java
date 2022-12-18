@@ -1,17 +1,30 @@
 package com.adventofcode.flashk.day18;
 
+import java.util.Objects;
+
 import com.adventofcode.flashk.common.Vector3;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Cube {
 
 	private Vector3 pos;
 	private int openSides = 6;
+	private boolean lava = true;
 	
 	public Cube(String input) {
-		pos = new Vector3(input);
+		this.pos = new Vector3(input);
+	}
+	
+	public Cube(int x, int y, int z) {
+		this.pos = new Vector3(x,y,z);
+	}
+	
+	public Cube(Vector3 pos, boolean lava) {
+		this.pos = new Vector3(pos);
+		this.lava = lava;
 	}
 	
 	public void decrementOpenSides() {
@@ -48,12 +61,28 @@ public class Cube {
 		
 		return dz == 1;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(pos);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cube other = (Cube) obj;
+		return Objects.equals(pos, other.pos);
+	}
+	
 	
 	@Override
 	public String toString() {
 		return "Cube [pos=" + pos + "]";
 	}
-	
-	
 	
 }

@@ -35,4 +35,66 @@ public class Vector3 {
 		this.z = Integer.parseInt(values[2]);
 		
 	}
+	
+	public Vector3(Vector3 pos) {
+		this.x = pos.x;
+		this.y = pos.y;
+		this.z = pos.z;
+	}
+	
+	public void transform(Vector3 vector) {
+		this.x += vector.x;
+		this.y += vector.y;
+		this.z += vector.z;
+	}
+	
+	
+	public static Vector3 transform(Vector3 start, Vector3 end) {
+		int x = start.x + end.x;
+		int y = start.y + end.y;
+		int z = start.z + end.z;
+		
+		return new Vector3(x,y,z);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector3(-1,0,0)</code>.
+	 * @return A unitary vector that points to the left.
+	 */
+	public static Vector3 left() {
+		return new Vector3(-1,0,0);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector3(1,0,0)</code>.
+	 * @return A unitary vector that points to the right.
+	 */
+	public static Vector3 right() {
+		return new Vector3(1,0,0);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector3(0,1,0)</code>.
+	 * @return A unitary vector that points up.
+	 */
+	public static Vector3 up() {
+		return new Vector3(0,1,0);
+	}
+	
+	/**
+	 * Shorthand for <code>Vector3(0,-1,0)</code>.
+	 * @return A unitary vector that points down.
+	 */
+	public static Vector3 down() {
+		return new Vector3(0,-1,0);
+	}
+	
+	public static Vector3 forward() {
+		return new Vector3(0,0,1);
+	}
+	
+	public static Vector3 backward() {
+		return new Vector3(0,0,-1);
+	}
+	
 }
