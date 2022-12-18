@@ -36,8 +36,8 @@ public class Vector2L {
 		
 		String[] values = coordinates.split(",");
 		
-		this.x = Integer.parseInt(values[0]);
-		this.y = Integer.parseInt(values[1]);
+		this.x = Long.parseLong(values[0]);
+		this.y = Long.parseLong(values[1]);
 		
 	}
 	

@@ -22,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_17)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled
 public class Day17Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_17;
@@ -74,6 +73,7 @@ public class Day17Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.SAMPLE)
 	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
+	@Disabled // TODO enable
 	public void testSolvePart2Sample() {
 		
 		System.out.print("2 | sample | ");
@@ -91,6 +91,7 @@ public class Day17Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+	@Disabled // TODO enable
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");

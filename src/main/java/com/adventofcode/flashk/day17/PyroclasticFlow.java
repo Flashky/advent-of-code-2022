@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Pair;
 import com.adventofcode.flashk.common.Vector2L;
 
 public class PyroclasticFlow {
@@ -54,34 +55,38 @@ public class PyroclasticFlow {
 	/*
 	 Problemas a tratar:
 	 
-	 [ ] Gestión de rocas
+	 [x] Gestión de rocas
 	 	[x] Creación de rocas de todas las formas respecto a una posición (x,y) ya calculada.
 	 	[x] Movimiento de roca según un vector dirección.
 	 	[x] Cálculo de colisiones contra otras rocas o bordes del mapa.
 	 
-	 [ ] Spawneo de rocas:
-	 	[ ] Calcular la posición inicial (x,y) de la roca
+	 [x] Spawneo de rocas:
+	 	[x] Calcular la posición inicial (x,y) de la roca
 	 		[x] Coordenada x: 2 unidades respecto a la izquierda (x = 2)
-	 		[ ] Coordenada y: 3 unidades respecto al collider que esté en la posición más alta:
-	 			[ ] Caso inicial: el único collider que cuenta es colliderBottom situado en y = 0
-	 			[ ] Caso tras primera roca: collider con y más alta entre todos los colliders de todas las rocas.
+	 		[x] Coordenada y: 3 unidades respecto al collider que esté en la posición más alta:
+	 			[x] Caso inicial: el único collider que cuenta es colliderBottom situado en y = 0
+	 			[x] Caso tras primera roca: collider con y más alta entre todos los colliders de todas las rocas.
 	 	[x] Creación de la roca que corresponda según una lista circular.
 	 
-	 [ ] Movimiento:
+	 [x] Movimiento:
 	 	[x] Cálculo de vector dirección para el jet stream
-	 	[ ] Gestor de alternancia de movimiento lateral - hacia abajo.
-	 	[ ] Comprobación de colisión al hacer movimiento lateral.
-	 	[ ] Comprobación de colisión al hacer movimiento vertical.
+	 	[x] Gestor de alternancia de movimiento lateral - hacia abajo.
+	 	[x] Comprobación de colisión al hacer movimiento lateral.
+	 	[x] Comprobación de colisión al hacer movimiento vertical.
 	 
-	 * @return
+
+		// Parte 2
+
+		[ ] Calcular para cada columna cuál es su y más baja.
+		[ ] Descartar colliders por debajo de cierto umbral.
+			[ ] Opción 1: borrar colliders por debajo de ciertos umbrales. Borrar lleva a menos comparaciones
+			[ ] Opción 2: filtrar los colliders por debajo de ciertos umbrales.
+			[ ] Opción 3: Aun borrando colliders es demasiado, hay que buscar un patrón
+		
 	 */
 	
 	public long solveA(long numberOfRocks) {
-
-		// Spawn a rock always on y = tallestPosition + 3
-		System.out.println();
-		// Rocks examples
-
+		
 		for(int rockCount = 1; rockCount <= numberOfRocks; rockCount++) {
 			
 			// Spawn a new rock
@@ -151,10 +156,10 @@ public class PyroclasticFlow {
 				maxY = nextRock.getMaxY();
 			}
 			
-			// TODO borrador de colliders inactivos
-			// Un collider es inactivo si es imposible que nada choque contra él (hay una barra horizontal bloqueando por encima de él)
-			// Solo podemos borrar colliders que estén a 5 unidades por debajo de la barra de corte
-			cleanColliderPool();
+			// TODO la solución de borrar colliders no es suficiente para un volumen de datos tan alto
+			// La solución va por buscar un patrón que se repita
+			// ¿Cómo almacenamos un patrón? ¿cómo lo comparamos? al principio no hay nada con lo que comparar.
+			//cleanColliderPool();
 		}
 		
 		return maxY;
