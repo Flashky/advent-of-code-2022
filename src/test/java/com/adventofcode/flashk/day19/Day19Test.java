@@ -21,7 +21,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_19)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day19Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_19;
