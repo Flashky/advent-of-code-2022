@@ -24,6 +24,10 @@ public class MixedNumber {
 		return Math.abs(number);
 	}
 
+	public static void resetTotalNumbers() {
+		totalNumbers = 0;
+	}
+	
 	@Override
 	public String toString() {
 		return "MixedNumber [number=" + number + "]";
