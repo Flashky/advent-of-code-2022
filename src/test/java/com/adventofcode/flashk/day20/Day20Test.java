@@ -44,8 +44,7 @@ public class Day20Test extends PuzzleTest {
 		// Read input file
 		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		MixedNumber.resetTotalNumbers();
-		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs);
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 1L);
 		long result = positioningSystem.solveA();
 		
 		assertEquals(3, result);
@@ -64,8 +63,7 @@ public class Day20Test extends PuzzleTest {
 		// Read input file
 		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 
-		MixedNumber.resetTotalNumbers();
-		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs);
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 1L);
 		long result = positioningSystem.solveA();
 
 		assertEquals(18257, result);
@@ -83,7 +81,10 @@ public class Day20Test extends PuzzleTest {
 		// Read input file
 		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 	
-		MixedNumber.resetTotalNumbers();
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 811589153L);
+		long result = positioningSystem.solveB();
+
+		assertEquals(1623178306L, result);
 	}
 	
 	@Test
@@ -97,8 +98,11 @@ public class Day20Test extends PuzzleTest {
 		
 		// Read input file
 		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		MixedNumber.resetTotalNumbers();
 		
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 811589153L);
+		long result = positioningSystem.solveB();
+		
+		assertEquals(4148032160983L, result);
 	}
 
 }

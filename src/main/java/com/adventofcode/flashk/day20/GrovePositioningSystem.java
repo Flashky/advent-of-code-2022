@@ -76,20 +76,22 @@ public class GrovePositioningSystem {
 	 - El input tiene 5000  números.
 	  
 	 */
-
 	
 	private Deque<MixedNumber> mixedNumbers;
 	private int movedNumbers = 0;
 	private int currentOrder = 0;
 	
-	public GrovePositioningSystem(List<Integer> inputs) {
-	
+	public GrovePositioningSystem(List<Integer> inputs, long decryptionKey) {
+		MixedNumber.resetTotalNumbers();
 		mixedNumbers = inputs.stream().map(MixedNumber::new).collect(Collectors.toCollection(LinkedList::new));
-		System.out.println("test");
+		
+		if(decryptionKey > 1) {
+			mixedNumbers.forEach(n -> n.applyDecryptionKey(decryptionKey));
+		}
+		
 	}
 	
-	public int solveA() {
-		int result = 0;
+	public long solveA() {
 		
 		moveNumbers();
 		orderNumbers(); // Move the circular list until 0 is at first position
@@ -101,9 +103,35 @@ public class GrovePositioningSystem {
 		int thousandIndex2 = 2000 % mixedNumbersResult.length;
 		int thousandIndex3 = 3000 % mixedNumbersResult.length;
 		
-		int thousandNumber = mixedNumbersResult[thousandIndex].getNumber();
-		int thousandNumber2 = mixedNumbersResult[thousandIndex2].getNumber();
-		int thousandNumber3 = mixedNumbersResult[thousandIndex3].getNumber();
+		long thousandNumber = mixedNumbersResult[thousandIndex].getNumber();
+		long thousandNumber2 = mixedNumbersResult[thousandIndex2].getNumber();
+		long thousandNumber3 = mixedNumbersResult[thousandIndex3].getNumber();
+		
+		return thousandNumber + thousandNumber2 + thousandNumber3;
+	}
+	
+	public long solveB() {
+		
+		// Repeat mixing 10 times
+		for(int i = 0; i < 10; i++) {
+			moveNumbers();
+			movedNumbers = 0;
+			currentOrder = 0;
+			mixedNumbers.forEach(n -> n.setHasMoved(false));
+		}
+		
+		orderNumbers(); // Move the circular list until 0 is at first position
+		
+		MixedNumber[] mixedNumbersResult = new MixedNumber[mixedNumbers.size()];
+		mixedNumbersResult = mixedNumbers.toArray(mixedNumbersResult);
+		
+		int thousandIndex = 1000 % mixedNumbersResult.length;
+		int thousandIndex2 = 2000 % mixedNumbersResult.length;
+		int thousandIndex3 = 3000 % mixedNumbersResult.length;
+		
+		long thousandNumber = mixedNumbersResult[thousandIndex].getNumber();
+		long thousandNumber2 = mixedNumbersResult[thousandIndex2].getNumber();
+		long thousandNumber3 = mixedNumbersResult[thousandIndex3].getNumber();
 		
 		return thousandNumber + thousandNumber2 + thousandNumber3;
 	}
@@ -153,7 +181,7 @@ public class GrovePositioningSystem {
 		Deque<MixedNumber> rightSide = new LinkedList<>();
 		
 		// int movements = mixedNumber.getMovements();
-		int movements = mixedNumber.getMovements() % mixedNumbers.size();
+		long movements = mixedNumber.getMovements() % mixedNumbers.size();
 		
 		for(int moveCount = 0; moveCount < movements; moveCount++) {
 			
@@ -175,7 +203,7 @@ public class GrovePositioningSystem {
 		//leftSide.add(mixedNumber);
 		
 		//int movements = mixedNumber.getMovements();
-		int movements = mixedNumber.getMovements() % mixedNumbers.size();
+		long movements = mixedNumber.getMovements() % mixedNumbers.size();
 		
 		for(int moveCount = 0; moveCount < movements; moveCount++) {
 			
