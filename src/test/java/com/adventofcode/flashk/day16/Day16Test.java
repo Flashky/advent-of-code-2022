@@ -23,6 +23,7 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_16)
 @TestMethodOrder(OrderAnnotation.class)
+@Disabled
 public class Day16Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_16;
@@ -44,9 +45,10 @@ public class Day16Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
 		
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
 		long result = proboscideaVolcanium.solveA();
+		
 		assertEquals(1651, result);
 	}
 	
@@ -61,6 +63,9 @@ public class Day16Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
+		//long result = proboscideaVolcanium.solveA();
 		
 	}
 	
