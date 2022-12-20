@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day20;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +22,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_20)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day20Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_20;
@@ -42,7 +42,12 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("1 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs);
+		
+		long result = positioningSystem.solveA();
+		
+		assertEquals(3, result);
 		
 	}
 	
@@ -56,8 +61,12 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("1 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs);
 		
+		long result = positioningSystem.solveA();
+		
+		System.out.println(result);
 	}
 	
 	@Test
@@ -70,7 +79,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("2 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 	}
 	
@@ -84,7 +93,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 	}
 
