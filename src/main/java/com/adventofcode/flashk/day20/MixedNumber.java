@@ -9,18 +9,22 @@ public class MixedNumber {
 	@Getter
 	public static int totalNumbers = 0;
 	
-	private int number;
+	private long number;
 	private int order;
 	
 	@Setter
 	private boolean hasMoved = false;
 	
-	public MixedNumber(int number) {
+	public MixedNumber(long number) {
 		this.number = number;
 		this.order = totalNumbers++;
 	}
 	
-	public int getMovements() {
+	public void applyDecryptionKey(long decryptionKey) {
+		this.number *= decryptionKey;
+	}
+	
+	public long getMovements() {
 		return Math.abs(number);
 	}
 
