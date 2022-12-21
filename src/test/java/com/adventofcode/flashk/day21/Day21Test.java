@@ -66,8 +66,7 @@ public class Day21Test extends PuzzleTest {
 		MonkeyMath monkeyMath = new MonkeyMath(inputs);
 		long result = monkeyMath.solveA();
 		
-		System.out.println(result);
-		//assertEquals(152, result);
+		assertEquals(158731561459602L, result);
 	}
 	
 	@Test
@@ -81,6 +80,11 @@ public class Day21Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
+		MonkeyMath monkeyMath = new MonkeyMath(inputs);
+		long result = monkeyMath.solveB();
+		
+		assertEquals(301L, result);
 		
 	}
 	
@@ -96,6 +100,10 @@ public class Day21Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		MonkeyMath monkeyMath = new MonkeyMath(inputs);
+		long result = monkeyMath.solveB();
+		
+		assertEquals(3769668716709L, result);
 	}
 
 }
