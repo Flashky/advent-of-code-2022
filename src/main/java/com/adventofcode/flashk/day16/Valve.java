@@ -1,74 +1,69 @@
 package com.adventofcode.flashk.day16;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Valve {
+@Setter
+public class Valve implements Comparable<Valve> {
 
-	private static final String VALVE_REGEX = "Valve ([A-Z]*) has flow rate=(\\d*)";
-	private static final Pattern VALVE_PATTERN = Pattern.compile(VALVE_REGEX);
-	private static final String SEPARATOR = "; ";
-	
 	private String name;
 	private int flow;
+	private boolean open = false;
+	private boolean visited = false;
+	private Set<Valve> neighbourValves = new HashSet<>();
 	
-	@Setter
-	private boolean open;
-	private int visitedNeighbours = 0;
+	// Dijkstra attributes
 	
-
-	private List<String> leadingValves = new ArrayList<>();
+	// Total minutes to reach this valve from origin valve
+	private int totalMinutes = Integer.MAX_VALUE;
 	
-	public Valve(String input) {
-		
-		String[] inputSplit = input.split(SEPARATOR);
-		
-		initializeValve(inputSplit[0]);
-		initializeLeadingCaves(inputSplit[1]);
-	}
-
+	// Minutes to reach to any neighbour valve
+	private int minutes = 1;
 	
-	public boolean hasUnvisitedNeighbours() {
-		return visitedNeighbours < leadingValves.size();
+	public Valve(String name) {
+		this.name = name;
 	}
 	
-	
-	private void initializeValve(String input) {
-		Matcher matcher = VALVE_PATTERN.matcher(input);
-		matcher.find();
-		
-		name = matcher.group(1);
-		flow = Integer.parseInt(matcher.group(2));
+	public void addNeighbour(Valve valve) {
+		neighbourValves.add(valve);
 	}
 	
 	public boolean isOpenable() {
 		return !open && flow > 0;
 	}
 	
-	private void initializeLeadingCaves(String input) {
-		
-		
-		
-		if(input.startsWith("tunnel leads to valve ")) {
-			input = input.substring(22, input.length());
-		} else if(input.startsWith("tunnels lead to valves ")) {
-			input = input.substring(23, input.length());
-		}
-		
-		String[] split = input.split(", ");
-		
-		for(String valve : split) {
-			leadingValves.add(valve);
-		}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
 	}
 
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Valve other = (Valve) obj;
+		return Objects.equals(name, other.name);
+	}
+
+	@Override
+	public String toString() {
+		return "Valve [name=" + name + "]";
+	}
+
+	@Override
+	public int compareTo(Valve other) {
+		return Integer.compare(totalMinutes, other.totalMinutes);
+	}
+
 	
 }

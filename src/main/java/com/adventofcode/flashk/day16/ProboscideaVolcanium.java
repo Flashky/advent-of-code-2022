@@ -1,207 +1,150 @@
 package com.adventofcode.flashk.day16;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.adventofcode.flashk.day12.Node;
 
 public class ProboscideaVolcanium {
 
+	private static final String VALVE_REGEX = "Valve ([A-Z]*) has flow rate=(\\d*)";
+	private static final Pattern VALVE_PATTERN = Pattern.compile(VALVE_REGEX);
+	private static final String TUNNELS_REGEX = "lead to valves ([,A-Z ]*)|leads to valve ([A-Z]*)";
+	private static final Pattern TUNNELS_PATTERN = Pattern.compile(TUNNELS_REGEX);
+	private static final String SEPARATOR = ", ";
+	
 	private static final int MAX_TIME = 30;
 	
-	private List<Valve> valves;
-	private final Map<String, Valve> valvesByName = new HashMap<>();
-	
-	private Valve origin;
-
+	// Current valve to calculate dijktra from
+	private Valve currentValve;
+	private List<Valve> openableValves = new ArrayList<>();
 	
 	private int maxReleasedPressure = Integer.MIN_VALUE;
 	private int openedValves = 0;
-	private int openableValves = 0;
-	
-	
-	// Release maximum pressure
-	
-	// Modelo de datos
-	
-	// Tenemos válvulas. De cada válvula necesitamos saber:
-	// - Su nombre (Por ejemplo: AA)
-	// - Su flujo (flow rate)
-	// - Si está abierta o no.
-	
-	
-	// Datos adicionales para resolver el problema:
-	
-	// - Necesitamos un contador de tiempo: minutes
-	// - Hay que llevar un contador de cuanta presión llevamos liberada: releasedPressure
-	// - Por otro lado, hay que llevar un contador de cuanto es el flujo actual: currentFlow;
-	// - Cada minuto adicional se sumará a releasedPressure = releasedPressure + currentFlow
-	// - Problema de optimización. 
-	// 	- Hay que llevar un contador de cuál es el camino que ha permitido llevar una mayor releasedPressure: maxReleasedPressure
-	//	- Inicialmente maxReleasedPressure = -infinito o 0.
-	//	- Se actualiza maxReleasedPressure cuando han transcurrido los 30 minutos
-	// 
-	// Al llegar a 30 minutos, habría que retroceder en el problema y ver si hay una solución más óptima
-	
-	
-	/* Ruta completa del ejemplo:
-
-		AA -> DD (open)
-		DD -> CC
-		CC -> BB (open)
-		BB -> AA 
-		AA -> II
-		II -> JJ (open)
-		JJ -> II
-		II -> AA
-		AA -> DD (REPEATED STEP) -> Puedes caminar dos veces por la misma tubería visitada.
-		DD -> EE
-		EE -> FF
-		FF -> GG
-		GG -> HH (open)
-		HH -> GG
-		GG -> FF
-		FF -> EE (open)
-		EE -> DD 
-		DD -> CC (open) (REPETEAD STEP) 
-		Stay in CC from minutes 24 to 30: 81*6 = 486 presión adicional en esos minutos
-		
-	 */
-	
-	
-	/*
-		Premisas falsas:
-		- Un nodo es visitado como mucho, tantas veces como vecinos tenga.
-
-		Premisas verdaderas:
-		- Un nodo puede visitarse múltiples veces, y es posible realizar un mismo camino varias veces si es una solución óptima.
-			- En el ejemplo, se repiten dos veces el paso AA -> DD y el paso DD -> CC
-			
-	 */
-	
-	
-	// Algoritmo v2
-	
-	// Inicialmente lo había planteado como un algoritmo de backtracking en elq ue la profundidad la marca el tiempo restante: 
-	// 29 minutos, 28, 27...
-	// Sin embargo, esto tiene el problema de muchas ramas muertas que se meten en bucles.
-	
-	// La nueva idea mejorada se basa en backtracking también, pero con una topología diferente: permutaciones
-	// Si hay 6 válvulas a abrir, podemos elegir cualquiera de ellas.
-	// Luego, buscaríamos una de las 5 restantes.
-	// Una de las 4...
-	// Y así hasta que están todas abiertas.
-	// Esto es 6! un total de 720 permutaciones diferentes de abrir las válvulas.
-	//
-	// Algoritmo
-	// - En primer lugar, en una lista aparte, guardaremos únicamente las válvulas que se pueden abrir.
-	// - Desde el nodo inicial hay que aplicar Dijkstra para saber cuál es el camino más corto a todos los nodos.
-	// - En la aplicación de Dijkstra se calcularía un peso en cada nodo que indicaría cuál es la presión total liberada en los minutos restantes tras abrir cada nodo.
-	// - Elegimos cualquiera de los 6 nodos posibles, lo marcamos como parte de la solución (sumamos al total) y lo ponemos como nuevo origen.
-	// - Repetimos  Dijkstra. Se actualizarían los pesos desde la nueva posición.
-	// - Elegimos cualquiera de los 5 nodos posibles, lo marcamos como parte de la solución  y lo ponemos como nuevo origen.
-	// - Repetimos Dijkstra, se actualizarán los pesos desde la nueva posición.
-	// - Elegimos cualquiera de los 4 nodos posibles...
-	
-	// Así hasta que no quedan nodos posibles (nodo hoja).
-	// Cogemos el tiempo restante, cual sería el flujo total posible en esa solución y comprobamos si es una solución más óptima.
-	// Hacemos backtracking desde aquí, e investigamos el resto de posibles soluciones. Si Dijkstra ya está calculado, no hace falta repetirlo.
-	
-	
-	
 	
 	public ProboscideaVolcanium(List<String> inputs) {
-		valves = inputs.stream().map(Valve::new).collect(Collectors.toList());
 		
-		for(Valve valve : valves) {
-			valvesByName.put(valve.getName(), valve);
-			if(valve.getFlow() > 0) {
-				openableValves++;
-			}
+		Map<String, Valve> valves = new HashMap<>();
+		
+		for(String input : inputs) {
+			
+			// Create valve (graph vertex)
+			Valve currentValve = createValve(valves, input);
+			
+			// Create tunnels (graph edges)
+			createTunnel(valves, input, currentValve);
+			
 		}
-		origin = valves.get(0);
+		
+		
+		// Start with AA valve
+		currentValve = valves.get("AA");
 	}
-	
+
 	public long solveA() {
-		maxPressure(origin, 0, 0, 0);
-		return maxReleasedPressure;
+		
+		// Algoritmo
+		// Hay que mezclar dijkstra y backtracking
+		
+		// 0. Seteamos currentReleasedPressure = 0
+		// 1. Calculamos dijkstra desde currentValue al resto de válvulas
+		// 2. Elegimos una de las válvulas que queden por abrir y vamos a ella por el camino mínimo.
+		// 	2.1. Actualizamos currentValve a la válvula en la que estamos.
+		//	2.2. Abrimos válvula y la quitamos del listado de válvulas pendientes de abrir.
+		// 	2.2. Actualizamos currentReleasedPresure calculando fórmula: 
+		//			currentReleasedPresure = currentReleasedPresure + ((tiempo restante - tiempo en llegar - 1)*currentValve.flow) => en la primera iteración 30-t-1 => 29-t
+		// 3. Si quedan válvulas por abrir, reseteamos los valores de totalMinutes y visitado de cada Valve y repetimos desde paso 1.
+		// 4. Cuando no queden válvulas por abrir, actualizamos solución óptima: maxReleasedPressure = max(currentReleasedPressure,maxReleasedPressure)
+		// 5. Aplicamos backtracking. Seleccionamos una válvula distinta para abrir.
+		
+		// Algoritmo de dijkstra: está funcionando ok
+		// calcula el valor de totalMinutes para llegar a cada nodo
+		currentValve.setTotalMinutes(0);
+		
+		PriorityQueue<Valve> queue = new PriorityQueue<>();
+		queue.add(currentValve);
+		
+		while(!queue.isEmpty()) {
+			
+			Valve minValve = queue.poll();
+			minValve.setVisited(true);
+
+			Set<Valve> adjacentValves = minValve.getNeighbourValves();
+			
+			for(Valve adjacentValve : adjacentValves) {
+				if(!adjacentValve.isVisited()) {
+					
+					// Cost of moving to the adjacent node
+					int minutes = adjacentValve.getMinutes();
+					
+					// Cost of moving to the adjacent node + total cost to reach to this node
+					int estimatedMinutes = minValve.getTotalMinutes() + minutes;
+					
+					if(adjacentValve.getTotalMinutes() > estimatedMinutes) {
+						adjacentValve.setTotalMinutes(estimatedMinutes);
+						queue.add(adjacentValve);
+					}
+				}
+			}
+		}
+		
+		
+		return 0;
 	}
 	
-	private void maxPressure(Valve currentValve, int totalMinutes, int totalReleasedPressure, int totalFlow) {
 
-		if(totalMinutes >= MAX_TIME) {
-			// Case base - Max time reached	
-
-			// Check if solution is a better optimal solution
-			if(totalReleasedPressure > maxReleasedPressure) {
-				maxReleasedPressure = totalReleasedPressure;
-			}
-			
-		} else if (openedValves == openableValves) {
-
-			// Recursive case 1 - All valves are opened
-			
-			// Calculate total pressure for remaining minutes
-			// Leads directly to case base
-			
-			int remainingMinutes = MAX_TIME - totalMinutes;
-			int estimatedTotalReleasedPressure = totalReleasedPressure + (remainingMinutes * totalFlow);
-			maxPressure(currentValve, MAX_TIME, estimatedTotalReleasedPressure, totalFlow);
-			
-		} else {
-
-			// Recursive case 2 - Open an openable valve that has flow greater than 0
-
-			
-			/// Finalmente, la válvula pasa a estar abierta y actualizamos el contador de válvulas abiertas.
-			
-			// Open valve
-			if (currentValve.isOpenable()) {
-				currentValve.setOpen(true);
-				openedValves++;
-				
-				// You spend 1 minute opening the valve, update total minutes and total released pressure before calling recursive method
-				maxPressure(currentValve, totalMinutes + 1, totalReleasedPressure + totalFlow, totalFlow + currentValve.getFlow());
-				
-				// Backtrack - Close valve
-				currentValve.setOpen(false);
-				openedValves--;
-			} else {
-			
-				// Recursive case 3
-				// Después de explorar la opción de abrir la válvula, habría que explorar la opción de ignorarla y moverse a la siguiente.
-				visitNeighbours(currentValve, totalMinutes, totalReleasedPressure, totalFlow);
-			}
+	private Valve createValve(Map<String, Valve> valves, String input) {
+		Matcher valveMatcher = VALVE_PATTERN.matcher(input);
+		valveMatcher.find();
+		
+		String name = valveMatcher.group(1);
+		int flow = Integer.parseInt(valveMatcher.group(2));
+		
+		Valve currentValve = valves.getOrDefault(name, new Valve(name));
+		if(flow > 0) {
+			currentValve.setFlow(flow);
+			openableValves.add(currentValve);
 		}
-
+		valves.put(name, currentValve);
+		return currentValve;
 	}
-
-	private void visitNeighbours(Valve currentValve, int totalMinutes, int totalReleasedPressure, int totalFlow) {
-		// Recursive case 3 - Move to other valve
+	
+	private void createTunnel(Map<String, Valve> valves, String input, Valve currentValve) {
+		Matcher tunnelMatcher = TUNNELS_PATTERN.matcher(input);
+		tunnelMatcher.find();
 		
-		// Premisas:
-		// - Podemos repetir nodos ya visitados previamente.
+		String tunnels = tunnelMatcher.group(1);
+		String tunnel = tunnelMatcher.group(2);
 		
-		// Problemas:
-		// - Stack overflow. Es debido a la existencia de ciclos
+		String[] neighbourNames = null;
 		
-		// Puesto que lleva 1 minuto moverse a otra válvula, para la siguiente llamada recursiva:
-		// - Incrementamos el minuto en 1.
-		// - Incrementamos la presión liberada con el totalFlow adicional generado en ese minuto.
-		// - El flujo total permanece igual, no hemos abierto nada.
-
-		//List<String> leadingValves = currentValve.getUnvisitedNeighbours();
-		List<String> leadingValves = currentValve.getLeadingValves();
+		if(!StringUtils.isBlank(tunnels)) {
+			neighbourNames = tunnelMatcher.group(1).split(SEPARATOR);
+		} else if(!StringUtils.isBlank(tunnel)){
+			neighbourNames = new String[1];
+			neighbourNames[0] = tunnel;
+		}
 		
-		for(String valveName : leadingValves) {
-
-			// Obtain next valve to evaluate
-			//Valve nextValve = valves.stream().filter(v -> valveName.equals(v.getName())).findFirst().get();
-			Valve nextValve = valvesByName.get(valveName);
+		for(String neighbourName : neighbourNames) {
 			
-			// Move to next valve
-			maxPressure(nextValve, totalMinutes + 1, totalReleasedPressure + totalFlow, totalFlow);
+			// Search or create neighbour valve
+			Valve neighbourValve = valves.getOrDefault(neighbourName, new Valve(neighbourName));
+			valves.put(neighbourName, neighbourValve);
+			
+			// Add edge between both
+			currentValve.addNeighbour(neighbourValve);
+			neighbourValve.addNeighbour(currentValve);
 			
 		}
 	}
+	
+
 }
