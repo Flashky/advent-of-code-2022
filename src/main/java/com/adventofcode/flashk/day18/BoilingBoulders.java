@@ -16,9 +16,12 @@ public class BoilingBoulders {
 
 	private Set<Cube> lavaDroplets;
 	
-	private int minX, maxX;
-	private int minY, maxY;
-	private int minZ, maxZ;
+	private int minX;
+	private int maxX;
+	private int minY;
+	private int maxY;
+	private int minZ;
+	private int maxZ;
 	
 	public BoilingBoulders(List<String> inputs) {
 		lavaDroplets = inputs.stream().map(Cube::new).collect(Collectors.toSet());
@@ -108,13 +111,10 @@ public class BoilingBoulders {
 	
 		// 
 		// Caso base - Borde de lava
-		if(cube.isLava()) {
+		if(cube.isLava() || cube.isVisited()) {
 			return true;
 		}
 		
-		if(cube.isVisited()) {
-			return true;
-		}
 		
 		// Caso base - Out of Range
 		if(cube.getPos().getX() < minX 

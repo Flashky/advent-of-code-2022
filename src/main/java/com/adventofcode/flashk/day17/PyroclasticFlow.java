@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Collider2D;
-import com.adventofcode.flashk.common.Pair;
 import com.adventofcode.flashk.common.Vector2L;
 
 public class PyroclasticFlow {
