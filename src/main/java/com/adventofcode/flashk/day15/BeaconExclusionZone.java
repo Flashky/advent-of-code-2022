@@ -16,15 +16,13 @@ public class BeaconExclusionZone {
 	
 	private List<Sensor> sensors = new ArrayList<>(); // Sensor-Beacon map
 	
-	private Set<Vector2> lastScanLinePoints;
-	
 	public BeaconExclusionZone(List<String> inputs) {
 		sensors = inputs.stream().map(Sensor::new).collect(Collectors.toList());
 	}
 	
 	public long solveA(int y) {
 		
-		lastScanLinePoints = new HashSet<>();
+		Set<Vector2> lastScanLinePoints = new HashSet<>();
 		for(Sensor sensor : sensors) {
 			
 			int distanceToY = sensor.distanceTo(y);
@@ -75,16 +73,13 @@ public class BeaconExclusionZone {
 					Sensor testSensor = testSensors.next();
 					Vector2 testCandidate = candidate.get();
 					
-					// Evitamos comparar un sensor consigo mismo
-					if(currentSensor != testSensor) {
+					// Si el sensor está en rango al candidato, entonces no es una posición válida para la baliza
+					if((currentSensor != testSensor) && testSensor.isInRange(testCandidate)){
 						
-						// Si el sensor está en rango al candidato, entonces no es una posición válida para la baliza
-						if(testSensor.isInRange(testCandidate)) {
-							
-							// Calculate next candidate
-							isCandidate = false;
-							candidate = currentSensor.nextBorderPos(maxRange);
-						}
+						// Calculate next candidate
+						isCandidate = false;
+						candidate = currentSensor.nextBorderPos(maxRange);
+
 					}
 				}
 				
