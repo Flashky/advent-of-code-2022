@@ -23,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_16)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled
 public class Day16Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_16;
