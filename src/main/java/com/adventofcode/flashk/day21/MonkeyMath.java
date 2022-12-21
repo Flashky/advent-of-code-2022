@@ -33,7 +33,7 @@ public class MonkeyMath {
 		}
 		
 		// Assign root monkey
-		root = monkeys.get("root");
+		root = monkeys.get(Monkey.ROOT_NAME);
 		
 	}
 
@@ -42,10 +42,10 @@ public class MonkeyMath {
 	}
 	
 	public long solveB() {
-		// Override root operation
 		root.setOperation(Monkey.EQUALS);
-		return root.operate();
+		return root.operateEquation();
 	}
+	
 	private void createMonkeyNumber(Map<String, Monkey> monkeys, Matcher numberMatcher) {
 		// Monkey number
 		String name = numberMatcher.group(1);

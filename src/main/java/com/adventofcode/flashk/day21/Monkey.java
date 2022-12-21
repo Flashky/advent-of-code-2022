@@ -7,10 +7,15 @@ import lombok.Setter;
 @Setter
 public class Monkey {
 
-	private static final String ADD = "+";
-	private static final String SUBSTRACT = "-";
-	private static final String MULTIPLY = "*";
-	private static final String DIVIDE = "/";
+	// Names
+	public static final String HUMAN_NAME = "humn";
+	public static final String ROOT_NAME = "root";
+	
+	// Operations
+	public static final String ADD = "+";
+	public static final String SUBSTRACT = "-";
+	public static final String MULTIPLY = "*";
+	public static final String DIVIDE = "/";
 	public static final String EQUALS = "=";
 	
 	private String name;
@@ -38,6 +43,10 @@ public class Monkey {
 		
 	}
 	
+	/**
+	 * Traverses monkey expression tree to apply all the operations.
+	 * @return the result of all math operations.
+	 */
 	public long operate() {
 		
 		if(operation == null) {
@@ -48,13 +57,45 @@ public class Monkey {
 		long rightResult = right.operate();
 		
 		switch(operation) {
-			case ADD: return leftResult+rightResult;
-			case SUBSTRACT: return leftResult-rightResult;
-			case MULTIPLY: return leftResult*rightResult;
-			case DIVIDE: return leftResult/rightResult;
-			case EQUALS: return leftResult == rightResult ? 1 : 0;
+			case ADD: return leftResult + rightResult;
+			case SUBSTRACT: return leftResult - rightResult;
+			case MULTIPLY: return leftResult * rightResult;
+			case DIVIDE: return leftResult / rightResult;
 			default:
 				throw new UnsupportedOperationException("Operation "+operation+" is not supported");
 		}
 	}
+	
+	/**
+	 * Traverses monkey expression tree to solve the operation equation.
+	 * @return the solved x value.
+	 */
+	public long operateEquation() {
+		Equation result = this.findNumberToYell();
+		return (long) result.getNumberFactor();
+	}
+	
+	private Equation findNumberToYell() {
+		
+		if(HUMAN_NAME.equals(name)) {
+			return new Equation(0,1);
+		} else if(operation == null) {
+			return new Equation(number,0);
+		}
+		
+		Equation leftEquation = left.findNumberToYell();
+		Equation rightEquation = right.findNumberToYell();
+	
+		switch(operation) {
+			case ADD: return Equation.add(leftEquation, rightEquation);
+			case SUBSTRACT: return Equation.substract(leftEquation, rightEquation);
+			case MULTIPLY: return Equation.multiply(leftEquation, rightEquation);
+			case DIVIDE: return Equation.divide(leftEquation, rightEquation);
+			case EQUALS: return Equation.solve(leftEquation, rightEquation);
+			default:
+				throw new UnsupportedOperationException("Operation "+operation+" is not supported");
+		}
+		
+	}
+
 }
