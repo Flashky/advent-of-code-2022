@@ -64,8 +64,9 @@ public class Day16Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
-		//long result = proboscideaVolcanium.solveA();
-		
+		long result = proboscideaVolcanium.solveA();
+
+		assertEquals(1896, result);
 	}
 	
 	@Test

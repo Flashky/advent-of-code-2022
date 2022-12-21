@@ -1,17 +1,16 @@
 package com.adventofcode.flashk.day16;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.adventofcode.flashk.day12.Node;
 
 public class ProboscideaVolcanium {
 
@@ -24,10 +23,12 @@ public class ProboscideaVolcanium {
 	private static final int MAX_TIME = 30;
 	
 	// Current valve to calculate dijktra from
-	private Valve currentValve;
-	private List<Valve> openableValves = new ArrayList<>();
+	private Valve startingValve;
 	
-	private int maxReleasedPressure = Integer.MIN_VALUE;
+	private Set<Valve> allValves = new HashSet<>();
+	private Set<Valve> openableValves = new HashSet<>();
+	
+	private long maxReleasedPressure = Integer.MIN_VALUE;
 	private int openedValves = 0;
 	
 	public ProboscideaVolcanium(List<String> inputs) {
@@ -46,7 +47,7 @@ public class ProboscideaVolcanium {
 		
 		
 		// Start with AA valve
-		currentValve = valves.get("AA");
+		startingValve = valves.get("AA");
 	}
 
 	public long solveA() {
@@ -67,6 +68,52 @@ public class ProboscideaVolcanium {
 		
 		// Algoritmo de dijkstra: está funcionando ok
 		// calcula el valor de totalMinutes para llegar a cada nodo
+		
+		Set<Valve> candidates = getNextCandidates(MAX_TIME);
+		for(Valve nextValve : candidates) {
+			dijkstra(startingValve);
+			releasePressure(nextValve, MAX_TIME, 0);
+		}
+		
+		
+		return maxReleasedPressure;
+	
+	}
+
+	private void releasePressure(Valve currentValve, int remainingTime, long totalPressure) {
+		// PRE 1: currentValve no está abierta (hemos prefiltrado)
+		// PRE 2: La válvula actual da tiempo a abrirla y a producir presión (hemos prefiltrado)
+		
+		currentValve.setOpen(true);
+		int remainingTimeAfterOpen = remainingTime - currentValve.getTimeToOpen();
+		long updatedPressure = totalPressure + currentValve.getFlow() * remainingTimeAfterOpen;
+		
+		Set<Valve> candidates = getNextCandidates(remainingTimeAfterOpen);
+		
+		if(candidates.isEmpty()) {
+			maxReleasedPressure = Math.max(updatedPressure, maxReleasedPressure);
+		} else {
+			for(Valve nextValve : candidates) {
+				dijkstra(currentValve);
+				releasePressure(nextValve, remainingTimeAfterOpen, updatedPressure);
+			}
+		}
+		
+		currentValve.setOpen(false);
+	}
+	
+	public Set<Valve> getNextCandidates(int remainingTime) {
+		
+		// Search for open valves that we could reach in time to open
+		return openableValves.stream()
+								.filter(v -> !v.isOpen())
+								.filter(v -> v.getTimeToOpen() < remainingTime)
+								.collect(Collectors.toSet());
+	}
+	
+	private void dijkstra(Valve currentValve) {
+		
+		resetValves();
 		currentValve.setTotalMinutes(0);
 		
 		PriorityQueue<Valve> queue = new PriorityQueue<>();
@@ -95,12 +142,12 @@ public class ProboscideaVolcanium {
 				}
 			}
 		}
-		
-		
-		return 0;
 	}
 	
-
+	private void resetValves() {
+		allValves.forEach(Valve::reset);
+	}
+	
 	private Valve createValve(Map<String, Valve> valves, String input) {
 		Matcher valveMatcher = VALVE_PATTERN.matcher(input);
 		valveMatcher.find();
@@ -113,7 +160,10 @@ public class ProboscideaVolcanium {
 			currentValve.setFlow(flow);
 			openableValves.add(currentValve);
 		}
+		
 		valves.put(name, currentValve);
+		allValves.add(currentValve);
+		
 		return currentValve;
 	}
 	
