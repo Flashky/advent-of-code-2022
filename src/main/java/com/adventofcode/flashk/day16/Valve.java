@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class Valve implements Comparable<Valve> {
 
+	private static final int OPEN_TIME = 1;
+	
 	private String name;
 	private int flow;
 	private boolean open = false;
@@ -37,7 +39,15 @@ public class Valve implements Comparable<Valve> {
 		return !open && flow > 0;
 	}
 	
-
+	public int getTimeToOpen() {
+		return totalMinutes + OPEN_TIME;
+	}
+	
+	public void reset() {
+		totalMinutes = Integer.MAX_VALUE;
+		visited = false;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(name);
