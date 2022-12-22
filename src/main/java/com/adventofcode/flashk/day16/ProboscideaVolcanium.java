@@ -29,7 +29,6 @@ public class ProboscideaVolcanium {
 	private Set<Valve> openableValves = new HashSet<>();
 	
 	private long maxReleasedPressure = Integer.MIN_VALUE;
-	private int openedValves = 0;
 	
 	public ProboscideaVolcanium(List<String> inputs) {
 		
