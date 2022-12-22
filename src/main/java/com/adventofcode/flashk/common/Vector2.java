@@ -149,6 +149,27 @@ public class Vector2 {
 		return new Vector2(newX, newY);
 	}
 	
+	/**
+	 * Rotates the Vector2 90º clockwise.
+	 */
+	public void rotateRight() {
+		
+		//https://limnu.com/sketch-easy-90-degree-rotate-vectors/
+		int newY = -this.x;
+		this.x = this.y;
+		this.y = newY;
+	}
+	
+	/**
+	 * Rotates the Vector2 90º counter-clockwise.
+	 */
+	public void rotateLeft() {
+		int newX = -this.y;
+		this.y = this.x;
+		this.x = newX;
+		
+	}
+	
 	// Static operations
 	
 	/**

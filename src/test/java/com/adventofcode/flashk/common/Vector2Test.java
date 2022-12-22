@@ -1,8 +1,8 @@
 package com.adventofcode.flashk.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -251,6 +251,164 @@ class Vector2Test {
 			.verify();
 	}
 	
+	// Rotation tests
+	
+	@Test
+	public void testRotateRight() {
+		
+		Vector2 startVector = new Vector2(-1,0);
+		startVector.rotateRight();
+		
+		assertEquals(0, startVector.getX());
+		assertEquals(1, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(1, startVector.getX());
+		assertEquals(0, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(0, startVector.getX());
+		assertEquals(-1, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(-1, startVector.getX());
+		assertEquals(0, startVector.getY());
+		
+	}
+	
+	@Test
+	public void testRotateRightNonZero() {
+		
+		Vector2 startVector = new Vector2(2,1);
+		startVector.rotateRight();
+		
+		assertEquals(1, startVector.getX());
+		assertEquals(-2, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(-2, startVector.getX());
+		assertEquals(-1, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(-1, startVector.getX());
+		assertEquals(2, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(2, startVector.getX());
+		assertEquals(1, startVector.getY());
+		
+	}
+	
+	@Test
+	public void testRotateRightNonZeroEqual() {
+		
+		Vector2 startVector = new Vector2(5,5);
+		startVector.rotateRight();
+		
+		assertEquals(5, startVector.getX());
+		assertEquals(-5, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(-5, startVector.getX());
+		assertEquals(-5, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(-5, startVector.getX());
+		assertEquals(5, startVector.getY());
+		
+		startVector.rotateRight();
+		
+		assertEquals(5, startVector.getX());
+		assertEquals(5, startVector.getY());
+		
+	}
+	
+	@Test
+	public void testRotateLeft() {
+		
+		Vector2 startVector = new Vector2(-1,0);
+		startVector.rotateLeft();
+		
+		assertEquals(0, startVector.getX());
+		assertEquals(-1, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(1, startVector.getX());
+		assertEquals(0, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(0, startVector.getX());
+		assertEquals(1, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(-1, startVector.getX());
+		assertEquals(0, startVector.getY());
+		
+	}
+	
+	@Test
+	public void testRotateLeftNonZero() {
+		
+		Vector2 startVector = new Vector2(2,1);
+		startVector.rotateLeft();
+		
+		assertEquals(-1, startVector.getX());
+		assertEquals(2, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(-2, startVector.getX());
+		assertEquals(-1, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(1, startVector.getX());
+		assertEquals(-2, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(2, startVector.getX());
+		assertEquals(1, startVector.getY());
+		
+	}
+	
+	@Test
+	public void testRotateLeftNonZeroEqual() {
+		
+		Vector2 startVector = new Vector2(5,5);
+		startVector.rotateLeft();
+		
+		assertEquals(-5, startVector.getX());
+		assertEquals(5, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(-5, startVector.getX());
+		assertEquals(-5, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(5, startVector.getX());
+		assertEquals(-5, startVector.getY());
+		
+		startVector.rotateLeft();
+		
+		assertEquals(5, startVector.getX());
+		assertEquals(5, startVector.getY());
+		
+	}
+	
 	// Normalization tests - normalize()
 	
 	@Test
@@ -341,6 +499,7 @@ class Vector2Test {
 		assertThrows(IllegalStateException.class, () -> vector.normalize());
 	
 	}
+	
 	
 	// Normalization tests - normalized()
 	
@@ -464,5 +623,7 @@ class Vector2Test {
 		assertThrows(IllegalStateException.class, () -> vector.normalized());
 	
 	}
+	
+
 	
 }
