@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day22;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_22)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day22Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_22;
@@ -44,6 +45,10 @@ public class Day22Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		MonkeyMap monkeyMap = new MonkeyMap(inputs);
+		long result = monkeyMap.solveA();
+		assertEquals(6032, result);
+		
 	}
 	
 	@Test
@@ -57,6 +62,12 @@ public class Day22Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		MonkeyMap monkeyMap = new MonkeyMap(inputs);
+		long result = monkeyMap.solveA();
+		
+		System.out.println(result);
+		// Too high: 145332
 		
 	}
 	
