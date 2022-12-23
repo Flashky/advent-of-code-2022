@@ -111,7 +111,7 @@ public class MonkeyMap {
 				// Move right while possible
 				Optional<Vector2> right = moveRight();
 				while(distance > 0 && right.isPresent()) {
-					map[position.getY()][position.getX()] = FACING_RIGHT;
+					//map[position.getY()][position.getX()] = FACING_RIGHT;
 					position = right.get();
 					right = moveRight();
 					distance--;
@@ -122,7 +122,7 @@ public class MonkeyMap {
 				// Move down while possible
 				Optional<Vector2> down = moveDown();
 				while(distance > 0 && down.isPresent()) {
-					map[position.getY()][position.getX()] = FACING_DOWN;
+					//map[position.getY()][position.getX()] = FACING_DOWN;
 					position = down.get();
 					down = moveDown();
 					distance--;
@@ -133,7 +133,7 @@ public class MonkeyMap {
 				// Move left while possible
 				Optional<Vector2> left = moveLeft();
 				while(distance > 0 && left.isPresent()) {
-					map[position.getY()][position.getX()] = FACING_LEFT;
+					//map[position.getY()][position.getX()] = FACING_LEFT;
 					position = left.get();
 					left = moveLeft();
 					distance--;
@@ -144,7 +144,7 @@ public class MonkeyMap {
 				// Move up while possible
 				Optional<Vector2> up = moveUp();
 				while(distance > 0 && up.isPresent()) {
-					map[position.getY()][position.getX()] = FACING_UP;
+					//map[position.getY()][position.getX()] = FACING_UP;
 					position = up.get();
 					up = moveUp();
 					distance--;
@@ -170,7 +170,16 @@ public class MonkeyMap {
 				direction.rotateLeft();	
 			}
 			
-			updateFacingValue();
+			// Update facing direction
+			if(Vector2.right().equals(direction)) {
+				facingDirection = FACING_RIGHT;
+			} else if(Vector2.left().equals(direction)) {
+				facingDirection = FACING_LEFT;
+			} else if(Vector2.up().equals(direction)) {
+				facingDirection = FACING_DOWN;
+			} else {
+				facingDirection = FACING_UP;
+			}
 		}
 	}
 	
@@ -266,19 +275,6 @@ public class MonkeyMap {
 			}
 		}
 	}
-	
-	private void updateFacingValue() {
-		if(Vector2.right().equals(direction)) {
-			facingDirection = FACING_RIGHT;
-		} else if(Vector2.left().equals(direction)) {
-			facingDirection = FACING_LEFT;
-		} else if(Vector2.up().equals(direction)) {
-			facingDirection = FACING_DOWN;
-		} else {
-			facingDirection = FACING_UP;
-		}
-	}
-	
 	
 	private void initializeRanges() {
 		
