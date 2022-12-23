@@ -66,8 +66,7 @@ public class Day22Test extends PuzzleTest {
 		MonkeyMap monkeyMap = new MonkeyMap(inputs);
 		long result = monkeyMap.solveA();
 		
-		System.out.println(result);
-		// Too high: 145332
+		assertEquals(27436, result);
 		
 	}
 	
