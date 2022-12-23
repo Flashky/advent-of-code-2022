@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Collider2DL;
 import com.adventofcode.flashk.common.Vector2L;
 
 public class PyroclasticFlow {
@@ -32,7 +32,7 @@ public class PyroclasticFlow {
 	private long minY = 1; // Purge bar
 
 	// Collider manager
-	private Set<Collider2D> colliders = new HashSet<>();
+	private Set<Collider2DL> colliders = new HashSet<>();
 	
 	// Part 2
 	//private Set<Vector2L> min
@@ -44,9 +44,9 @@ public class PyroclasticFlow {
 		Vector2L start = new Vector2L();
 		Vector2L end = new Vector2L(8,0);
 		
-		colliders.add(new Collider2D(start,end)); // Floor
-		colliders.add(new Collider2D(start, new Vector2L(0, Integer.MAX_VALUE))); // Left border
-		colliders.add(new Collider2D(end, new Vector2L(end.getX(), Integer.MAX_VALUE))); // Right border
+		colliders.add(new Collider2DL(start,end)); // Floor
+		colliders.add(new Collider2DL(start, new Vector2L(0, Integer.MAX_VALUE))); // Left border
+		colliders.add(new Collider2DL(end, new Vector2L(end.getX(), Integer.MAX_VALUE))); // Right border
 		
 		
 	}
@@ -189,7 +189,7 @@ public class PyroclasticFlow {
 			while(collisionCount < 7 && pointIterator.hasNext()) {
 				
 				Vector2L point = pointIterator.next();
-				Optional<Collider2D> collider = colliders.stream().filter(c -> c.collidesWith(point)).findAny();
+				Optional<Collider2DL> collider = colliders.stream().filter(c -> c.collidesWith(point)).findAny();
 				
 				if(collider.isPresent()) {
 					collisionCount++;
@@ -220,7 +220,7 @@ public class PyroclasticFlow {
 	private boolean collidesWithAnything(Rock rock) {
 		
 		// Test collisions against all colliders
-		Optional<Collider2D> result = colliders.stream().filter(collider -> rock.collidesWith(collider)).findAny();
+		Optional<Collider2DL> result = colliders.stream().filter(collider -> rock.collidesWith(collider)).findAny();
 		return result.isPresent();
 
 	}

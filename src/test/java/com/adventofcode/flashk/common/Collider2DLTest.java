@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class Collider2DTest {
+class Collider2DLTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -18,11 +18,61 @@ class Collider2DTest {
 	}
 
 	@Test
+	void testCollidePointSameVectorStartEnd() {
+		Vector2L startEnd = new Vector2L(2,2);
+		
+		Collider2DL point = new Collider2DL(startEnd, startEnd);
+		Collider2DL point2 = new Collider2DL(startEnd, startEnd);
+	
+		assertTrue(point.getStart().equals(startEnd));
+		assertTrue(point.getEnd().equals(startEnd));
+		
+		assertTrue(point.collidesWith(point2));
+	}
+	
+	@Test
+	void testCollidePointSameVectorStartEnd2() {
+		Vector2L startEnd = new Vector2L(2,2);
+		
+		Collider2DL point = new Collider2DL(startEnd);
+		Collider2DL point2 = new Collider2DL(startEnd);
+	
+		assertTrue(point.getStart().equals(startEnd));
+		assertTrue(point.getEnd().equals(startEnd));
+		
+		assertTrue(point.collidesWith(point2));
+	}
+	
+	@Test
+	void testCollidePointSameVectorStartEnd3() {
+		Vector2L startEnd = new Vector2L(2,2);
+		
+		Collider2DL point = new Collider2DL(startEnd, startEnd);
+	
+		assertTrue(point.getStart().equals(startEnd));
+		assertTrue(point.getEnd().equals(startEnd));
+		
+		assertTrue(point.collidesWith(startEnd));
+	}
+	
+	@Test
+	void testCollidePointSameVectorStartEnd4() {
+		Vector2L startEnd = new Vector2L(2,2);
+		
+		Collider2DL point = new Collider2DL(startEnd);
+	
+		assertTrue(point.getStart().equals(startEnd));
+		assertTrue(point.getEnd().equals(startEnd));
+		
+		assertTrue(point.collidesWith(startEnd));
+	}
+	
+	@Test
 	void testLine() {
 		Vector2L start = new Vector2L();
 		Vector2L end = new Vector2L(0,2);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.getStart().equals(start));
 		assertTrue(line.getEnd().equals(end));
@@ -34,7 +84,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(1,2);
 		Vector2L end = new Vector2L(1,5);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(1,2)));
 		assertTrue(line.collidesWith(new Vector2L(1,3)));
@@ -55,7 +105,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L();
 		Vector2L end = new Vector2L(0,3);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(0,0)));
 		assertTrue(line.collidesWith(new Vector2L(0,1)));
@@ -75,7 +125,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(0,3);
 		Vector2L end = new Vector2L();
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(0,0)));
 		assertTrue(line.collidesWith(new Vector2L(0,1)));
@@ -94,7 +144,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(0,-2);
 		Vector2L end = new Vector2L(0,2);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(0,-2)));
 		assertTrue(line.collidesWith(new Vector2L(0,-1)));
@@ -114,7 +164,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(2,1);
 		Vector2L end = new Vector2L(5,1);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(2,1)));
 		assertTrue(line.collidesWith(new Vector2L(3,1)));
@@ -134,7 +184,7 @@ class Collider2DTest {
 		
 		Vector2L start = new Vector2L();
 		Vector2L end = new Vector2L(3,0);
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(0,0)));
 		assertTrue(line.collidesWith(new Vector2L(1,0)));
@@ -153,7 +203,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(3,0);
 		Vector2L end = new Vector2L();
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(0,0)));
 		assertTrue(line.collidesWith(new Vector2L(1,0)));
@@ -172,7 +222,7 @@ class Collider2DTest {
 		Vector2L start = new Vector2L(-2,0);
 		Vector2L end = new Vector2L(2,0);
 		
-		Collider2D line = new Collider2D(start, end);
+		Collider2DL line = new Collider2DL(start, end);
 		
 		assertTrue(line.collidesWith(new Vector2L(-2,0)));
 		assertTrue(line.collidesWith(new Vector2L(-1,0)));
@@ -191,33 +241,33 @@ class Collider2DTest {
 	
 		Vector2L start = new Vector2L(2,0);
 		Vector2L end = new Vector2L(4,0);
-		Collider2D collider = new Collider2D(start,end);
+		Collider2DL collider = new Collider2DL(start,end);
 		
 		// Horizontal collider at the left
 		start = new Vector2L();
 		end = new Vector2L(1,0);
-		Collider2D otherCollider = new Collider2D(start, end);
+		Collider2DL otherCollider = new Collider2DL(start, end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Horizontal collider at the right
 		start = new Vector2L(5,0);
 		end = new Vector2L(6,0);
-		otherCollider = new Collider2D(start, end);
+		otherCollider = new Collider2DL(start, end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Parallel collider on top of current collider
 		start = new Vector2L(2,1);
 		end = new Vector2L(4,1);
-		otherCollider = new Collider2D(start,end);
+		otherCollider = new Collider2DL(start,end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Parallel collider on bottom of current collider
 		start = new Vector2L(2,-1);
 		end = new Vector2L(4,-1);
-		otherCollider = new Collider2D(start,end);
+		otherCollider = new Collider2DL(start,end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 	}
@@ -228,33 +278,33 @@ class Collider2DTest {
 		// Collider
 		Vector2L start = new Vector2L(0,2);
 		Vector2L end = new Vector2L(0,4);
-		Collider2D collider = new Collider2D(start,end);
+		Collider2DL collider = new Collider2DL(start,end);
 		
 		// Horizontal collider at the left
 		start = new Vector2L();
 		end = new Vector2L(0,1);
-		Collider2D otherCollider = new Collider2D(start, end);
+		Collider2DL otherCollider = new Collider2DL(start, end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Horizontal collider at the right
 		start = new Vector2L(0,5);
 		end = new Vector2L(0,6);
-		otherCollider = new Collider2D(start, end);
+		otherCollider = new Collider2DL(start, end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Parallel collider on top of current collider
 		start = new Vector2L(1,2);
 		end = new Vector2L(1,4);
-		otherCollider = new Collider2D(start,end);
+		otherCollider = new Collider2DL(start,end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 		
 		// Parallel collider on bottom of current collider
 		start = new Vector2L(-1,2);
 		end = new Vector2L(-1,4);
-		otherCollider = new Collider2D(start,end);
+		otherCollider = new Collider2DL(start,end);
 		
 		assertFalse(collider.collidesWith(otherCollider));
 	}
@@ -265,31 +315,31 @@ class Collider2DTest {
 		// Collider
 		Vector2L start = new Vector2L(2,0);
 		Vector2L end = new Vector2L(4,0);
-		Collider2D collider = new Collider2D(start,end);
+		Collider2DL collider = new Collider2DL(start,end);
 		
 		// Collides with a collider at its left
 		start = new Vector2L(-1,0);
 		end = new Vector2L(3,0);
-		Collider2D otherCollider = new Collider2D(start, end);
+		Collider2DL otherCollider = new Collider2DL(start, end);
 		
 		assertTrue(collider.collidesWith(otherCollider));
 		
 		// Collides with a collider at its right
 		start = new Vector2L(3,0);
 		end = new Vector2L(5,0);
-		otherCollider = new Collider2D(start, end);
+		otherCollider = new Collider2DL(start, end);
 		
 		assertTrue(collider.collidesWith(otherCollider));
 		
 		// Order does not matter
 		start = new Vector2L(4,0);
 		end = new Vector2L(2,0);
-		collider = new Collider2D(start,end);
+		collider = new Collider2DL(start,end);
 		
 		// Collides with a collider at its left
 		start = new Vector2L(-1,0);
 		end = new Vector2L(3,0);
-		otherCollider = new Collider2D(start, end);
+		otherCollider = new Collider2DL(start, end);
 		
 		assertTrue(collider.collidesWith(otherCollider));
 		

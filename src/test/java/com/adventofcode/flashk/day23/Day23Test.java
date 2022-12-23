@@ -3,7 +3,6 @@ package com.adventofcode.flashk.day23;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +20,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_23)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day23Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_23;
@@ -31,6 +29,24 @@ public class Day23Test extends PuzzleTest {
 		Timer.printHeader(TestDisplayName.DAY_23);
 	}
 
+	@Test
+	@Order(0)
+	@Tag(TestTag.PART_ONE)
+	@Tag(TestTag.SAMPLE)
+	@DisplayName(TestDisplayName.PART_ONE_SINGLE_SAMPLE)
+	public void testSolvePart1SingleSample() {
+		
+		System.out.print("1 | single sample | ");
+		
+		// Read input file
+		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
+		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		
+		unstableDiffusion.solveA(3);
+		
+		
+	}
+	
 	
 	@Test
 	@Order(1)
@@ -43,6 +59,8 @@ public class Day23Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		
 		
 	}
 	
