@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Collider2DL;
 import com.adventofcode.flashk.common.Vector2L;
 
 import lombok.Getter;
@@ -28,7 +28,7 @@ public abstract class Rock {
 	protected Vector2L position;
 	
 	@Getter
-	protected Set<Collider2D> colliders = new HashSet<>();
+	protected Set<Collider2DL> colliders = new HashSet<>();
     
 	public Rock(Vector2L initialPosition) {
 		position = initialPosition;
@@ -45,13 +45,13 @@ public abstract class Rock {
 		
 	}
 	
-	public boolean collidesWith(Collider2D other) {
+	public boolean collidesWith(Collider2DL other) {
 		
-		Iterator<Collider2D> colliderIterator = colliders.iterator();
+		Iterator<Collider2DL> colliderIterator = colliders.iterator();
 		boolean collides = false;
 		
 		while(!collides && colliderIterator.hasNext()) {
-			Collider2D collider = colliderIterator.next();
+			Collider2DL collider = colliderIterator.next();
 			collides = collider.collidesWith(other);
 		}
 		
@@ -64,14 +64,14 @@ public abstract class Rock {
 		
 		// Two rocks collide if any of the colliders between two rocks collide between them
 		
-		Iterator<Collider2D> colliderIterator = colliders.iterator();
+		Iterator<Collider2DL> colliderIterator = colliders.iterator();
 		boolean collides = false;
 		
 		while(!collides && colliderIterator.hasNext()) {
 			
-			Collider2D collider = colliderIterator.next();
+			Collider2DL collider = colliderIterator.next();
 			
-			Optional<Collider2D> collidedLine = other.colliders.stream()
+			Optional<Collider2DL> collidedLine = other.colliders.stream()
 													.filter(anotherCollider ->  anotherCollider.collidesWith(collider))
 													.findAny();
 			

@@ -1,6 +1,6 @@
 package com.adventofcode.flashk.day17;
 
-import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Collider2DL;
 import com.adventofcode.flashk.common.Vector2L;
 
 public class VerticalRock extends Rock {
@@ -19,7 +19,7 @@ public class VerticalRock extends Rock {
 		Vector2L end = new Vector2L(position);
 		end.transformY(3);
 		
-		colliders.add(new Collider2D(start,end));
+		colliders.add(new Collider2DL(start,end));
 	}
 
 	@Override
