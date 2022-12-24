@@ -80,7 +80,7 @@ public class UnstableDiffusion {
 			
 			// 2. Proponemos una posición para todos los elfos que se puedan mover y que no estén solos.
 			for(Elve elve : elves) {
-				Optional<Vector2> proposedPosition = elve.evaluate(elvesColliders, directionsOrder);
+				Optional<Vector2> proposedPosition = elve.evaluate(elves, directionsOrder);
 				
 				if(proposedPosition.isPresent()) {
 					List<Elve> proposedElves = proposedMovements.getOrDefault(proposedPosition.get(), new ArrayList<>());

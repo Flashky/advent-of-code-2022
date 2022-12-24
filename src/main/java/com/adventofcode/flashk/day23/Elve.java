@@ -63,15 +63,19 @@ public class Elve {
 		}
 	}
 	
-	public Optional<Vector2> evaluate(Set<Collider2D> otherElves, Deque<Character> directionPriority) {
+	public Optional<Vector2> evaluate(Set<Elve> otherElves, Deque<Character> directionPriority) {
 		
 		// Copy directions priority
 		Deque<Character> directionsPriorityCopy = new LinkedList<>();
 		directionsPriorityCopy.addAll(directionPriority);
 		
 		
-		// Exclude self collider
-		Set<Collider2D> elvesColliders = otherElves.stream().filter(elveCollider -> !elveCollider.equals(collider)).collect(Collectors.toSet());
+		// Exclude self collider and colliders that are too far away
+		Set<Collider2D> elvesColliders = otherElves.stream()
+													.filter(elve -> Vector2.distance(position, elve.getPosition()) < 2)
+													.map(elve -> elve.getCollider())
+													.filter(elveCollider -> !elveCollider.equals(collider))
+													.collect(Collectors.toSet());
 		
 		long northHitCount = elvesColliders.stream().filter(elve -> elve.collidesWith(scanNorth)).count();
 		long southHitCount = elvesColliders.stream().filter(elve -> elve.collidesWith(scanSouth)).count();
