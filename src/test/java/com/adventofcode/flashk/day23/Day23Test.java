@@ -1,5 +1,5 @@
 package com.adventofcode.flashk.day23;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -60,8 +60,9 @@ public class Day23Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		long result = unstableDiffusion.solveA(10);
 		
-		
+		assertEquals(110, result);
 	}
 	
 	@Test
@@ -76,6 +77,10 @@ public class Day23Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		long result = unstableDiffusion.solveA(10);
+		
+		assertEquals(4146, result);
 	}
 	
 	@Test

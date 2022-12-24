@@ -58,8 +58,15 @@ public class Collider2D {
 	}
 	
 	public void transform(Vector2 vector) {
-		start.transform(vector);
-		end.transform(vector);
+
+		if(start != end) {
+			start.transform(vector);
+			end.transform(vector);
+		} else {
+			// Only transform once
+			start.transform(vector);
+		}
+		
 		calculateMinAndMax(start, end);
 	}
 

@@ -118,7 +118,10 @@ public class UnstableDiffusion {
 		long maxX = elves.stream().map(v -> v.getPosition().getX()).sorted(Comparator.reverseOrder()).findFirst().get();
 		long minY = elves.stream().map(v -> v.getPosition().getY()).sorted().findFirst().get();
 		long maxY = elves.stream().map(v -> v.getPosition().getY()).sorted(Comparator.reverseOrder()).findFirst().get();
-		return 0;
+		long sizeX = maxX -minX + 1;
+		long sizeY = maxY- minY +1;
+		long size = sizeX*sizeY;
+		return size - elves.size();
 	}
 	
 
