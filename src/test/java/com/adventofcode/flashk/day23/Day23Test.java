@@ -1,8 +1,10 @@
 package com.adventofcode.flashk.day23;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -95,6 +97,10 @@ public class Day23Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		long result = unstableDiffusion.solve();
+		
+		assertEquals(20, result);
 	}
 	
 	@Test
@@ -102,6 +108,7 @@ public class Day23Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+	@Disabled
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
@@ -109,6 +116,11 @@ public class Day23Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		UnstableDiffusion unstableDiffusion = new UnstableDiffusion(inputs);
+		long result = unstableDiffusion.solve();
+		
+		// Disabled test as it took 501058ms, needs optimization
+		assertEquals(957, result);
 	}
 
 }

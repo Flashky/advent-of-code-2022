@@ -58,38 +58,71 @@ public class UnstableDiffusion {
 		
 		// 1. Chequeamos si el elfo está aislado (no tiene colliders adyacentes)
 		for(int round = 0; round < numberOfMoves; round++) {
-			
-			Map<Vector2, List<Elve>> proposedMovements = new HashMap<>();
-			
-			// 2. Proponemos una posición para todos los elfos que se puedan mover y que no estén solos.
-			for(Elve elve : elves) {
-				Optional<Vector2> proposedPosition = elve.evaluate(elves, directionsOrder);
-				
-				if(proposedPosition.isPresent()) {
-					List<Elve> proposedElves = proposedMovements.getOrDefault(proposedPosition.get(), new ArrayList<>());
-					proposedElves.add(elve);
-					proposedMovements.put(proposedPosition.get(), proposedElves);
-				}
-						
-			}
-			
-			// 3. Hacemos commit de los movimientos que sean válidos
-			// Solo será válida una posición si uno y solo uno de los elfos puede moverse a la misma.
-			for(Vector2 stagedPosition : proposedMovements.keySet()) {
-				List<Elve> stagedElves = proposedMovements.get(stagedPosition);
-				if(stagedElves.size() == 1) {
-					Elve commitElve = stagedElves.get(0);
-					commitElve.move();
-				}
-			}
-			
-			// Rotate directions
-			directionsOrder.add(directionsOrder.poll());
+			round(directionsOrder);
 		}
 		
 		// Result = number of empty tiles
 		// Number of empty tiles = map size - number of elves
 		return calculateMapSize() - elves.size();
+	}
+
+	
+	public long solve() {
+
+		
+		// Algoritmo
+		
+		Deque<Character> directionsOrder = new LinkedList<>();
+		directionsOrder.add(NORTH);
+		directionsOrder.add(SOUTH);
+		directionsOrder.add(WEST);
+		directionsOrder.add(EAST);
+		
+		// 1. Chequeamos si el elfo está aislado (no tiene colliders adyacentes)
+		boolean hasAnyMovements = false; 
+		int round = 0;
+		do {
+			hasAnyMovements = round(directionsOrder);
+			round++;
+		}while(hasAnyMovements);
+		
+		// Result = number of empty tiles
+		// Number of empty tiles = map size - number of elves
+		return round;
+	}
+	
+	private boolean round(Deque<Character> directionsOrder) {
+		
+		Map<Vector2, List<Elve>> proposedMovements = new HashMap<>();
+		
+		for(Elve elve : elves) {
+			// Propose a new position for each elve
+			Optional<Vector2> proposedPosition = elve.evaluate(elves, directionsOrder);
+			
+			if(proposedPosition.isPresent()) {
+				List<Elve> proposedElves = proposedMovements.getOrDefault(proposedPosition.get(), new ArrayList<>());
+				proposedElves.add(elve);
+				proposedMovements.put(proposedPosition.get(), proposedElves);
+			}
+					
+		}
+		
+		// Commit valid positions.
+		// A valid position is a position where at most 1 elve attempts to reach it.
+		boolean hasAnyMovements = false;
+		for(Vector2 stagedPosition : proposedMovements.keySet()) {
+			List<Elve> stagedElves = proposedMovements.get(stagedPosition);
+			if(stagedElves.size() == 1) {
+				Elve commitElve = stagedElves.get(0);
+				commitElve.move();
+				hasAnyMovements = true;
+			}
+		}
+		
+		// Rotate directions
+		directionsOrder.add(directionsOrder.poll());
+		
+		return hasAnyMovements;
 	}
 
 	private long calculateMapSize() {
