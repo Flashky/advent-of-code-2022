@@ -43,23 +43,6 @@ public class UnstableDiffusion {
 			y++;
 		}
 			
-		/*
-		int rowIndex = 0;
-		for(String input : inputs) {
-			
-			char[] row = input.toCharArray();
-
-			for(int colIndex = 0; colIndex < row.length; colIndex++) {
-				if(row[colIndex] == ELVE) {
-					Elve elve = new Elve(colIndex, rowIndex);
-					elves.add(elve);
-					elvesColliders.add(elve.getCollider());
-				}
-			}
-			
-			rowIndex++;
-		}*/
-		System.out.println("test");
 	}
 	
 	public long solveA(int numberOfMoves) {
@@ -105,24 +88,21 @@ public class UnstableDiffusion {
 		}
 		
 		// Result = number of empty tiles
-		// Number of empty tiles = rectangle size - number of elves
+		// Number of empty tiles = map size - number of elves
+		return calculateMapSize() - elves.size();
+	}
+
+	private long calculateMapSize() {
 		
-		// Where rectangle size:
-		// 1. calculate minxX, maxX
-		// 2. Calculate minY maxY 
-		// 3. Calculate sizeX = maxX - minX + 1
-		// 4. calculate sizeY = maxY - minY + 1
-		// 5. Size = sixeX * sizeY
-		
+		// Calculates the rectangle size
 		long minX = elves.stream().map(v -> v.getPosition().getX()).sorted().findFirst().get();
 		long maxX = elves.stream().map(v -> v.getPosition().getX()).sorted(Comparator.reverseOrder()).findFirst().get();
 		long minY = elves.stream().map(v -> v.getPosition().getY()).sorted().findFirst().get();
 		long maxY = elves.stream().map(v -> v.getPosition().getY()).sorted(Comparator.reverseOrder()).findFirst().get();
-		long sizeX = maxX -minX + 1;
-		long sizeY = maxY- minY +1;
-		long size = sizeX*sizeY;
-		return size - elves.size();
+		long sizeX = maxX - minX + 1;
+		long sizeY = maxY - minY +1;
+		long size = sizeX * sizeY;
+		return size;
 	}
 	
-
 }
