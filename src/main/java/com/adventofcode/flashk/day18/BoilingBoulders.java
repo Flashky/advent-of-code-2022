@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import com.adventofcode.flashk.common.Vector3;
@@ -35,7 +34,7 @@ public class BoilingBoulders {
 		
 		// Sum all open sides
 		return lavaDroplets.stream()
-							.map(Cube::getOpenSides)
+							.mapToInt(Cube::getOpenSides)
 							.reduce(0, Integer::sum);
 	}
 
