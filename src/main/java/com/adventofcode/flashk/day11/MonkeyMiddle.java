@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.adventofcode.flashk.common.MathUtil;
 import com.adventofcode.flashk.common.Pair;
 import com.google.common.collect.Lists;
 
@@ -53,15 +54,12 @@ public class MonkeyMiddle {
 		// 2. Limitar el resultado a los dos monos con un valor más alto
 		// 3. Multiplicar el valor de ambos monos de countedItems
 		// 4. Devolver resultado.
-		//ai.accumulateAndGet(y, (x, y) -> x * y);
-		AtomicLong monkeyBusinessCount = new AtomicLong(1);
 	
-		Arrays.stream(monkeys)
-				.sorted(Comparator.reverseOrder()).limit(2)
-				.map(monkey -> monkey.getCountedItems())
-				.forEach(countedItems -> monkeyBusinessCount.set(monkeyBusinessCount.get()*countedItems));
-		
-		return monkeyBusinessCount.get();
+		return Arrays.stream(monkeys)
+				.sorted(Comparator.reverseOrder())
+				.limit(2)
+				.map(Monkey::getCountedItems)
+				.reduce(1L, Math::multiplyExact);
 	}
 	
 	

@@ -200,9 +200,7 @@ public class GrovePositioningSystem {
 	private void moveToTheRight(MixedNumber mixedNumber) {
 		
 		Deque<MixedNumber> leftSide = new LinkedList<>();
-		//leftSide.add(mixedNumber);
-		
-		//int movements = mixedNumber.getMovements();
+
 		long movements = mixedNumber.getMovements() % mixedNumbers.size();
 		
 		for(int moveCount = 0; moveCount < movements; moveCount++) {

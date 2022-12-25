@@ -33,10 +33,10 @@ public class BoilingBoulders {
 		compareY();
 		compareX();
 		
-		AtomicLong result = new AtomicLong(0L);
-		lavaDroplets.stream().forEach(c -> result.getAndAdd(c.getOpenSides()));
-		
-		return result.get();
+		// Sum all open sides
+		return lavaDroplets.stream()
+							.map(Cube::getOpenSides)
+							.reduce(0, Integer::sum);
 	}
 
 	public long solveB() {
