@@ -1,5 +1,7 @@
 package com.adventofcode.flashk.day24;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +23,7 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_24)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
+@Disabled
 public class Day24Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_24;
@@ -31,6 +33,23 @@ public class Day24Test extends PuzzleTest {
 		Timer.printHeader(TestDisplayName.DAY_24);
 	}
 
+	@Test
+	@Order(0)
+	@Tag(TestTag.PART_ONE)
+	@Tag(TestTag.SAMPLE)
+	@DisplayName(TestDisplayName.PART_ONE_SINGLE_SAMPLE)
+	public void testSolvePart1SingleSample() {
+		
+		System.out.print("1 | single sample | ");
+		
+		// Read input file
+		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
+		
+		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		long result = blizzardBasin.solveA();
+		assertEquals(0,0);
+		
+	}
 	
 	@Test
 	@Order(1)
@@ -43,7 +62,10 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		long result = blizzardBasin.solveA();
 		
+		assertEquals(18, result);
 	}
 	
 	@Test
@@ -57,7 +79,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		long result = blizzardBasin.solveA();
 		
+		// 351 -> Too high
+		System.out.println(result);
 	}
 	
 	@Test
