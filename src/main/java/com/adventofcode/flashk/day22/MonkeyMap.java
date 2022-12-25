@@ -25,14 +25,12 @@ public class MonkeyMap {
 	private static final int NOT_SET = -1;
 	private static final char EMPTY = ' ';
 	private static final char PATH = '.';
-	private static final char WALL = '#';
 	
 	private static final char FACING_RIGHT = '>';
 	private static final char FACING_LEFT = '<';
 	private static final char FACING_UP = '^';
 	private static final char FACING_DOWN = 'v';
 	
-	private static final char ROTATE_RIGHT = 'R';
 	private static final char ROTATE_LEFT = 'L';
 	
 	// QUIERO un Vector2 de dirección
