@@ -1,9 +1,8 @@
 package com.adventofcode.flashk.day25;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -21,7 +20,6 @@ import com.adventofcode.flashk.common.test.utils.Util;
 
 @DisplayName(TestDisplayName.DAY_25)
 @TestMethodOrder(OrderAnnotation.class)
-@Disabled // TODO Remove comment when implemented
 public class Day25Test extends PuzzleTest {
 
 	private final static String INPUT_FOLDER = TestFolder.DAY_25;
@@ -44,6 +42,10 @@ public class Day25Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		FullOfHotAir fullOfHotAir = new FullOfHotAir(inputs);
+		String result = fullOfHotAir.solve();
+		
+		assertEquals("2=-1=0", result);
 	}
 	
 	@Test
@@ -58,34 +60,23 @@ public class Day25Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		FullOfHotAir fullOfHotAir = new FullOfHotAir(inputs);
+		String result = fullOfHotAir.solve();
+		
+		assertEquals("2-0-01==0-1=2212=100", result);
+		
 	}
-	
-	@Test
-	@Order(3)
-	@Tag(TestTag.PART_TWO)
-	@Tag(TestTag.SAMPLE)
-	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
+
+
+	@Override
 	public void testSolvePart2Sample() {
-		
-		System.out.print("2 | sample | ");
-		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		
+		// Does not apply on day 25
 	}
-	
-	@Test
-	@Order(4)
-	@Tag(TestTag.PART_TWO)
-	@Tag(TestTag.INPUT)
-	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+
+
+	@Override
 	public void testSolvePart2Input() {
-		
-		System.out.print("2 | input  | ");
-		
-		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
+		// Does not apply on day 25
 	}
 
 }
