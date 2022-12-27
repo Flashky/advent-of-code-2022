@@ -5,12 +5,13 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
 public class TetrisState {
 
 	private int shapeIndex;
 	private int jetIndex;
+	
+	@Getter
 	private long maxY;
 	
 	public void normalizeHeight(long heightBeforeCycle) {
@@ -32,11 +33,5 @@ public class TetrisState {
 		TetrisState other = (TetrisState) obj;
 		return jetIndex == other.jetIndex && shapeIndex == other.shapeIndex;
 	}
-	
-	@Override
-	public String toString() {
-		return shapeIndex + "," + jetIndex + " - height = "+maxY;
-	}
-	
 	
 }

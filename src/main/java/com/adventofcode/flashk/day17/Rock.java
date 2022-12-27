@@ -3,7 +3,6 @@ package com.adventofcode.flashk.day17;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import com.adventofcode.flashk.common.Collider2DL;
@@ -59,54 +58,8 @@ public abstract class Rock {
 		
 	}
 	
-	// TODO no sé si necesito esto o si me vale con el método anterior
-	public boolean collidesWith(Rock other) {
-		
-		// Two rocks collide if any of the colliders between two rocks collide between them
-		
-		Iterator<Collider2DL> colliderIterator = colliders.iterator();
-		boolean collides = false;
-		
-		while(!collides && colliderIterator.hasNext()) {
-			
-			Collider2DL collider = colliderIterator.next();
-			
-			Optional<Collider2DL> collidedLine = other.colliders.stream()
-													.filter(anotherCollider ->  anotherCollider.collidesWith(collider))
-													.findAny();
-			
-			collides = collidedLine.isPresent();
-		}
-		
-		
-		return collides;
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(position);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Rock other = (Rock) obj;
-		return Objects.equals(position, other.position);
-	}
-	
-	
-	public long getMinY() {
-		return position.getY();
-	}
-	
 	// Abstract methods
 	public abstract long getMaxY();
-
 
 
 }
