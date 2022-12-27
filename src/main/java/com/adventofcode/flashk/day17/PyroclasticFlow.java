@@ -1,10 +1,11 @@
 package com.adventofcode.flashk.day17;
 
-import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.adventofcode.flashk.common.Collider2DL;
 import com.adventofcode.flashk.common.Vector2L;
@@ -35,9 +36,10 @@ public class PyroclasticFlow {
 	private Set<Collider2DL> colliders = new HashSet<>();
 	
 	// Part 2
-	private TetrisPattern currentTetrisPattern;
-	private List<TetrisPattern> tetrisFullPattern = new ArrayList<>();
-	
+	private TetrisState currentTetrisState;
+	private Set<TetrisState> foundTetrisStates = new HashSet<>();
+	private Deque<TetrisState> tetrisCycle = new LinkedList<>();
+	private boolean cycleEndFound = false;
 	
 	public PyroclasticFlow(String input) {
 		jetMovements = input.toCharArray();
@@ -53,74 +55,20 @@ public class PyroclasticFlow {
 		
 	}
 	
-	/*
-	 Problemas a tratar:
-
-	Parte 2
-	
-	Necesitaremos ver si se repite algún patrón. 
-	Una forma de visualizarlo es como una cadena.
-	
-	Por ejemplo ``ABCDXABCDX`` sería un patrón ``ABCDX`` que se repite dos veces.
-	
-	Pero ojo, puede haber patrones dentro de patrones:
-	1. ``ABCDABCDXABCDABCDX``, tenemos un patrón ABCDABCD que se repite dos veces.
-	2. De repente, aparece una ``X`` y el patrón se rompe.
-	3. Finalmente el patrón se ve que es ``ABCDABCDX`` 
-	
-	Para el tetris necesitaríamos una estructura de datos que nos permita identificar un estado único.
-
-	QUIERO una estructura de datos que permita modelar un estado
-	PARA poder guardar un listado de estados y comprobar si en algún momento se repite
-	
-	¿Ahora bien, qué es un estado?
-	El problema tiene claramente un patrón que se repite continuamente: las formas de las rocas, dando un nombre a cada una:
-	- A: Barra horizontal
-	- B: Cruz
-	- C: L
-	- D: Barra vertical
-	- E: cuadado
-	
-	Vemos que el tipo de roca no es suficiente para definir un estado, continuamente se repite un ciclo: "ABCDE ABCDE ABCDE..."
-	Por lo tanto, para definir un estado hace falta algo más. 
-	
-	Opciones:
-	
-	1. La coordenada horizontal en la que termina la roca:
-		1.1 El campo de juego va desde las coordenadas x=1 hasta x=7. Por lo que podemos guardar el nombre de la roca y su coordenada:
-			A,1 -> Barra horizontal que ha caido en la coordenada x=1
-			B,6 -> Cruz que ha caído en la coordenada x=6
-			
-	2. En el caso de que lo anterior no sea suficiente, podríamos guardar también el listado de movimientos que ha hecho dicha figura. Por ejemplo:
-		A,1,>>< -> Barra horizontal que ha caído en la coordenada x=1 después de moverse dos veces a la derecha y una vez a la izquierda
-		
-	Cuantas más restricciones pongamos, más fácil será evitar que el patrón se repita por casualidad.
-	
-	Por lo tanto, la estructura de datos podría ser un objeto que guarde los tres datos:
-	- Shape: String / Character
-	- Position: int
-	- Movements: String
-	
-	La estructura necesitaría un equals para comparar con otra estructura.
-	
-	Ahora nos falta otra estructura:.
-	
-	QUIERO una estructura que almacene un listado de patrones
-	PARA poder comparar con el patrón actual
-	
-	
-	
-		// Parte 2
-
-		[ ] Calcular para cada columna cuál es su y más baja.
-		[ ] Descartar colliders por debajo de cierto umbral.
-			[ ] Opción 1: borrar colliders por debajo de ciertos umbrales. Borrar lleva a menos comparaciones
-			[ ] Opción 2: filtrar los colliders por debajo de ciertos umbrales.
-			[ ] Opción 3: Aun borrando colliders es demasiado, hay que buscar un patrón
-		
-	 */
-	
 	public long solveA(long numberOfRocks) {
+		System.out.println();
+		// Before cycle
+		long rocksBeforeCycle = 0;
+		long heightBeforeCycle = 0;
+		
+		// Cycle
+		long cycleRocks = 0;
+		long cycleHeight = 0;
+		
+		// After cycle
+		long rocksAfterCycle = 0;
+		long totalCycles = 0;
+		long uncycledRocks = 0;
 		
 		for(int rockCount = 1; rockCount <= numberOfRocks; rockCount++) {
 			
@@ -180,18 +128,133 @@ public class PyroclasticFlow {
 			// De esta forma, la siguiente roca podrá comparar colisiones con esta roca.
 			colliders.addAll(nextRock.getColliders());
 			
-			if(nextRock.getMaxY() > maxY) {
-				maxY = nextRock.getMaxY();
-			}
+			// START CHECK CYCLE REPETION  ALGORITHM
 			
 			// Add current rock to pattern list
-			currentTetrisPattern.setX(nextRock.getPosition().getX());
-			System.out.println(currentTetrisPattern);
-			tetrisFullPattern.add(currentTetrisPattern);
+			if(!foundTetrisStates.contains(currentTetrisState)) {
+				tetrisCycle.clear();
+				currentTetrisState.setMaxY(maxY);
+				foundTetrisStates.add(currentTetrisState);
+				rocksBeforeCycle++;
+				System.out.println("Rock count: " + rocksBeforeCycle + " - " + currentTetrisState);
+				
+
+			} else {
+				
+				
+				
+				// Already seen state, might be a cycle MIGHT BE pero puede que no lo sea
+				// He partido de una premisa falsa: 
+				
+				
+				if(tetrisCycle.isEmpty()) {
+					// Cycle start
+					heightBeforeCycle = maxY; // OK
+					
+					System.out.println();
+					System.out.println("Cycle start!!");
+					rocksBeforeCycle++;
+					System.out.println("Rock count: " + rocksBeforeCycle + " - " + currentTetrisState);
+					
+					
+				} else if(tetrisCycle.peek().equals(currentTetrisState)) {
+	
+					// Cycle end
+					cycleEndFound = true;
+					System.out.println("Cycle end!!");
+
+					// Adjust before cycle data
+					rocksBeforeCycle--;
+					
+					// Calculate cycle data
+					//cycleHeight = maxY - heightBeforeCycle;
+					AtomicLong heightBeforeCycleAtomic = new AtomicLong(heightBeforeCycle);
+					tetrisCycle.stream().forEach(status -> status.normalizeHeight(heightBeforeCycleAtomic.get()));
+					
+					cycleRocks = tetrisCycle.size(); // OK
+					cycleHeight = tetrisCycle.peekLast().getMaxY(); // OK
+					
+							
+					// Caclulate after cycle data
+					rocksAfterCycle = numberOfRocks - rocksBeforeCycle;
+					totalCycles = rocksAfterCycle / cycleRocks;
+					uncycledRocks = rocksAfterCycle % cycleRocks;
+					
+
+					break;
+				}
+				
+				if(!cycleEndFound) {
+					// Add rock to cycle
+					currentTetrisState.setMaxY(maxY);
+					tetrisCycle.add(currentTetrisState);
+					//cycleRocks++;
+				}
+			}
+
+			// END CHECK CYCLE REPETION  ALGORITHM
+		
+			maxY = Math.max(maxY, nextRock.getMaxY());
+			
+		}
+		
+		
+		if(cycleEndFound) {
+			
+			System.out.println("----------------------------------------");
+			System.out.println("Before cycle");
+			System.out.println("----------------------------------------");
+			System.out.println("Rocks before cycle = " + rocksBeforeCycle);
+			System.out.println("Height before cycle = " +heightBeforeCycle);
+			
+			System.out.println();
+			System.out.println("----------------------------------------");
+			System.out.println("Cycle");
+			System.out.println("----------------------------------------");
+			System.out.println("Rocks per cycle = "+cycleRocks);
+			System.out.println("Cycle height = "+cycleHeight);
+			
+			System.out.println();
+			System.out.println("----------------------------------------");
+			System.out.println("After cycle");
+			System.out.println("----------------------------------------");
+			System.out.println("Remaining rocks = "+rocksAfterCycle);
+			System.out.println("Remaining cycles = "+totalCycles);
+			System.out.println("Uncycled rocks = "+uncycledRocks); // CUIDADO CON ESTAS, HAY QUE CALCULAR SU ALTURA
+			
+			System.out.println();
+			System.out.println("----------------------------------------");
+			System.out.println("Calculations");
+			System.out.println("----------------------------------------");
+			long heightAfterCycle = calculateHeightAfterCycles(uncycledRocks);
+			long totalCyclesHeight = totalCycles * cycleHeight;
+			long totalHeight = heightBeforeCycle + totalCyclesHeight + heightAfterCycle;
+			System.out.println("Height before cycles = "+heightBeforeCycle);
+			System.out.println("Cycles height = " + totalCyclesHeight);
+			System.out.println("Height after cycles = " + heightAfterCycle);
+			System.out.println("Total height = "+ totalHeight);
+			System.out.println();
+			
+			return totalHeight;
+
+			// Calculate how many cycles fit
 		}
 		
 		return maxY;
 		
+	}
+
+	private long calculateHeightAfterCycles(long uncycledRocks) {
+		long heightAfterCycle = 0;
+
+		//Long height = tetrisCycle.stream().mapToLong(TetrisState::getCycleHeight).reduce(0, Long::sum);
+
+		for(long i = uncycledRocks; i != 0; i--) {
+			TetrisState status = tetrisCycle.poll();
+			heightAfterCycle = status.getMaxY();
+		}
+
+		return heightAfterCycle;
 	}
 
 	private boolean collidesWithAnything(Rock rock) {
@@ -208,7 +271,7 @@ public class PyroclasticFlow {
 		Vector2L direction = jetMovements[nextJetMovementIndex] == JET_LEFT ? LEFT : RIGHT;
 		
 		// Add movement to tetris pattern
-		currentTetrisPattern.addMovement(jetMovements[nextJetMovementIndex]);
+		currentTetrisState.setJetIndex(nextJetMovementIndex);
 		
 		// Obtain next circular index
 		nextJetMovementIndex = (nextJetMovementIndex+1) % jetMovements.length;
@@ -238,8 +301,8 @@ public class PyroclasticFlow {
 		}
 	
 		// Save current pattern
-		currentTetrisPattern = new TetrisPattern();	
-		currentTetrisPattern.setShape(rockShapeOrder[nextRockIndex]);
+		currentTetrisState = new TetrisState();	
+		currentTetrisState.setShapeIndex(nextRockIndex);
 		
 		// Obtain next circular index
 		nextRockIndex = (nextRockIndex+1) % rockShapeOrder.length;

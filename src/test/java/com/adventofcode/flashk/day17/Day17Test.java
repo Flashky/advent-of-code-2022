@@ -73,7 +73,6 @@ public class Day17Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.SAMPLE)
 	@DisplayName(TestDisplayName.PART_TWO_SAMPLE)
-	@Disabled // TODO enable
 	public void testSolvePart2Sample() {
 		
 		System.out.print("2 | sample | ");
@@ -91,15 +90,16 @@ public class Day17Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
-	@Disabled // TODO enable
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		long result = 0;
-		System.out.println(result);
+		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
+		long result = pyroclasticFlow.solveA(1000000000000L);
+	
+		assertEquals(1597714285698L, result);
 	}
 
 }
