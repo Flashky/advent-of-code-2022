@@ -3,9 +3,7 @@ package com.adventofcode.flashk.day11;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
-import com.adventofcode.flashk.common.MathUtil;
 import com.adventofcode.flashk.common.Pair;
 import com.google.common.collect.Lists;
 
@@ -58,8 +56,8 @@ public class MonkeyMiddle {
 		return Arrays.stream(monkeys)
 				.sorted(Comparator.reverseOrder())
 				.limit(2)
-				.map(Monkey::getCountedItems)
-				.reduce(1L, Math::multiplyExact);
+				.mapToLong(Monkey::getCountedItems)
+				.reduce(1, Math::multiplyExact);
 	}
 	
 	
