@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.adventofcode.flashk.common.Collider2DL;
 import com.adventofcode.flashk.common.Vector2L;
@@ -57,20 +56,6 @@ public class PyroclasticFlow {
 
 		// Part 2
 		Set<TetrisState> foundTetrisStates = new HashSet<>();
-		boolean cycleEndFound = false;
-		
-		// Before cycle
-		long rocksBeforeCycle = 0;
-		long heightBeforeCycle = 0;
-		
-		// Cycle
-		long cycleRocks = 0;
-		long cycleHeight = 0;
-		
-		// After cycle
-		long rocksAfterCycle = 0;
-		long totalCycles = 0;
-		long uncycledRocks = 0;
 		
 		for(int rockCount = 1; rockCount <= numberOfRocks; rockCount++) {
 			
@@ -121,43 +106,24 @@ public class PyroclasticFlow {
 			
 			// Cuando la roca ya no se esté moviendo, añadimos sus colliders al listado de colliders
 			// De esta forma, la siguiente roca podrá comparar colisiones con esta roca.
+			
 			colliders.addAll(nextRock.getColliders());
 			
 			// START CHECK CYCLE REPETION  ALGORITHM
 			
 			if(!foundTetrisStates.contains(currentTetrisState)) {
-				// Reset cycle
+				
+				// Reset cycle	
 				tetrisCycle.clear();
 				currentTetrisState.setMaxY(maxY);
 				foundTetrisStates.add(currentTetrisState);
+				
 			} else if(foundCycle()) {
 	
-				// Cycle end
-				
-				cycleEndFound = true;
-
-				// Adjust before cycle data
-				rocksBeforeCycle = rockCount - tetrisCycle.size() - 2;
-				heightBeforeCycle = tetrisCycle.peek().getMaxY();
-				
-				// Calculate cycle data
-				AtomicLong heightBeforeCycleAtomic = new AtomicLong(heightBeforeCycle);
-				tetrisCycle.stream().forEach(status -> status.normalizeHeight(heightBeforeCycleAtomic.get()));
-				
-				cycleRocks = tetrisCycle.size();
-				cycleHeight = tetrisCycle.peekLast().getMaxY();
-				
-						
-				// Caclulate after cycle data
-				rocksAfterCycle = numberOfRocks - rocksBeforeCycle;
-				totalCycles = rocksAfterCycle / cycleRocks;
-				uncycledRocks = rocksAfterCycle % cycleRocks;
-					
-				break;
+				// Cycle end match
+				return calculateHeight(numberOfRocks, rockCount);
 					
 			} else {
-			
-			
 				// Add rock to cycle
 				currentTetrisState.setMaxY(maxY);
 				tetrisCycle.add(currentTetrisState);
@@ -170,63 +136,40 @@ public class PyroclasticFlow {
 			
 		}
 		
-		
-		if(cycleEndFound) {
-			
-			System.out.println("----------------------------------------");
-			System.out.println("Before cycle");
-			System.out.println("----------------------------------------");
-			System.out.println("Rocks before cycle = " + rocksBeforeCycle);
-			System.out.println("Height before cycle = " +heightBeforeCycle);
-			
-			System.out.println();
-			System.out.println("----------------------------------------");
-			System.out.println("Cycle");
-			System.out.println("----------------------------------------");
-			System.out.println("Rocks per cycle = "+cycleRocks);
-			System.out.println("Cycle height = "+cycleHeight);
-			
-			System.out.println();
-			System.out.println("----------------------------------------");
-			System.out.println("After cycle");
-			System.out.println("----------------------------------------");
-			System.out.println("Remaining rocks = "+rocksAfterCycle);
-			System.out.println("Remaining cycles = "+totalCycles);
-			System.out.println("Uncycled rocks = "+uncycledRocks); // CUIDADO CON ESTAS, HAY QUE CALCULAR SU ALTURA
-			
-			System.out.println();
-			System.out.println("----------------------------------------");
-			System.out.println("Calculations");
-			System.out.println("----------------------------------------");
-			long heightAfterCycle = calculateHeightAfterCycles(uncycledRocks);
-			long totalCyclesHeight = totalCycles * cycleHeight;
-			long totalHeight = heightBeforeCycle + totalCyclesHeight + heightAfterCycle;
-			System.out.println("Height before cycles = "+heightBeforeCycle);
-			System.out.println("Cycles height = " + totalCyclesHeight);
-			System.out.println("Height after cycles = " + heightAfterCycle);
-			System.out.println("Total height = "+ totalHeight);
-			System.out.println();
-			
-			return totalHeight;
-
-		}
-		
 		return maxY;
 		
+	}
+
+	private long calculateHeight(long numberOfRocks, int rockCount) {
+		
+		// Calculate before cycle data
+		long rocksBeforeCycles = rockCount - tetrisCycle.size() - 2;
+		final long heightBeforeCycles = tetrisCycle.peek().getMaxY();
+		
+		// Calculate cycle data
+		tetrisCycle.stream().forEach(status -> status.normalizeHeight(heightBeforeCycles));
+		long rocksPerCycle = tetrisCycle.size();
+		long heightPerCycle = tetrisCycle.peekLast().getMaxY();
+		long remainingRocks = numberOfRocks - rocksBeforeCycles;
+		long totalCycles = remainingRocks / rocksPerCycle;
+		final long totalCyclesHeight = totalCycles * heightPerCycle;
+		
+		//  Calculate after cycle data
+		long rocksAfterCycles = remainingRocks % rocksPerCycle;
+		final long heightAfterCycles = calculateHeightAfterCycles(rocksAfterCycles);
+		
+		return heightBeforeCycles + totalCyclesHeight + heightAfterCycles;
 	}
 
 	private boolean foundCycle() {
 		return !tetrisCycle.isEmpty() && tetrisCycle.peek().equals(currentTetrisState);
 	}
 
-	private long calculateHeightAfterCycles(long uncycledRocks) {
+	private long calculateHeightAfterCycles(long remainingRocks) {
 		long heightAfterCycle = 0;
 
-		//Long height = tetrisCycle.stream().mapToLong(TetrisState::getCycleHeight).reduce(0, Long::sum);
-
-		for(long i = uncycledRocks; i != 0; i--) {
-			TetrisState status = tetrisCycle.poll();
-			heightAfterCycle = status.getMaxY();
+		if(remainingRocks > 1) {
+			heightAfterCycle = tetrisCycle.stream().skip(remainingRocks-1).findFirst().get().getMaxY();
 		}
 
 		return heightAfterCycle;
