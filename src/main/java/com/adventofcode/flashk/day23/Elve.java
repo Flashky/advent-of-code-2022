@@ -64,18 +64,10 @@ public class Elve {
 	}
 	
 	public Optional<Vector2> evaluate(Set<Elve> otherElves, Deque<Character> directionPriority) {
-		
-		// Copy directions priority
-		Deque<Character> directionsPriorityCopy = new LinkedList<>();
-		directionsPriorityCopy.addAll(directionPriority);
-		
+
 		
 		// Exclude self collider and colliders that are too far away
-		Set<Collider2D> elvesColliders = otherElves.stream()
-													.filter(elve -> Vector2.distance(position, elve.getPosition()) < 2)
-													.map(elve -> elve.getCollider())
-													.filter(elveCollider -> !elveCollider.equals(collider))
-													.collect(Collectors.toSet());
+		Set<Collider2D> elvesColliders = filterColliders(otherElves);
 		
 		long northHitCount = elvesColliders.stream().filter(elve -> elve.collidesWith(scanNorth)).count();
 		long southHitCount = elvesColliders.stream().filter(elve -> elve.collidesWith(scanSouth)).count();
@@ -98,7 +90,28 @@ public class Elve {
 			return Optional.empty();
 		}
 		
-		while(!directionPriority.isEmpty()) {
+		return obtainNextDirection(directionPriority, northHitCount, southHitCount, westHitCount, eastHitCount);
+
+	}
+
+	private Set<Collider2D> filterColliders(Set<Elve> otherElves) {
+		return otherElves.stream().filter(elve -> Vector2.distance(position, elve.getPosition()) < 2)
+									.map(elve -> elve.getCollider())
+									.filter(elveCollider -> !elveCollider.equals(collider))
+									.collect(Collectors.toSet());
+	}
+
+	private Optional<Vector2> obtainNextDirection(Deque<Character> directionsPriority, 
+			long northHitCount, 
+			long southHitCount,
+			long westHitCount, 
+			long eastHitCount) {
+		
+		// Copy directions priority
+		Deque<Character> directionsPriorityCopy = new LinkedList<>();
+		directionsPriorityCopy.addAll(directionsPriority);
+		
+		while(!directionsPriorityCopy.isEmpty()) {
 			Character direction = directionsPriorityCopy.poll();
 
 			if(direction == 'N' && northHitCount == 0) {
@@ -117,8 +130,6 @@ public class Elve {
 
 		}
 		
-		// This case should not happen, queue won't be empty.
-		nextDirection = null;
 		return Optional.empty();
 	}
 }
