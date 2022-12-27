@@ -2,7 +2,6 @@ package com.adventofcode.flashk.day17;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
 import com.adventofcode.flashk.common.Collider2DL;

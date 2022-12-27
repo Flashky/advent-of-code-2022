@@ -214,6 +214,7 @@ public class PyroclasticFlow {
 			case Rock.SQUARE: spawnedRock = new SquareRock(position); break;
 			case Rock.CROSS: spawnedRock = new CrossRock(position); break;
 			case Rock.CORNER: spawnedRock = new CornerRock(position); break;
+			default: throw new UnsupportedOperationException("Unsupported rock shape: "+ rockShapeOrder[nextRockIndex]);
 		}
 	
 		// Prepare current tetris state
