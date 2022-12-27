@@ -1,11 +1,11 @@
 package com.adventofcode.flashk.day17;
 
-import com.adventofcode.flashk.common.Collider2DL;
-import com.adventofcode.flashk.common.Vector2L;
+import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Vector2;
 
 public class CrossRock extends Rock {
 
-	public CrossRock(Vector2L initialPosition) {
+	public CrossRock(Vector2 initialPosition) {
 		
 		super(initialPosition);
 		
@@ -17,23 +17,23 @@ public class CrossRock extends Rock {
 	
 		
 		// Vertical collider
-		Vector2L start = Vector2L.transform(position, Vector2L.right());
-		Vector2L end = new Vector2L(start);
+		Vector2 start = Vector2.transform(position, Vector2.right());
+		Vector2 end = new Vector2(start);
 		end.transformY(2);
 		
-		colliders.add(new Collider2DL(start,end));
+		colliders.add(new Collider2D(start,end));
 
 		// Horizontal Collider
-		start = Vector2L.transform(position, Vector2L.up());
-		end = new Vector2L(start);
+		start = Vector2.transform(position, Vector2.up());
+		end = new Vector2(start);
 		end.transformX(2);
 		
-		colliders.add(new Collider2DL(start,end));
+		colliders.add(new Collider2D(start,end));
 		
 	}
 
 	@Override
-	public long getMaxY() {
+	public int getMaxY() {
 		return this.getPosition().getY() + 2;
 	}
 
