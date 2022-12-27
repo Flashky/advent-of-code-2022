@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.adventofcode.flashk.common.Collider2DL;
-import com.adventofcode.flashk.common.Vector2L;
+import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Vector2;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,16 +23,16 @@ public abstract class Rock {
 	private boolean moving = true;
 	
 	@Getter
-	protected Vector2L position;
+	protected Vector2 position;
 	
 	@Getter
-	protected Set<Collider2DL> colliders = new HashSet<>();
+	protected Set<Collider2D> colliders = new HashSet<>();
     
-	public Rock(Vector2L initialPosition) {
+	public Rock(Vector2 initialPosition) {
 		position = initialPosition;
 	}
 	
-	public void move(Vector2L direction) {
+	public void move(Vector2 direction) {
 		
 		// Only move one unit at once updating both rock position and colliders positions
 		direction.normalize(); 
@@ -43,13 +43,13 @@ public abstract class Rock {
 		
 	}
 	
-	public boolean collidesWith(Collider2DL other) {
+	public boolean collidesWith(Collider2D other) {
 		
-		Iterator<Collider2DL> colliderIterator = colliders.iterator();
+		Iterator<Collider2D> colliderIterator = colliders.iterator();
 		boolean collides = false;
 		
 		while(!collides && colliderIterator.hasNext()) {
-			Collider2DL collider = colliderIterator.next();
+			Collider2D collider = colliderIterator.next();
 			collides = collider.collidesWith(other);
 		}
 		
@@ -58,7 +58,7 @@ public abstract class Rock {
 	}
 	
 	// Abstract methods
-	public abstract long getMaxY();
+	public abstract int getMaxY();
 
 
 }

@@ -1,11 +1,11 @@
 package com.adventofcode.flashk.day17;
 
-import com.adventofcode.flashk.common.Collider2DL;
-import com.adventofcode.flashk.common.Vector2L;
+import com.adventofcode.flashk.common.Collider2D;
+import com.adventofcode.flashk.common.Vector2;
 
 public class SquareRock extends Rock {
 
-	public SquareRock(Vector2L initialPosition) {
+	public SquareRock(Vector2 initialPosition) {
 		
 		super(initialPosition);
 		
@@ -15,21 +15,21 @@ public class SquareRock extends Rock {
 		// x#
 	
 		// Square lower row collider
-		Vector2L start = new Vector2L(position);
-		Vector2L end = Vector2L.transform(start, Vector2L.right());
+		Vector2 start = new Vector2(position);
+		Vector2 end = Vector2.transform(start, Vector2.right());
 	
-		colliders.add(new Collider2DL(start,end));
+		colliders.add(new Collider2D(start,end));
 		
 		// Square upper row collider
-		start = Vector2L.transform(start, Vector2L.up());
-		end = Vector2L.transform(start,Vector2L.right());
+		start = Vector2.transform(start, Vector2.up());
+		end = Vector2.transform(start,Vector2.right());
 		
-		colliders.add(new Collider2DL(start, end));
+		colliders.add(new Collider2D(start, end));
 		
 	}
 
 	@Override
-	public long getMaxY() {
+	public int getMaxY() {
 		return this.getPosition().getY() + 1;
 	}
 
