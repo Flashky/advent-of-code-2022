@@ -30,16 +30,14 @@ public class PyroclasticFlow {
 	private char[] rockShapeOrder = { Rock.HORIZONTAL_BAR, Rock.CROSS, Rock.CORNER, Rock.VERTICAL_BAR, Rock.SQUARE };
 	private int nextRockIndex = 0;
 	private long maxY = 0;
-	private long minY = 1; // Purge bar
 
 	// Collider manager
 	private Set<Collider2DL> colliders = new HashSet<>();
 	
+	
 	// Part 2
 	private TetrisState currentTetrisState;
-	private Set<TetrisState> foundTetrisStates = new HashSet<>();
 	private Deque<TetrisState> tetrisCycle = new LinkedList<>();
-	private boolean cycleEndFound = false;
 	
 	public PyroclasticFlow(String input) {
 		jetMovements = input.toCharArray();
@@ -56,7 +54,11 @@ public class PyroclasticFlow {
 	}
 	
 	public long solveA(long numberOfRocks) {
-		System.out.println();
+
+		// Part 2
+		Set<TetrisState> foundTetrisStates = new HashSet<>();
+		boolean cycleEndFound = false;
+		
 		// Before cycle
 		long rocksBeforeCycle = 0;
 		long heightBeforeCycle = 0;
@@ -80,15 +82,12 @@ public class PyroclasticFlow {
 			while(nextRock.isMoving()) {
 				
 				if(jetGas) {
-					// Apply horizontal movement
 					
-					// 1. Obtain direction
+					// Horizontal movement
+
 					Vector2L direction = getHorizontalDirection();
-					
-					// 2. Attempt to move
 					nextRock.move(direction);
 					
-					// 3. Collision check
 					if(collidesWithAnything(nextRock)) {
 						
 						// Restore previous position
@@ -98,17 +97,14 @@ public class PyroclasticFlow {
 							nextRock.move(LEFT);
 						}
 					}
+
+					jetGas = false; // Next movement will be vertical
 					
-					// Finished movement
-					// Next movement will be vertical
-					
-					jetGas = false;
 				} else {
 					
-					// 1. Attempt to move down
+					// Vertical movement
 					nextRock.move(DOWN);
 					
-					// 2. Collision check
 					if(collidesWithAnything(nextRock)) {
 
 						// Restore previous position and make rock stop moving
@@ -116,9 +112,8 @@ public class PyroclasticFlow {
 						nextRock.setMoving(false);
 						
 					}
-					//System.out.println("Fall 1 unit - " +nextRock.getPosition());
-					// Next movement will be horizontal
-					jetGas = true;
+
+					jetGas = true; // Next movement will be horizontal
 				}
 				
 
@@ -130,67 +125,44 @@ public class PyroclasticFlow {
 			
 			// START CHECK CYCLE REPETION  ALGORITHM
 			
-			// Add current rock to pattern list
 			if(!foundTetrisStates.contains(currentTetrisState)) {
+				// Reset cycle
 				tetrisCycle.clear();
 				currentTetrisState.setMaxY(maxY);
 				foundTetrisStates.add(currentTetrisState);
-				rocksBeforeCycle++;
-				System.out.println("Rock count: " + rocksBeforeCycle + " - " + currentTetrisState);
-				
-
-			} else {
-				
-				
-				
-				// Already seen state, might be a cycle MIGHT BE pero puede que no lo sea
-				// He partido de una premisa falsa: 
-				
-				
-				if(tetrisCycle.isEmpty()) {
-					// Cycle start
-					heightBeforeCycle = maxY; // OK
-					
-					System.out.println();
-					System.out.println("Cycle start!!");
-					rocksBeforeCycle++;
-					System.out.println("Rock count: " + rocksBeforeCycle + " - " + currentTetrisState);
-					
-					
-				} else if(tetrisCycle.peek().equals(currentTetrisState)) {
+			} else if(foundCycle()) {
 	
-					// Cycle end
-					cycleEndFound = true;
-					System.out.println("Cycle end!!");
-
-					// Adjust before cycle data
-					rocksBeforeCycle--;
-					
-					// Calculate cycle data
-					//cycleHeight = maxY - heightBeforeCycle;
-					AtomicLong heightBeforeCycleAtomic = new AtomicLong(heightBeforeCycle);
-					tetrisCycle.stream().forEach(status -> status.normalizeHeight(heightBeforeCycleAtomic.get()));
-					
-					cycleRocks = tetrisCycle.size(); // OK
-					cycleHeight = tetrisCycle.peekLast().getMaxY(); // OK
-					
-							
-					// Caclulate after cycle data
-					rocksAfterCycle = numberOfRocks - rocksBeforeCycle;
-					totalCycles = rocksAfterCycle / cycleRocks;
-					uncycledRocks = rocksAfterCycle % cycleRocks;
-					
-
-					break;
-				}
+				// Cycle end
 				
-				if(!cycleEndFound) {
-					// Add rock to cycle
-					currentTetrisState.setMaxY(maxY);
-					tetrisCycle.add(currentTetrisState);
-					//cycleRocks++;
-				}
+				cycleEndFound = true;
+
+				// Adjust before cycle data
+				rocksBeforeCycle = rockCount - tetrisCycle.size() - 2;
+				heightBeforeCycle = tetrisCycle.peek().getMaxY();
+				
+				// Calculate cycle data
+				AtomicLong heightBeforeCycleAtomic = new AtomicLong(heightBeforeCycle);
+				tetrisCycle.stream().forEach(status -> status.normalizeHeight(heightBeforeCycleAtomic.get()));
+				
+				cycleRocks = tetrisCycle.size();
+				cycleHeight = tetrisCycle.peekLast().getMaxY();
+				
+						
+				// Caclulate after cycle data
+				rocksAfterCycle = numberOfRocks - rocksBeforeCycle;
+				totalCycles = rocksAfterCycle / cycleRocks;
+				uncycledRocks = rocksAfterCycle % cycleRocks;
+					
+				break;
+					
+			} else {
+			
+			
+				// Add rock to cycle
+				currentTetrisState.setMaxY(maxY);
+				tetrisCycle.add(currentTetrisState);
 			}
+		
 
 			// END CHECK CYCLE REPETION  ALGORITHM
 		
@@ -237,11 +209,14 @@ public class PyroclasticFlow {
 			
 			return totalHeight;
 
-			// Calculate how many cycles fit
 		}
 		
 		return maxY;
 		
+	}
+
+	private boolean foundCycle() {
+		return !tetrisCycle.isEmpty() && tetrisCycle.peek().equals(currentTetrisState);
 	}
 
 	private long calculateHeightAfterCycles(long uncycledRocks) {
@@ -270,7 +245,7 @@ public class PyroclasticFlow {
 		// Obtain next jet movement
 		Vector2L direction = jetMovements[nextJetMovementIndex] == JET_LEFT ? LEFT : RIGHT;
 		
-		// Add movement to tetris pattern
+		// Add movement to current tetris state
 		currentTetrisState.setJetIndex(nextJetMovementIndex);
 		
 		// Obtain next circular index
@@ -300,7 +275,7 @@ public class PyroclasticFlow {
 				throw new IllegalArgumentException("Invalid rock type: "+rockShapeOrder[nextRockIndex]);
 		}
 	
-		// Save current pattern
+		// Prepare current tetris state
 		currentTetrisState = new TetrisState();	
 		currentTetrisState.setShapeIndex(nextRockIndex);
 		
