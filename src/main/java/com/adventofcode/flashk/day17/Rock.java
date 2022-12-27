@@ -99,8 +99,14 @@ public abstract class Rock {
 		return Objects.equals(position, other.position);
 	}
 	
+	
+	public long getMinY() {
+		return position.getY();
+	}
+	
 	// Abstract methods
 	public abstract long getMaxY();
+
 
 
 }
