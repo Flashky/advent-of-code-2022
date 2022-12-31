@@ -12,8 +12,8 @@ public class BlizzardBasinV2 {
 
 	private Map<Integer, ValleyMap> valleyMaps = new HashMap<>(); // Podría orientarse como una cola también
 	private int maxMaps; // Sobre este calcularemos el módulo
-	private int targetRow;
-	private int targetCol;
+	//private int targetRow;
+	//private int targetCol;
 	
 	public BlizzardBasinV2(List<String> inputs) {
 		
@@ -35,20 +35,73 @@ public class BlizzardBasinV2 {
 		
 		maxMaps = valleyMaps.size();
 
-		targetRow = initialMap.getRows() - 1;
-		targetCol = initialMap.getCols() - 2;
+		//targetRow = initialMap.getRows() - 1;
+		//targetCol = initialMap.getCols() - 2;
 		//target = new Vector2(initialMap.getRows()-1, initialMap.getCols()-2);
 		
 	}
 	
 	public long solveABFS() {
 		
-		// Implementar como BFS:
-		// https://en.wikipedia.org/wiki/Breadth-first_search
+		ValleyMap initialMap = valleyMaps.get(0);
+		
+		// Obtain initial cell and target position
+		Cell root = initialMap.getCell(0,1);
+		int targetRow = initialMap.getRows() - 1;
+		int targetCol = initialMap.getCols() - 2;		
+		
+		Cell target = bfs(root, targetRow, targetCol);
+		
+		if(target != null) {
+			return target.getMinutes();
+		} 
+		
+		return 0;
+	}
 	
-		// Initialize queue with root node
+	public long solveBBFS() {
+
+		ValleyMap initialMap = valleyMaps.get(0);
+		
+		// Obtain initial cell and end positions
+		int startRow = 0;
+		int startCol = 1;
+		int endRow = initialMap.getRows() - 1;
+		int endCol = initialMap.getCols() - 2;	
+		 
+		// First pass: start -> end
+		Cell start = initialMap.getCell(startRow,startCol);
+		Cell end = bfs(start, endRow, endCol);
+		resetVisited();
+		
+		// Second pass: end -> start
+		start = bfs(end, startRow, startCol);
+		resetVisited();
+		
+		// Third pass: start -> end
+		end = bfs(start, endRow, endCol);
+		
+		if(end != null) {
+			return end.getMinutes();
+		}
+		
+		return 0;
+		
+	}
+	
+	/**
+	 * Applies BFS to find shortest path to destination. returns the destination cell when reached.
+	 * @param root the start cell
+	 * @param targetRow the target row index
+	 * @param targetCol the target col index
+	 * @return
+	 */
+	private Cell bfs(Cell root, int targetRow, int targetCol) {
+		
+		// BFS algorithm: 
+		// https://en.wikipedia.org/wiki/Breadth-first_search
+
 		Queue<Cell> toVisit = new LinkedList<>();
-		Cell root = valleyMaps.get(0).getCell(0,1);
 		root.setVisited(true);
 		toVisit.add(root);
 		
@@ -58,7 +111,7 @@ public class BlizzardBasinV2 {
 			
 			// Check for solution
 			if(targetRow == currentPos.getRow() && targetCol == currentPos.getCol()) {
-				return currentPos.getMinutes();
+				return currentPos;
 			}
 			
 			Queue<Cell> adjacents = getAdjacents(currentPos);
@@ -70,7 +123,7 @@ public class BlizzardBasinV2 {
 			}
 		}
 		
-		return 0;
+		return null;
 	}
 	
 	private Queue<Cell> getAdjacents(Cell currentPos) {
@@ -99,10 +152,12 @@ public class BlizzardBasinV2 {
 		}
 		
 		// Down
-		adjacent = nextMinuteMap.getCell(row+1, col);
-		if(adjacent.isPath()) {
-			adjacent.setMinutes(nextMinute);
-			adjacentCells.add(adjacent);
+		if(currentPos.getRow() < nextMinuteMap.getRows()-1) {
+			adjacent = nextMinuteMap.getCell(row+1, col);
+			if(adjacent.isPath()) {
+				adjacent.setMinutes(nextMinute);
+				adjacentCells.add(adjacent);
+			}
 		}
 		
 		// Up - Extra verification to avoid start position issues
@@ -126,6 +181,14 @@ public class BlizzardBasinV2 {
 		return adjacentCells;
 	}
 
+	private void resetVisited() {
+	
+		// For each map, mark all cells as not visited
+		for(ValleyMap valleyMap : valleyMaps.values()) {
+			valleyMap.resetVisited();
+		}
+	}
+	
 	private void drawMap(ValleyMap valleyMap, int minutes) {
 		if(minutes == 0) {
 			System.out.println("Initial map");
