@@ -1,4 +1,4 @@
-package com.adventofcode.flashk.day24;
+package com.adventofcode.flashk.day24.v2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,9 +43,11 @@ public class Day24Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
 		
-		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
 		//long result = blizzardBasin.solveA();
 		//System.out.println(result);
+		
+
 		assertEquals(0,0);
 		
 	}
@@ -61,9 +63,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
-		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
+		long result = blizzardBasin.solveABFS();
 		//int result = blizzardBasin.solveABFS();
-		int result = blizzardBasin.solveADFS();
+		//int result = blizzardBasin.solveADFS();
+		//int result = 0;
 		assertEquals(18, result);
 	}
 	
@@ -78,9 +82,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
-		//long result = blizzardBasin.solveABFS();
-		int result = blizzardBasin.solveADFS();
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
+		
+		//int result = 0;
+		long result = blizzardBasin.solveABFS();
+		
 		// 241 -> Too high
 		// 351 -> Too high
 		// 411 -> Too high 
