@@ -52,7 +52,6 @@ public class ValleyMap {
 			}
 		}
 		
-		System.out.println("Test");
 	}
 	
 	/**
