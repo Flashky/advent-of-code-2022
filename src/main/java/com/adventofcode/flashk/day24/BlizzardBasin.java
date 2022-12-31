@@ -1,12 +1,15 @@
 package com.adventofcode.flashk.day24;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
-import com.adventofcode.flashk.common.Collider2D;
-import com.adventofcode.flashk.common.Vector2;
 import com.adventofcode.flashk.day22.Range;
 
 public class BlizzardBasin {
@@ -39,135 +42,364 @@ public class BlizzardBasin {
 	
 	// QUIERO un array bidimensional que me permita almacenar ventiscas para cada punto (x,y)
 	
-	//private int rows;
-	//private int cols;
-
-	// Indicates whether in a position exists a blizzard or not
-	private Set<Vector2> blizzardPositions = new HashSet<>();
-	private List<Blizzard> blizzards = new ArrayList<>();
+	private Cell[][] initialValleyMap;
+	private Cell[][] valleyMap;
 	
-	private Vector2 currentPosition;
-	private Vector2 startPosition;
-	private Vector2 endPosition;
+	private Map<Integer, Set<Cell>> visitedCellsByMinute = new HashMap<>();
+	private int blizzardStates = 1; // Total number of possible blizzard states
+	
+	private Cell endPosition;
 	
 	private int rows;
 	private int cols;
-	private Collider2D topCollider;
-	private Collider2D bottomCollider;
-	private Collider2D leftCollider;
-	private Collider2D rightCollider;
-	
-	private Range horizontalRange;
-	private Range verticalRange;
+
+	// DFS
+	private int shortestTime = Integer.MAX_VALUE;
 	
 	public BlizzardBasin(List<String> inputs) {
 		
 		rows = inputs.size();
 		cols = inputs.get(0).length();
 		
-		// Setup colliders positions
-		topCollider = new Collider2D(new Vector2(1,rows-1), new Vector2(cols-1, rows-1));	// Expected: (1,6) -> (6,6)
-		bottomCollider = new Collider2D(new Vector2(0,0), new Vector2(cols-3,0)); 			// Expected: (0,0) -> (4,0)
-		leftCollider = new Collider2D(new Vector2(0,0), new Vector2(0, cols-1));			// Expected: (0,0) -> (0,6)
-		rightCollider = new Collider2D(new Vector2(cols-1,0), new Vector2(cols-1, rows-1));	// Expected: (6,0) -> (6,6)
+		initialValleyMap = new Cell[rows][cols]; // To check for patterns 
+		valleyMap = new Cell[rows][cols];
 		
 		// Max horizontal range for blizzards
-		horizontalRange = new Range(1,cols-2);
-		verticalRange = new Range(1, rows-2);
+		Range horizontalRange = new Range(1,cols-2);
+		Range verticalRange = new Range(1, rows-2);
 		
 		// Bottom-left corner of the map will be (0,0) using this method
-		int y = 0;
-		for(int rowIndex = rows-1; rowIndex > 0; rowIndex--) {
-			String input = inputs.get(rowIndex);
-			char[] row = input.toCharArray();
-			for(int colIndex = 0 ; colIndex < row.length-1; colIndex++) {
-				char content = row[colIndex];
+		for(int row = 0; row < rows; row++) {
+			valleyMap[row] = new Cell[cols];
+			initialValleyMap[row] = new Cell[cols];
+			char[] valleyRow = inputs.get(row).toCharArray();
+			for(int col = 0; col < cols; col++) {
 				
-				Blizzard blizzard = null;
-				if(content == Blizzard.LEFT || content == Blizzard.RIGHT) {
-					blizzard = new Blizzard(content, y, colIndex, horizontalRange);
-				} else if(content == Blizzard.UP || content == Blizzard.DOWN) {
-					blizzard = new Blizzard(content, y, colIndex, verticalRange);
+				switch(valleyRow[col]) {
+					case WALL: 
+						initialValleyMap[row][col] = new Cell(true, row, col); 
+						valleyMap[row][col] = new Cell(true, row, col); 
+						break;
+					case EMPTY: 
+						initialValleyMap[row][col] = new Cell(false, row, col); 
+						valleyMap[row][col] = new Cell(false, row, col); 
+						break;
+					case Blizzard.LEFT: 
+						initialValleyMap[row][col] = new Cell(new Blizzard(Blizzard.LEFT,row,col,horizontalRange), row, col); 
+						valleyMap[row][col] = new Cell(new Blizzard(Blizzard.LEFT,row,col,horizontalRange), row, col); 
+						break;
+					case Blizzard.RIGHT: 
+						initialValleyMap[row][col] = new Cell(new Blizzard(Blizzard.RIGHT,row,col,horizontalRange), row, col);
+						valleyMap[row][col] = new Cell(new Blizzard(Blizzard.RIGHT,row,col,horizontalRange), row, col); 
+						break;
+					case Blizzard.UP: 
+						initialValleyMap[row][col] = new Cell(new Blizzard(Blizzard.UP,row,col,verticalRange), row, col);
+						valleyMap[row][col] = new Cell(new Blizzard(Blizzard.UP,row,col,verticalRange), row, col); 
+						break;
+					case Blizzard.DOWN: 
+						initialValleyMap[row][col] = new Cell(new Blizzard(Blizzard.DOWN,row,col,verticalRange), row, col);
+						valleyMap[row][col] = new Cell(new Blizzard(Blizzard.DOWN,row,col,verticalRange), row, col); 
+					break;
+					default:
+						throw new IllegalArgumentException("Invalid cell value: "+valleyRow[col]);
 				}
-				
-				if(blizzard != null) {
-					blizzards.add(blizzard);
-					blizzardPositions.add(blizzard.getPos());
-				}
-			}
-			y++;
-		}
 
+			}
+		}
+		
 		// Initialize start, end and current position
 		
-		currentPosition = new Vector2(1,rows-1); 	// Expected: (1,6)
-		startPosition = new Vector2(currentPosition);
-		endPosition = new Vector2(cols-2,0);		// Expected: (5,0)
+		endPosition = valleyMap[rows-1][cols-2];
+		blizzardStates = calculateDifferentBlizzardPatterns();
+		initializeVisitedMap();
+
 	}
+
 	
-	public long solveA() {
-		System.out.println();
+	public int solveABFS2() {
+		
+		// Test pattern recognition
 		int minutes = 0;
 		do {
-			minutes++;
 			moveBlizzards();
-
-			// Check movements
-			if(currentPosition.equals(startPosition)) {
-				// Only check down
-				Vector2 down = Vector2.transform(currentPosition, Vector2.down());
-				if(!blizzardPositions.contains(down)) {
-					currentPosition = down;
-					//System.out.println(String.format("Minute %s move %s",minutes, "down"));
-				}
-				
-			} else {
-				//check 4 directions against colliders
-				Vector2 up = Vector2.transform(currentPosition, Vector2.up());
-				Vector2 right = Vector2.transform(currentPosition, Vector2.right());
-				Vector2 down = Vector2.transform(currentPosition, Vector2.down());
-				Vector2 left = Vector2.transform(currentPosition, Vector2.left());
-				
-				// TODO en realidad deberíamos mirar las cuatro posibles direcciones recursivamente y no una sola
-				// en ocasiones puede darse el caso de que haya más de un posible movimiento
-				if(!rightCollider.collidesWith(right) && !blizzardPositions.contains(right)) {
-					
-					currentPosition = right;
-					//System.out.println(String.format("Minute %s move %s",minutes, "right"));
-					
-				} else if(!bottomCollider.collidesWith(down) && !blizzardPositions.contains(down)) {
-					
-					currentPosition = down;
-					//System.out.println(String.format("Minute %s move %s",minutes, "down"));
-					
-				} else if(!topCollider.collidesWith(up) && !blizzardPositions.contains(up)) {
-					
-					currentPosition = up;
-					//System.out.println(String.format("Minute %s move %s",minutes, "up"));
-					
-				} else if(!leftCollider.collidesWith(left) && !blizzardPositions.contains(left)) {
-					
-					currentPosition = left;
-					//System.out.println(String.format("Minute %s move %s",minutes, "left"));
-					
-				}  else {
-					
-					//System.out.println(String.format("Minute %s move %s",minutes, "wait"));
-					
-				}
-
-			}
-		} while(!currentPosition.equals(endPosition));
+			minutes++;
+		} while(!sameBlizzardPattern());
 		
-		return minutes;
+		System.out.println(minutes);
+		return 0;
 	}
 	
-	// OK
+	public int solveABFS() {
+		
+		// Implementar como BFS:
+		// https://en.wikipedia.org/wiki/Breadth-first_search
+		Set<Integer> blizzardMinutes = new HashSet<>();
+		int previousMinute = -1;
+		//int blizzardMovements = 0;
+		
+		Queue<Cell> toVisit = new LinkedList<>();
+		
+		// Set start position as visited and add to queue
+		Cell currentPos = valleyMap[0][1];
+		currentPos.setExpedition(true);
+		visitedCellsByMinute.get(0).add(currentPos);
+		toVisit.add(currentPos);
+		
+		drawMap(currentPos);
+		moveBlizzards();
+		blizzardMinutes.add(0);
+		blizzardMinutes.add(1);
+		
+		while(!toVisit.isEmpty()) {
+					
+			// Move expedition
+			currentPos.setExpedition(false);
+			previousMinute = currentPos.getMinutes();
+			currentPos = toVisit.poll();
+			currentPos.setExpedition(true);
+
+			
+			if(isSolution(currentPos)) {
+				return currentPos.getMinutes();
+			} else {
+				
+				currentPos.setExpedition(true);
+			
+				
+				// Move blizzards
+				if(!blizzardMinutes.contains(currentPos.getMinutes())) {
+					moveBlizzards(); 
+					blizzardMinutes.add(currentPos.getMinutes());
+				}
+	
+				
+				// Draw map after both expedition and blizzards have moved
+
+				if(currentPos.getMinutes() > 0) {
+					//drawMap(currentPos);
+				}
+				
+				// Simulate blizzard movement before calculating adjacents and then rollback
+				moveBlizzards();
+				Queue<Cell> adjacentCells = getAdjacentCells(currentPos);
+				backtrackBlizzards();
+				
+				for(Cell cell : adjacentCells) {
+					if(!isVisited(cell)) {
+						int modMinute = cell.getMinutes() % blizzardStates;
+						visitedCellsByMinute.get(modMinute).add(cell);
+						toVisit.add(cell);
+					}
+				}
+				
+			}
+		}
+	
+		
+		return -1;
+
+	}
+
+	
+	private boolean isVisited(Cell cell) {
+		
+		// TODO aplicar módulo sobre los minutos de la celda
+		int minutes = cell.getMinutes() % blizzardStates;
+		return visitedCellsByMinute.get(minutes).contains(cell);
+		
+	}
+
+	
+	public int solveADFS() {
+		dfs(valleyMap[0][1], 0);
+		
+		return shortestTime;
+	}
+	
+
+	private void dfs(Cell currentPosition, int minutes) {
+		
+		//currentPosition.incrementTime();
+		
+		if(isSolution(currentPosition)) {
+			shortestTime = Math.min(shortestTime, minutes);
+		} else if(minutes > shortestTime) {
+			return; // Not optimal solution
+		} else if(currentPosition.isEmpty() && !isVisited(currentPosition)) {
+			
+			// Mark current position as visited
+			int modMinute = minutes % blizzardStates;
+			visitedCellsByMinute.get(modMinute).add(currentPosition);
+			
+			currentPosition.setExpedition(true);
+			//drawMap(currentPosition);
+			moveBlizzards(); // Cada vez que el mapa cambia
+			
+			Queue<Cell> adjacentCells = getAdjacentCells(currentPosition);
+
+			for(Cell nextPosition : adjacentCells) {
+				currentPosition.setExpedition(false);
+				dfs(nextPosition, minutes+1);
+			}
+			
+			backtrackBlizzards();
+		}
+	}
+	
+	private Queue<Cell> getAdjacentCells(Cell currentPosition) {
+		
+		Queue<Cell> adjacentCells = new LinkedList<>();
+		
+		int row = currentPosition.getRow();
+		int col = currentPosition.getCol();
+		int minutes = currentPosition.getMinutes() + 1;
+		
+		// Left
+		Cell adjacent = valleyMap[row][col-1];
+		if(adjacent.isEmpty()) {
+			adjacent.setMinutes(minutes);
+			adjacentCells.add(adjacent);
+		}
+		
+		// Right
+		adjacent = valleyMap[row][col+1];
+		if(adjacent.isEmpty()) {
+			adjacent.setMinutes(minutes);
+			adjacentCells.add(adjacent);
+		}
+		
+		// Down
+		adjacent = valleyMap[row+1][col];
+		if(adjacent.isEmpty()) {
+			adjacent.setMinutes(minutes);
+			adjacentCells.add(adjacent);
+		}
+		
+
+		
+
+		
+		// Up - Extra verification to avoid start position issues
+		if(currentPosition.getRow() > 0) {
+			adjacent = valleyMap[row-1][col];
+			if(adjacent.isEmpty()) {
+				adjacent.setMinutes(minutes);
+				adjacentCells.add(adjacent);
+			}
+		}
+		
+		// Wait - Only if there are no blizzards over us
+		if(adjacentCells.isEmpty() && currentPosition.isEmpty()) {
+			adjacent = valleyMap[row][col];
+			if(adjacent.isEmpty()) {
+				adjacent.setMinutes(minutes);
+				adjacentCells.add(adjacent);
+			}
+		}
+		
+		return adjacentCells;
+	}
+
+	private boolean isSolution(Cell currentPosition) {
+		return currentPosition.equals(endPosition);
+	}
+	
 	private void moveBlizzards() {
-		blizzardPositions = new HashSet<>();
-		blizzards.stream().forEach(blizzard -> {
-			blizzard.move();
-			blizzardPositions.add(blizzard.getPos());
-		});
+		List<Blizzard> nextBlizzardPositions = new ArrayList<>();
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++) {
+				while(valleyMap[row][col].hasBlizzards()) {
+					Blizzard blizzard = valleyMap[row][col].nextBlizzard();
+					blizzard.move();
+					nextBlizzardPositions.add(blizzard);
+				}
+			}
+		}
+		
+		nextBlizzardPositions.stream()
+							.forEach(blizzard -> valleyMap[blizzard.getRow()][blizzard.getCol()].addBlizzard(blizzard));
+	}
+	
+	private void backtrackBlizzards() {
+		List<Blizzard> nextBlizzardPositions = new ArrayList<>();
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++) {
+				while(valleyMap[row][col].hasBlizzards()) {
+					Blizzard blizzard = valleyMap[row][col].nextBlizzard();
+					blizzard.backtrack();
+					nextBlizzardPositions.add(blizzard);
+				}
+			}
+		}
+		
+		nextBlizzardPositions.stream()
+							.forEach(blizzard -> valleyMap[blizzard.getRow()][blizzard.getCol()].addBlizzard(blizzard));
+	}
+	
+	private void drawMap(Cell currentPosition) {
+		System.out.println();
+		
+		if(currentPosition.getMinutes() == 0) {
+			System.out.println("Initial state:");
+		} else {
+			System.out.println(String.format("Minute %s:",currentPosition.getMinutes()));
+		}
+		
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++) {
+				System.out.print(valleyMap[row][col].toString());
+			}
+			System.out.println();
+		}
+	}
+	
+	private boolean sameBlizzardPattern() {
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++) {
+				
+				Queue<Blizzard> initialBlizzards = initialValleyMap[row][col].getBlizzards();
+				Queue<Blizzard> currentBlizzards = valleyMap[row][col].getBlizzards();
+				if(!sameBlizzards(initialBlizzards, currentBlizzards)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean sameBlizzards(Queue<Blizzard> initialBlizzards, Queue<Blizzard> currentBlizzards) {
+		if(initialBlizzards.size() != currentBlizzards.size()) {
+			return false;
+		}
+		
+		boolean same = true;
+		
+		Iterator<Blizzard> initialBlizzardsIt = initialBlizzards.iterator();
+		Iterator<Blizzard> currentBlizzardsIt = currentBlizzards.iterator();
+		
+		while(initialBlizzardsIt.hasNext() && same) {
+			same = initialBlizzardsIt.next().getDirection() == currentBlizzardsIt.next().getDirection();
+		}
+		
+		return same;
+		
+	}
+	
+
+	private void initializeVisitedMap() {
+		for(int i = 0; i < blizzardStates; i++) {
+			Set<Cell> visitedCells = new HashSet<>();
+			visitedCellsByMinute.put(i, visitedCells);
+		}
+	}
+
+	private int calculateDifferentBlizzardPatterns() {
+		int minutes = 0;
+		do {
+			moveBlizzards();
+			minutes++;
+		} while(!sameBlizzardPattern());
+		
+		return minutes;
 	}
 }
