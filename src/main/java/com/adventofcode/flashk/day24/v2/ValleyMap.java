@@ -113,6 +113,13 @@ public class ValleyMap {
 		
 	}
 	
+	public void resetVisited() {
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++) {
+				tiles[row][col].setVisited(false);
+			}
+		}
+	}
 	
 	@Override
 	public int hashCode() {

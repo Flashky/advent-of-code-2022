@@ -1,6 +1,7 @@
 package com.adventofcode.flashk.day24.v2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
@@ -44,10 +45,9 @@ public class Day24Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
 		
 		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
-		//long result = blizzardBasin.solveA();
-		//System.out.println(result);
 		
-
+		// This test use is only for debugging blizzard movements
+		assertNotNull(blizzardBasin);
 		assertEquals(0,0);
 		
 	}
@@ -63,11 +63,10 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
 		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
 		long result = blizzardBasin.solveABFS();
-		//int result = blizzardBasin.solveABFS();
-		//int result = blizzardBasin.solveADFS();
-		//int result = 0;
+		
 		assertEquals(18, result);
 	}
 	
@@ -82,15 +81,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
 		
-		//int result = 0;
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
 		long result = blizzardBasin.solveABFS();
 		
-		// 241 -> Too high
-		// 351 -> Too high
-		// 411 -> Too high 
-		System.out.println(result);
+		assertEquals(238, result);
 	}
 	
 	@Test
@@ -104,6 +99,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
+		long result = blizzardBasin.solveBBFS();
+		
+		assertEquals(54, result);
 		
 	}
 	
@@ -119,6 +119,10 @@ public class Day24Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		BlizzardBasinV2 blizzardBasin = new BlizzardBasinV2(inputs);
+		long result = blizzardBasin.solveBBFS();
+		
+		assertEquals(751, result);
 	}
 
 }
