@@ -1,6 +1,7 @@
 package com.adventofcode.flashk.day24;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
@@ -44,8 +45,9 @@ public class Day24Test extends PuzzleTest {
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
-		//long result = blizzardBasin.solveA();
-		//System.out.println(result);
+		
+		// This test use is only for debugging blizzard movements
+		assertNotNull(blizzardBasin);
 		assertEquals(0,0);
 		
 	}
@@ -61,9 +63,10 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
-		//int result = blizzardBasin.solveABFS();
-		int result = blizzardBasin.solveADFS();
+		long result = blizzardBasin.solveA();
+		
 		assertEquals(18, result);
 	}
 	
@@ -78,13 +81,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
-		//long result = blizzardBasin.solveABFS();
-		int result = blizzardBasin.solveADFS();
-		// 241 -> Too high
-		// 351 -> Too high
-		// 411 -> Too high 
-		System.out.println(result);
+		long result = blizzardBasin.solveA();
+		
+		assertEquals(238, result);
 	}
 	
 	@Test
@@ -98,6 +99,11 @@ public class Day24Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		
+		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		long result = blizzardBasin.solveB();
+		
+		assertEquals(54, result);
 		
 	}
 	
@@ -113,6 +119,10 @@ public class Day24Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
+		long result = blizzardBasin.solveB();
+		
+		assertEquals(751, result);
 	}
 
 }
