@@ -1,93 +1,98 @@
 package com.adventofcode.flashk.day24;
 
-import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Queue;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class Cell {
 
-	private boolean wall = false;
-	private Queue<Blizzard> blizzards = new LinkedList<>();
+	public static final char WALL = '#';
+	public static final char PATH = '.';
+	
+	@Getter
 	private int row;
+	@Getter
 	private int col;
-	private boolean visited = false;
+	private char value;
+	private int blizzardCount = 0;
+	
+	@Getter
+	@Setter
 	private int minutes = 0;
-	private boolean expedition = false;
 	
-	public Cell(boolean wall, int row, int col) {
-		this.wall = wall;
-		this.col = col;
+	@Getter
+	@Setter
+	private boolean visited = false;
+	
+	public Cell(int row, int col, char value) {
 		this.row = row;
+		this.col = col;
+		this.value = value;
+		
+		if(Blizzard.isBlizzard(value)) {
+			
+			// Single blizzard
+			this.blizzardCount = 1;
+			
+		} else if(Character.isDigit(value)) {
+			
+			// Multiple blizzards
+			String stringValue = String.valueOf(value);
+			this.value = stringValue.charAt(0);
+			this.blizzardCount = Integer.valueOf(stringValue);
+			
+		}
+		
 	}
 	
-	public Cell(Blizzard blizzard, int row, int col) {
-		this.blizzards.add(blizzard);
-		this.col = col;
-		this.row = row;
+	public Cell(Cell other) {
+		this.row = other.row;
+		this.col = other.col;
+		this.value = other.value;
+		this.blizzardCount = other.blizzardCount;
+		this.visited = other.visited;
 	}
 	
-	public Cell(Cell cell) {
-		this.wall = cell.wall;
-		this.row = cell.row;
-		this.col = cell.col;
-		this.visited = cell.visited;
-		this.minutes = cell.minutes;
+	public boolean isPath() {
+		return this.value == PATH;
+	}
+	
+	public boolean hasBlizzard() {
+		return blizzardCount > 0;
+	}
+	
+	public void clearBlizzards() {
+		this.value = PATH;
+		this.blizzardCount = 0;
 	}
 
-	public void addBlizzard(Blizzard blizzard) {
-		blizzards.add(blizzard);
-	}
+	public void addBlizzard(char value) {
+		
+		if(this.value == WALL) {
+			throw new UnsupportedOperationException("Cannot add a blizzard to a wall cell.");
+		}
+		
+		blizzardCount++;
+		
+		if(blizzardCount == 1) {
+			this.value = value;
+		} else {
+			this.value = String.valueOf(blizzardCount).charAt(0);
+		}
 	
-	public boolean hasBlizzards() {
-		return !blizzards.isEmpty();
-	}
-	
-	public Blizzard nextBlizzard() {
-		return blizzards.poll();
-	}
-	
-	public boolean isEmpty() {
-		return !wall && blizzards.isEmpty();
-	}
 
-	public void incrementTime() {
-		minutes++;
 	}
-	
-	public void decrementTime() {
-		minutes--;
-	}
-	
 	
 	@Override
 	public String toString() {
-		
-		if(wall) {
-			return "#";
-		} else if(!blizzards.isEmpty()) {
-			if(blizzards.size() > 1) {
-				return String.valueOf(blizzards.size());
-			} else {
-				return String.valueOf(blizzards.peek().getDirection());
-			}
-		} else if(expedition) {
-			return "E";
-		} else {
-			return ".";
-		}
-		
-		
-		//return "Cell [wall=" + wall + ", blizzards=" + blizzards.size() + "]";
+		return String.valueOf(value);
 	}
 
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(col, row);
+		return Objects.hash(col, row, value);
 	}
 
 	@Override
@@ -99,8 +104,7 @@ public class Cell {
 		if (getClass() != obj.getClass())
 			return false;
 		Cell other = (Cell) obj;
-		return col == other.col && row == other.row;
+		return col == other.col && row == other.row && value == other.value;
 	}
-	
 	
 }
