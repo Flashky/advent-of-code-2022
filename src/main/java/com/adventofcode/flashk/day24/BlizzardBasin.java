@@ -8,10 +8,8 @@ import java.util.Queue;
 
 public class BlizzardBasin {
 
-	private Map<Integer, ValleyMap> valleyMaps = new HashMap<>(); // Podría orientarse como una cola también
-	private int maxMaps; // Sobre este calcularemos el módulo
-	//private int targetRow;
-	//private int targetCol;
+	private Map<Integer, ValleyMap> valleyMaps = new HashMap<>();
+	private int maxMaps;
 	
 	public BlizzardBasin(List<String> inputs) {
 		
@@ -29,13 +27,9 @@ public class BlizzardBasin {
 			ValleyMap previousMap = currentMap;
 			currentMap = previousMap.afterOneMinute();
 			
-		} while(!currentMap.equals(initialMap)); // Hasta que el mapa actual sea similar al primer mapa
+		} while(!currentMap.equals(initialMap));
 		
 		maxMaps = valleyMaps.size();
-
-		//targetRow = initialMap.getRows() - 1;
-		//targetCol = initialMap.getCols() - 2;
-		//target = new Vector2(initialMap.getRows()-1, initialMap.getCols()-2);
 		
 	}
 	
@@ -44,11 +38,11 @@ public class BlizzardBasin {
 		ValleyMap initialMap = valleyMaps.get(0);
 		
 		// Obtain initial cell and target position
-		Cell root = initialMap.getCell(0,1);
-		int targetRow = initialMap.getRows() - 1;
-		int targetCol = initialMap.getCols() - 2;		
+		Cell start = initialMap.getCell(0,1);
+		int endRow = initialMap.getRows() - 1;
+		int endCol = initialMap.getCols() - 2;		
 		
-		Cell target = bfs(root, targetRow, targetCol);
+		Cell target = bfs(start, endRow, endCol);
 		
 		if(target != null) {
 			return target.getMinutes();
@@ -92,7 +86,7 @@ public class BlizzardBasin {
 	 * @param root the start cell
 	 * @param targetRow the target row index
 	 * @param targetCol the target col index
-	 * @return
+	 * @return the end cell, including all of its time information.
 	 */
 	private Cell bfs(Cell root, int targetRow, int targetCol) {
 		
@@ -149,7 +143,7 @@ public class BlizzardBasin {
 			adjacentCells.add(adjacent);
 		}
 		
-		// Down
+		// Down - Extra verification to avoid out of range issues
 		if(currentPos.getRow() < nextMinuteMap.getRows()-1) {
 			adjacent = nextMinuteMap.getCell(row+1, col);
 			if(adjacent.isPath()) {
@@ -158,7 +152,7 @@ public class BlizzardBasin {
 			}
 		}
 		
-		// Up - Extra verification to avoid start position issues
+		// Up - Extra verification to avoid out of range issues
 		if(currentPos.getRow() > 0) {
 			adjacent = nextMinuteMap.getCell(row-1, col);
 			if(adjacent.isPath()) {
