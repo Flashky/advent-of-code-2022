@@ -21,16 +21,12 @@ public class Cube {
 	
 	private int cubeSize;
 	
-	private boolean isSample;
-	
 	// Current movement attributes
 	private Side activeSide;
 	
 	private Map<Character, Long> facingValues = new HashMap<>();
 	
 	public Cube(List<String> inputs, boolean isSample) {
-		
-		this.isSample = isSample;
 		
 		if(isSample) {
 			initializeSampleCube(inputs);
@@ -57,7 +53,7 @@ public class Cube {
 	}
 	
 	public long password() {
-		Vector2 relativePosition = activeSide.getPosition();
+		
 		Vector2 absolutePosition = activeSide.getAbsolutePosition();
 		
 		long rowValue = 1000L * (long) (absolutePosition.getY()+1);
@@ -130,34 +126,34 @@ public class Cube {
 		
 		// Initialize sides
 		side1.setId(1);
-		side1.setLeft(side4); // Ok
-		side1.setRight(side2); // Ok
-		side1.setUp(side6); // Ok
-		side1.setDown(side3); // Ok
+		side1.setLeft(side4);
+		side1.setRight(side2);
+		side1.setUp(side6);
+		side1.setDown(side3);
 		
 		side2.setId(2);
-		side2.setLeft(side1); // Ok
-		side2.setRight(side5); // Ok
-		side2.setUp(side6); // Ok
-		side2.setDown(side3); // Ok
+		side2.setLeft(side1);
+		side2.setRight(side5);
+		side2.setUp(side6);
+		side2.setDown(side3);
 		
 		side3.setId(3);
-		side3.setLeft(side4); // Ok
-		side3.setRight(side2); // Ok
-		side3.setUp(side1); // Ok
-		side3.setDown(side5); // Ok
+		side3.setLeft(side4);
+		side3.setRight(side2);
+		side3.setUp(side1);
+		side3.setDown(side5);
 		
 		side4.setId(4);
-		side4.setLeft(side1); // Ok
-		side4.setRight(side5); // Ok
-		side4.setUp(side3); // Ok 
-		side4.setDown(side6); // Ok
+		side4.setLeft(side1);
+		side4.setRight(side5);
+		side4.setUp(side3); 
+		side4.setDown(side6);
 		
 		side5.setId(5);
-		side5.setLeft(side4); // Ok 
-		side5.setRight(side2); // Ok 
-		side5.setUp(side3); // Ok
-		side5.setDown(side6); // Ok
+		side5.setLeft(side4); 
+		side5.setRight(side2); 
+		side5.setUp(side3);
+		side5.setDown(side6);
 		
 		side6.setId(6);
 		side6.setLeft(side1);

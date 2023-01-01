@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.adventofcode.flashk.common.Vector2;
-
 public class MonkeyMapCube {
 
 	private static final String MOVEMENT_REGEX = "(\\d*)";
@@ -22,9 +20,7 @@ public class MonkeyMapCube {
 	private Queue<Integer> movements = new LinkedList<>();	
 	private Queue<Character> rotations = new LinkedList<>();
 	
-	
-
-	
+	// Map
 	private Cube mapCube;
 	
 	public MonkeyMapCube(List<String> inputs, boolean isSample) {
@@ -38,8 +34,6 @@ public class MonkeyMapCube {
 
 	public long solveA() {
 		
-		long result = 0;
-
 		while(!movements.isEmpty()) {
 			int distance = movements.poll();
 			
@@ -56,8 +50,6 @@ public class MonkeyMapCube {
 		return mapCube.password();
 		
 	}
-
-	
 
 	private void initializeMovements(String instructions) {
 		Matcher matcher = MOVEMENT_PATTERN.matcher(instructions);

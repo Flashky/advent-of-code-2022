@@ -63,31 +63,32 @@ public class Side {
 
 	public Side move(int distance) {
 
+		int remainingDistance = distance;
 		boolean canMove = true;
 		Side activeSide = this;
 		
 		map[position.getY()][position.getX()] = facingDirection;
 		
-		while(distance > 0 & canMove) {
+		while(remainingDistance > 0 & canMove) {
 			
 			Vector2 newPosition = Vector2.transform(position, direction);
 			
 			if(newPosition.getX() < 0) {
-				activeSide = left.moveLeft(distance-1, this);
+				activeSide = left.moveLeft(remainingDistance-1, this);
 				canMove = false;
 			} else if(newPosition.getX() == sideSize) {
-				activeSide = right.moveRight(distance-1, this);
+				activeSide = right.moveRight(remainingDistance-1, this);
 				canMove = false;
 			} else if(newPosition.getY() < 0) {
-				activeSide = up.moveUp(distance-1, this);
+				activeSide = up.moveUp(remainingDistance-1, this);
 				canMove = false;
 			} else if(newPosition.getY() == sideSize) {
-				activeSide = down.moveDown(distance-1, this);
+				activeSide = down.moveDown(remainingDistance-1, this);
 				canMove = false;
 			} else if(!isWall(newPosition)) {
 				position = newPosition;
 				map[position.getY()][position.getX()] = facingDirection;
-				distance--;
+				remainingDistance--;
 			} else {
 				canMove = false;
 			}
@@ -336,10 +337,6 @@ public class Side {
 		Vector2 originPos = originSide.getPosition();
 		Vector2 originDirection = originSide.getDirection();
 		
-		/*
-		int newX = Math.abs(maxIndex - originPos.getY());
-		int newY = Math.abs(maxIndex - originPos.getX());
-		*/
 		int newX = originPos.getY();
 		int newY = originPos.getX();
 		
