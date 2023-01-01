@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -82,6 +81,10 @@ public class Day22Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		MonkeyMapCube monkeyMapCube = new MonkeyMapCube(inputs, true);
+		long result = monkeyMapCube.solveA();
+		
+		assertEquals(5031, result);
 	}
 	
 	@Test
@@ -96,6 +99,10 @@ public class Day22Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+		MonkeyMapCube monkeyMapCube = new MonkeyMapCube(inputs, false);
+		long result = monkeyMapCube.solveA();
+		
+		assertEquals(15426, result);
 	}
 
 }
