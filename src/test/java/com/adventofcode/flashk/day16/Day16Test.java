@@ -81,6 +81,10 @@ public class Day16Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
+		long result = proboscideaVolcanium.solveB();
+		
+		assertEquals(1707, result);
 	}
 	
 	@Test
@@ -88,6 +92,7 @@ public class Day16Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+	@Disabled // Takes up to 426 seconds, disable until it is optimized
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
@@ -95,6 +100,12 @@ public class Day16Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
+
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
+		long result = proboscideaVolcanium.solveB();
+		System.out.println(result);
+		
+		assertEquals(2576, result);
 	}
 
 }
