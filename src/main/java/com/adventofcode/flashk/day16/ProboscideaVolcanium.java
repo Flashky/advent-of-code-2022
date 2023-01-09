@@ -1,7 +1,10 @@
 package com.adventofcode.flashk.day16;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -11,6 +14,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.util.CombinatoricsUtils;
 
 public class ProboscideaVolcanium {
 
@@ -20,15 +24,18 @@ public class ProboscideaVolcanium {
 	private static final Pattern TUNNELS_PATTERN = Pattern.compile(TUNNELS_REGEX);
 	private static final String SEPARATOR = ", ";
 	
-	private static final int MAX_TIME = 30;
+	public static final int MAX_TIME_PART_1 = 30;
+	public static final int MAX_TIME_PART_2 = 26;
 	
 	// Current valve to calculate dijktra from
 	private Valve startingValve;
+	private int maxTime = MAX_TIME_PART_1;
 	
 	private Set<Valve> allValves = new HashSet<>();
 	private Set<Valve> openableValves = new HashSet<>();
+	private Map<Integer,Valve> openableValvesByNumber = new HashMap<>();
 	
-	private long maxReleasedPressure = Integer.MIN_VALUE;
+	private long maxReleasedPressure = 0;
 	
 	public ProboscideaVolcanium(List<String> inputs) {
 		
@@ -68,15 +75,93 @@ public class ProboscideaVolcanium {
 		// Algoritmo de dijkstra: está funcionando ok
 		// calcula el valor de totalMinutes para llegar a cada nodo
 		
-		Set<Valve> candidates = getNextCandidates(MAX_TIME);
+		maxReleasedPressure = 0;
+		
+		Set<Valve> candidates = getNextCandidates(maxTime);
 		for(Valve nextValve : candidates) {
 			dijkstra(startingValve);
-			releasePressure(nextValve, MAX_TIME, 0);
+			releasePressure(nextValve, maxTime, 0);
 		}
 		
 		
 		return maxReleasedPressure;
 	
+	}
+	
+	public long solveB() {
+		
+		maxTime = MAX_TIME_PART_2;
+
+		// Generate all possible combinations
+		Map<Integer, List<Set<Valve>>> valveCombinationsByGroupSize = new HashMap<>();
+		for(int k = 0; k <= openableValves.size(); k++) {
+			Iterator<int[]> combinations = CombinatoricsUtils.combinationsIterator(openableValves.size(), k);
+			
+			List<Set<Valve>> result = map(combinations);
+			valveCombinationsByGroupSize.put(k,result);
+
+		}
+		
+		// Hay tantas combinaciones opuestas como partition: p = (n/2) + 1
+		// Para 6:
+		// p = (6/2) + 1 = 4
+		
+		int totalOpenableValves = openableValves.size();
+		int partitions = (totalOpenableValves / 2) + 1;
+		long maxCombinedReleasedPressure = 0;
+		
+		// Generate all possible partition of valves
+		for(int partition = 0; partition < partitions; partition++) {
+			
+			int opposedPartition = totalOpenableValves - partition;
+			List<Set<Valve>> elephantOptions = valveCombinationsByGroupSize.get(partition);
+			List<Set<Valve>> humanOptions = valveCombinationsByGroupSize.get(opposedPartition);
+			
+			// Pick opposing sets:
+			Set<Valve> elephantSelection;
+			Set<Valve> humanSelection;
+	
+			int elephantIndex = 0;
+			int humanIndex = humanOptions.size()-1;
+			
+			while(humanIndex >= 0) {
+
+				elephantSelection = elephantOptions.get(elephantIndex++);
+				humanSelection = humanOptions.get(humanIndex--);
+				
+				// Solve for elephant
+				resetValves();
+				openableValves = elephantSelection;
+				long pressureElephant = solveA();
+				
+				// Solve for human
+				resetValves();
+				openableValves = humanSelection;
+				long pressureHuman = solveA();
+				long totalPressure = pressureElephant + pressureHuman;
+				maxCombinedReleasedPressure = Math.max(maxCombinedReleasedPressure, totalPressure);
+				
+			}
+			
+		}
+		
+		
+		return maxCombinedReleasedPressure;
+	}
+
+
+	private List<Set<Valve>> map(Iterator<int[]> combinations) {
+		
+		List<Set<Valve>> valvesCombinationList = new ArrayList<>();
+		while(combinations.hasNext()) {
+			Set<Valve> valveCombination = map(combinations.next());
+			valvesCombinationList.add(valveCombination);
+		}
+		return valvesCombinationList;
+	}
+	
+	private Set<Valve> map(int[] combination) {
+		return Arrays.stream(combination).mapToObj(value -> openableValvesByNumber.get(value)).collect(Collectors.toSet());
 	}
 
 	private void releasePressure(Valve currentValve, int remainingTime, long totalPressure) {
@@ -157,6 +242,7 @@ public class ProboscideaVolcanium {
 		Valve currentValve = valves.getOrDefault(name, new Valve(name));
 		if(flow > 0) {
 			currentValve.setFlow(flow);
+			openableValvesByNumber.put(openableValves.size(), currentValve);
 			openableValves.add(currentValve);
 		}
 		

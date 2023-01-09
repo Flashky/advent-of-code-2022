@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Valve implements Comparable<Valve> {
 
 	private static final int OPEN_TIME = 1;
-	
+
 	private String name;
 	private int flow;
 	private boolean open = false;
