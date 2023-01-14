@@ -111,7 +111,6 @@ public class RobotFactory {
 		
 		int minutesBeforeEnd = maxTime - minutes;
 		
-		// Stockpile one additional minute of resources
 		int newOreAmount = oreAmount + (minutesBeforeEnd * oreRobots);
 		int newClayAmount = clayAmount + (minutesBeforeEnd * clayRobots);
 		int newObsidianAmount = obsidianAmount + (minutesBeforeEnd * obsidianRobots);
