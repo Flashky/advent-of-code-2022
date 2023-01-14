@@ -123,31 +123,28 @@ public class RobotFactory {
 	private void buildRobot(int minutes, int oreAmount, int clayAmount, int obsidianAmount, int geodeAmount, Robot robotToBuild) {
 		
 		int minutesBeforeFinishBuild = 1;
-		
-		if(!robotToBuild.hasEnoughResourcesToBuild(oreAmount, clayAmount, obsidianAmount)) {
 
-			// Check time required to harvest enough ore
-			if(robotToBuild.getOre() > oreAmount) {
-				int missingOre = robotToBuild.getOre() - oreAmount;
-				int minutesBeforeStartBuild = (int) Math.ceil((double) missingOre / (double) oreRobots);
-				minutesBeforeFinishBuild = minutesBeforeStartBuild + 1;
-			}
-			
-			// Check time required to harvest enough clay
-			if(robotToBuild.getClay() > clayAmount) {
-				int missingClay = robotToBuild.getClay() - clayAmount;
-				int minutesBeforeStartBuild = (int) Math.ceil((double) missingClay / (double) clayRobots);
-				minutesBeforeFinishBuild = Math.max(minutesBeforeFinishBuild, minutesBeforeStartBuild+1);
-			}
-			
-			// Check time required to harvest enough obsidian
-			if(robotToBuild.getObsidian() > obsidianAmount) {
-				int missingObsidian = robotToBuild.getObsidian() - obsidianAmount;
-				int minutesBeforeStartBuild = (int) Math.ceil((double) missingObsidian / (double) obsidianRobots);
-				minutesBeforeFinishBuild = Math.max(minutesBeforeFinishBuild, minutesBeforeStartBuild+1);
-			}
+		// Check time required to harvest enough ore
+		if(robotToBuild.getOre() > oreAmount) {
+			int missingOre = robotToBuild.getOre() - oreAmount;
+			int minutesBeforeStartBuild = (int) Math.ceil((double) missingOre / (double) oreRobots);
+			minutesBeforeFinishBuild = Math.max(minutesBeforeFinishBuild, minutesBeforeStartBuild+1);
 		}
 		
+		// Check time required to harvest enough clay
+		if(robotToBuild.getClay() > clayAmount) {
+			int missingClay = robotToBuild.getClay() - clayAmount;
+			int minutesBeforeStartBuild = (int) Math.ceil((double) missingClay / (double) clayRobots);
+			minutesBeforeFinishBuild = Math.max(minutesBeforeFinishBuild, minutesBeforeStartBuild+1);
+		}
+		
+		// Check time required to harvest enough obsidian
+		if(robotToBuild.getObsidian() > obsidianAmount) {
+			int missingObsidian = robotToBuild.getObsidian() - obsidianAmount;
+			int minutesBeforeStartBuild = (int) Math.ceil((double) missingObsidian / (double) obsidianRobots);
+			minutesBeforeFinishBuild = Math.max(minutesBeforeFinishBuild, minutesBeforeStartBuild+1);
+		}
+
 		int newMinutes = minutes + minutesBeforeFinishBuild;
 		
 		// Build robot only if there is enough time to build

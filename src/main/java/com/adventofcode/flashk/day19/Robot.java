@@ -16,9 +16,5 @@ public class Robot {
 		this.obsidian = obsidian;
 		this.type = type;
 	}
-	
-	public boolean hasEnoughResourcesToBuild(int oreAmount, int clayAmount, int obsidianAmount) {
-		return (oreAmount >= ore) && (clayAmount >= clay) && (obsidianAmount >= obsidian);
-				
-	}
+
 }
