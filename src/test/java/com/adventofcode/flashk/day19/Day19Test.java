@@ -1,9 +1,10 @@
 package com.adventofcode.flashk.day19;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -29,7 +30,6 @@ public class Day19Test extends PuzzleTest {
 	public static void beforeAll() {
 		Timer.printHeader(TestDisplayName.DAY_19);
 	}
-
 	
 	@Test
 	@Order(1)
@@ -43,6 +43,10 @@ public class Day19Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		Minerals minerals = new Minerals(inputs);
+		long result = minerals.solveA();
+		
+		assertEquals(33, result);
 	}
 	
 	@Test
@@ -56,6 +60,11 @@ public class Day19Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		Minerals minerals = new Minerals(inputs);
+		long result = minerals.solveA();
+		
+		assertEquals(1418, result);
 		
 	}
 	
@@ -71,6 +80,11 @@ public class Day19Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
+		Minerals minerals = new Minerals(inputs);
+		long result = minerals.solveB();
+		
+		assertEquals(3472, result);
+		
 	}
 	
 	@Test
@@ -84,6 +98,11 @@ public class Day19Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		
+		Minerals minerals = new Minerals(inputs);
+		long result = minerals.solveB();
+
+		assertEquals(4114, result);
 		
 	}
 

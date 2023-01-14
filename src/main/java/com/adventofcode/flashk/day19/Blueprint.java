@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import lombok.Getter;
 
+@Getter
 public class Blueprint {
 
 	private static final String BLUEPRINT_REGEX = "Blueprint (\\d*):";
@@ -13,7 +14,6 @@ public class Blueprint {
 	private static final String OBSIDIAN_ROBOT_REGEX = "Each obsidian robot costs (\\d*) ore and (\\d*) clay.";
 	private static final String GEODE_ROBOT_REGEX = "Each geode robot costs (\\d*) ore and (\\d*) obsidian.";
 
-	@Getter
 	private int id;
 	private Robot oreRobot;
 	private Robot clayRobot;
@@ -36,7 +36,7 @@ public class Blueprint {
 		matcher = pattern.matcher(input);
 		matcher.find();
 		
-		oreRobot = new Robot(Integer.parseInt(matcher.group(1)),0,0);
+		oreRobot = new Robot(Integer.parseInt(matcher.group(1)),0,0, RobotType.ORE);
 		
 		// Clay robot
 		pattern = Pattern.compile(CLAY_ROBOT_REGEX);
@@ -44,7 +44,7 @@ public class Blueprint {
 		matcher = pattern.matcher(input);
 		matcher.find();
 		
-		clayRobot = new Robot(Integer.parseInt(matcher.group(1)),0,0);
+		clayRobot = new Robot(Integer.parseInt(matcher.group(1)),0,0, RobotType.CLAY);
 		
 		// Obsidian robot
 		pattern = Pattern.compile(OBSIDIAN_ROBOT_REGEX);
@@ -52,7 +52,7 @@ public class Blueprint {
 		matcher = pattern.matcher(input);
 		matcher.find();
 		
-		obsidianRobot = new Robot(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)),0);
+		obsidianRobot = new Robot(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)),0, RobotType.OBSIDIAN);
 		
 		// Geode robot
 		pattern = Pattern.compile(GEODE_ROBOT_REGEX);
@@ -60,7 +60,7 @@ public class Blueprint {
 		matcher = pattern.matcher(input);
 		matcher.find();
 		
-		geodeRobot = new Robot(Integer.parseInt(matcher.group(1)),0,Integer.parseInt(matcher.group(2)));
+		geodeRobot = new Robot(Integer.parseInt(matcher.group(1)),0,Integer.parseInt(matcher.group(2)), RobotType.GEODE);
 	}
 	
 }

@@ -8,10 +8,17 @@ public class Robot {
 	private int ore;
 	private int clay;
 	private int obsidian;
+	private RobotType type;
 	
-	public Robot(int ore, int clay, int obsidian) {
+	public Robot(int ore, int clay, int obsidian, RobotType type) {
 		this.ore = ore;
 		this.clay = clay;
 		this.obsidian = obsidian;
+		this.type = type;
+	}
+	
+	public boolean hasEnoughResourcesToBuild(int oreAmount, int clayAmount, int obsidianAmount) {
+		return (oreAmount >= ore) && (clayAmount >= clay) && (obsidianAmount >= obsidian);
+				
 	}
 }
