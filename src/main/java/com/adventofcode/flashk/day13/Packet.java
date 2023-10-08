@@ -3,6 +3,7 @@ package com.adventofcode.flashk.day13;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.adventofcode.flashk.common.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +26,7 @@ public class Packet implements Comparable<Packet> {
 	private int packetIndex;
 	
 	public Packet(String input) {
-		root = buildTree(input);
+		root = JsonUtil.buildTree(input);
 		packetCode = input;
 	}
 	
@@ -118,20 +119,6 @@ public class Packet implements Comparable<Packet> {
 			return OK;
 		}
 
-	}
-	
-	private JsonNode buildTree(String input) {
-		
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.readTree(input);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
 	}
 
 	@Override
