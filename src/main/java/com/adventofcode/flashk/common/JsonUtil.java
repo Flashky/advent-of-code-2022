@@ -29,8 +29,6 @@ public final class JsonUtil {
 			return objectMapper.readTree(input);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		return null;
