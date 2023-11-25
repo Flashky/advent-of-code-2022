@@ -1,10 +1,8 @@
 package com.adventofcode.flashk.day13;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import com.adventofcode.flashk.common.JsonUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -20,7 +18,7 @@ public class Packet implements Comparable<Packet> {
 	private static final int NOT_OK = -1;
 	
 	private JsonNode root;
-	private String packetCode;
+	private String packetCode;	
 	
 	@Setter
 	private int packetIndex;
