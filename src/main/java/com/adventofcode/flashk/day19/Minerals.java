@@ -17,6 +17,6 @@ public class Minerals {
 	}
 	
 	public long solveB() {
-		return blueprints.stream().limit(3L).map(robotFactory::build).reduce(1L, (subtotal,element) -> subtotal*element);
+		return blueprints.stream().limit(3L).map(robotFactory::build).reduce(1L, Math::multiplyExact);
 	}
 }
