@@ -8,10 +8,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.adventofcode.flashk.common.Pair;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class Monkey implements Comparable<Monkey> {
 
@@ -84,9 +85,9 @@ public class Monkey implements Comparable<Monkey> {
 		long test = worryLevel % divisor;
 		
 		if(test == 0) {
-			return new Pair<Integer,Long>(trueMonkey, worryLevel);
+			return ImmutablePair.of(trueMonkey, worryLevel);
 		} else {
-			return new Pair<Integer,Long>(falseMonkey, worryLevel);
+			return ImmutablePair.of(falseMonkey, worryLevel);
 		}
 
 	}

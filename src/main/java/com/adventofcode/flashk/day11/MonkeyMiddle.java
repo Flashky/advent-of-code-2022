@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import com.adventofcode.flashk.common.Pair;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class MonkeyMiddle {
 
@@ -40,8 +40,8 @@ public class MonkeyMiddle {
 			for(int monkeyIndex = 0; monkeyIndex < monkeys.length; monkeyIndex++) {
 				Monkey currentMonkeyTurn = monkeys[monkeyIndex];
 				while(currentMonkeyTurn.hasItems()) {
-					Pair<Integer,Long> result = currentMonkeyTurn.throwItem(useRelief);
-					monkeys[result.getFirst()].getItems().add(result.getSecond());
+					Pair<Integer, Long> result = currentMonkeyTurn.throwItem(useRelief);
+					monkeys[result.getLeft()].getItems().add(result.getRight());
 				}
 			}
 			
