@@ -18,7 +18,7 @@ import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
-import com.adventofcode.flashk.common.test.utils.Util;
+import com.adventofcode.flashk.common.test.utils.Input;
 
 @DisplayName(TestDisplayName.DAY_04)
 @TestMethodOrder(OrderAnnotation.class)
@@ -36,11 +36,11 @@ public class Day04Test extends PuzzleTest {
 		Timer.printHeader(TestDisplayName.DAY_04);
 		
 		// Sample initialization
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		campCleanupSample = new CampCleanup(inputs);
 		
 		// Input initialization
-		inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		campCleanupInput = new CampCleanup(inputs);
 	}
 

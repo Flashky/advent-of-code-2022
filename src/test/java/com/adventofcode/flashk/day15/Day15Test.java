@@ -18,7 +18,7 @@ import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
-import com.adventofcode.flashk.common.test.utils.Util;
+import com.adventofcode.flashk.common.test.utils.Input;
 
 @DisplayName(TestDisplayName.DAY_15)
 @TestMethodOrder(OrderAnnotation.class)
@@ -42,7 +42,7 @@ public class Day15Test extends PuzzleTest {
 		System.out.print("1 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveA(10); 
@@ -60,7 +60,7 @@ public class Day15Test extends PuzzleTest {
 		System.out.print("1 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveA(2000000); 
@@ -78,7 +78,7 @@ public class Day15Test extends PuzzleTest {
 		System.out.print("2 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveB3(20);
@@ -97,7 +97,7 @@ public class Day15Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 
 		BeaconExclusionZone beaconExclusionZone = new BeaconExclusionZone(inputs);	
 		long result = beaconExclusionZone.solveB3(4000000L);

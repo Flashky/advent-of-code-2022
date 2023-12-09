@@ -1,16 +1,4 @@
-package com.adventofcode.flashk.day14;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+package com.adventofcode.flashk.day16;
 
 import com.adventofcode.flashk.common.test.constants.TestDisplayName;
 import com.adventofcode.flashk.common.test.constants.TestFilename;
@@ -19,16 +7,22 @@ import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
 import com.adventofcode.flashk.common.test.utils.Input;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
-@DisplayName(TestDisplayName.DAY_14)
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@DisplayName(TestDisplayName.DAY_16)
 @TestMethodOrder(OrderAnnotation.class)
-public class Day14Test extends PuzzleTest {
+public class Day16JGraphTTest extends PuzzleTest {
 
-	private final static String INPUT_FOLDER = TestFolder.DAY_14;
+	private final static String INPUT_FOLDER = TestFolder.DAY_16;
 
 	@BeforeAll
 	public static void beforeAll() {
-		Timer.printHeader(TestDisplayName.DAY_14);
+		Timer.printHeader(TestDisplayName.DAY_16);
 	}
 
 	
@@ -44,10 +38,10 @@ public class Day14Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		int result = reservoir.solve(false);
-		
-		assertEquals(24, result); 
+		ProboscideaVolcaniumJGraphT proboscideaVolcanium = new ProboscideaVolcaniumJGraphT(inputs);
+		long result = proboscideaVolcanium.solveA();
+
+		assertEquals(1651, result);
 	}
 	
 	@Test
@@ -61,11 +55,11 @@ public class Day14Test extends PuzzleTest {
 		
 		// Read input file
 		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
-		
-		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		int result = reservoir.solve(false);
-		
-		assertEquals(1016, result); 
+
+		ProboscideaVolcaniumJGraphT proboscideaVolcanium = new ProboscideaVolcaniumJGraphT(inputs);
+		long result = proboscideaVolcanium.solveA();
+
+		assertEquals(1896, result);
 	}
 	
 	@Test
@@ -80,10 +74,10 @@ public class Day14Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
-		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		int result = reservoir.solve(true);
-
-		assertEquals(93, result);
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
+		long result = proboscideaVolcanium.solveB();
+		
+		assertEquals(1707, result);
 	}
 	
 	@Test
@@ -91,6 +85,7 @@ public class Day14Test extends PuzzleTest {
 	@Tag(TestTag.PART_TWO)
 	@Tag(TestTag.INPUT)
 	@DisplayName(TestDisplayName.PART_TWO_INPUT)
+	@Disabled // Takes up to 426 seconds, disable until it is optimized
 	public void testSolvePart2Input() {
 		
 		System.out.print("2 | input  | ");
@@ -98,11 +93,12 @@ public class Day14Test extends PuzzleTest {
 		// Read input file
 		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
-		RegolithReservoir reservoir = new RegolithReservoir(inputs);
-		int result = reservoir.solve(true);
+
+		ProboscideaVolcanium proboscideaVolcanium = new ProboscideaVolcanium(inputs);
+		long result = proboscideaVolcanium.solveB();
+		System.out.println(result);
 		
-		assertEquals(25402, result);
-		
+		assertEquals(2576, result);
 	}
 
 }

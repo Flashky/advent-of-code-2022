@@ -19,7 +19,7 @@ import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
-import com.adventofcode.flashk.common.test.utils.Util;
+import com.adventofcode.flashk.common.test.utils.Input;
 
 @DisplayName(TestDisplayName.DAY_24)
 @TestMethodOrder(OrderAnnotation.class)
@@ -42,7 +42,7 @@ public class Day24Test extends PuzzleTest {
 		System.out.print("1 | single sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SINGLE_SAMPLE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
 		
@@ -62,7 +62,7 @@ public class Day24Test extends PuzzleTest {
 		System.out.print("1 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
 		long result = blizzardBasin.solveA();
@@ -80,7 +80,7 @@ public class Day24Test extends PuzzleTest {
 		System.out.print("1 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
 		long result = blizzardBasin.solveA();
@@ -98,7 +98,7 @@ public class Day24Test extends PuzzleTest {
 		System.out.print("2 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
 		long result = blizzardBasin.solveB();
@@ -117,7 +117,7 @@ public class Day24Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		BlizzardBasin blizzardBasin = new BlizzardBasin(inputs);
 		long result = blizzardBasin.solveB();

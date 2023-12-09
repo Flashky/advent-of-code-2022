@@ -17,7 +17,7 @@ import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
-import com.adventofcode.flashk.common.test.utils.Util;
+import com.adventofcode.flashk.common.test.utils.Input;
 
 @DisplayName(TestDisplayName.DAY_17)
 @TestMethodOrder(OrderAnnotation.class)
@@ -41,7 +41,7 @@ public class Day17Test extends PuzzleTest {
 		System.out.print("1 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
 		
 		
@@ -60,7 +60,7 @@ public class Day17Test extends PuzzleTest {
 		System.out.print("1 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
 		long result = pyroclasticFlow.solveA(2022);
 		
@@ -77,7 +77,7 @@ public class Day17Test extends PuzzleTest {
 		System.out.print("2 | sample | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
 		long result = pyroclasticFlow.solveA(1000000000000L);
 
@@ -94,7 +94,7 @@ public class Day17Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<String> inputs = Util.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<String> inputs = Input.readStringLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		PyroclasticFlow pyroclasticFlow = new PyroclasticFlow(inputs.get(0));
 		long result = pyroclasticFlow.solveA(1000000000000L);
 	

@@ -18,7 +18,7 @@ import com.adventofcode.flashk.common.test.constants.TestFolder;
 import com.adventofcode.flashk.common.test.constants.TestTag;
 import com.adventofcode.flashk.common.test.utils.PuzzleTest;
 import com.adventofcode.flashk.common.test.utils.Timer;
-import com.adventofcode.flashk.common.test.utils.Util;
+import com.adventofcode.flashk.common.test.utils.Input;
 
 @DisplayName(TestDisplayName.DAY_20)
 @TestMethodOrder(OrderAnnotation.class)
@@ -42,7 +42,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("1 | sample | ");
 		
 		// Read input file
-		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<Integer> inputs = Input.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 		
 		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 1L);
 		long result = positioningSystem.solveA();
@@ -61,7 +61,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("1 | input  | ");
 		
 		// Read input file
-		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<Integer> inputs = Input.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 
 		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 1L);
 		long result = positioningSystem.solveA();
@@ -79,7 +79,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("2 | sample | ");
 		
 		// Read input file
-		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
+		List<Integer> inputs = Input.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE_SAMPLE);
 	
 		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 811589153L);
 		long result = positioningSystem.solveB();
@@ -97,7 +97,7 @@ public class Day20Test extends PuzzleTest {
 		System.out.print("2 | input  | ");
 		
 		// Read input file
-		List<Integer> inputs = Util.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
+		List<Integer> inputs = Input.readIntegerLines(INPUT_FOLDER, TestFilename.INPUT_FILE);
 		
 		GrovePositioningSystem positioningSystem = new GrovePositioningSystem(inputs, 811589153L);
 		long result = positioningSystem.solveB();
