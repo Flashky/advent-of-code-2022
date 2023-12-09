@@ -33,6 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        token: ${{ secrets.PAT_TOKEN }}
     - uses: actions/cache@v3
       with:
         path: ~/.m2/repository
