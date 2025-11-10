@@ -1,4 +1,4 @@
-# Advent of Code 2022
+# 🎄 Advent of Code 2022
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b0a6ffd92df74afcae4f24ab5e208edf)](https://app.codacy.com/gh/Flashky/advent-of-code-2022/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b0a6ffd92df74afcae4f24ab5e208edf)](https://app.codacy.com/gh/Flashky/advent-of-code-2022/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
