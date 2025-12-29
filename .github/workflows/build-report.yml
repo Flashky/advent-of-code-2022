@@ -5,71 +5,140 @@ name: Build & Report
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'  
   push:
     branches:
       - '**'
-    tags-ignore:
-      - '**'
-    paths-ignore: 
-      - '.github/**'
+    #tags-ignore:
+    #  - '**'
+    #paths-ignore:
+    #  - '.github/**'
   pull_request:
     branches:
       - '**'
-    tags-ignore:
-      - '**'
-    paths-ignore: 
-      - '.github/**'
+    #tags-ignore:
+    #  - '**'
+    #paths-ignore:
+    #  - '.github/**'
 
 jobs:
-  
+
+  verify:
+    # Don't run just after creating repo from template
+    if: github.run_number != 1
+    runs-on: ubuntu-latest
+    outputs:
+      skip_report_status: ${{ steps.check_codacy_token.outputs.skip_status }}
+    steps:
+
+      # Verify for existing token secret set
+      - name: Check Personal Access Token
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          echo "Checking personal access token."
+          SECRETS_URL="${{ github.server_url }}/${{ github.repository }}/settings/secrets/actions"
+          
+          log_pat_error() {
+            echo -e "\e[93mTo generate a personal access token (PAT) for GitHub Actions:\e[0m" >&2
+            echo -e "\e[93m1. Go to \e[94mhttps://github.com/settings/tokens\e[0m" >&2
+            echo -e "\e[93m2. Click on \e[92mGenerate new token\e[0m\e[93m and then on \e[92mGenerate new token (classic) \e[0m\e[93m\e[0m" >&2
+            echo -e "\e[93m3. Give your token a name, select the required scopes (e.g., repo), and click on \e[92mGenerate token\e[93m\e[0m" >&2
+            echo -e "\e[93m4. Copy the generated token" >&2
+            echo -e "\e[93m5. Go to your repository action secret settings: \e[94m$SECRETS_URL\e[93m" >&2
+            echo -e "\e[93m6. Name the secret \e[94mPAT_TOKEN\e[93m and paste the copied token as the value" >&2
+          }
+          
+          if [ -z "$PAT_TOKEN" ]; then
+            echo -e "::group::\e[91m❌ Error: PAT_TOKEN secret is not set.\e[0m" >&2
+            log_pat_error
+            echo "::error title=Missing PAT_TOKEN::PAT_TOKEN secret is not set."
+            echo "::endgroup::"
+            exit 1
+          fi
+          RESPONSE=$(curl -s -D - -H "Authorization: token $PAT_TOKEN" https://api.github.com/user)
+          
+          HTTP_CODE=$(echo "$RESPONSE" | head -n 1 | awk '{print $2}')
+          SCOPES=$(echo "$RESPONSE" | grep -i "X-OAuth-Scopes" | awk '{print $2}' | tr -d '\r')
+          
+          # 1. Verify 401 and 403 errors
+          if [ "$HTTP_CODE" -eq 401 ] || [ "$HTTP_CODE" -eq 403 ]; then
+            echo -e "::group::\e[91m❌ Error: PAT_TOKEN secret is invalid or has expired.\e[0m" >&2
+            log_pat_error
+            echo "::error title=The PAT_TOKEN is invalid or has expired::Please, refresh the PAT_TOKEN."
+            echo "::endgroup::"
+            exit 1
+          fi
+          
+          # Verify other errors
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo -e "::group::\e[91m❌ Error: Unexpected HTTP status code ($HTTP_CODE).\e[0m" >&2
+            log_pat_error
+            echo "::error title=Unexpected HTTP Status Code::Found: $HTTP_CODE."
+            echo "::endgroup::"
+            exit 1
+          fi
+          
+          if [[ "$SCOPES" != *"repo"* ]]; then
+            echo "::group::\e[91m❌ Error: missing scope 'repo' on the PAT.\e[0m" >&2
+            log_pat_error
+            echo "::error title=Missing permissions at PAT_TOKEN::Please, refresh the PAT_TOKEN with 'repo' scope."
+            echo "::endgroup::"
+            exit 1
+          fi
+
+      # Verify for existing Codacy token secret set
+      # Setup is optional, reports will be skipped if not set.
+      - name: Check Codacy Project Token
+        id: check_codacy_token
+        continue-on-error: true
+        run: |
+          if [ -z "${{ secrets.CODACY_PROJECT_TOKEN }}" ]; then
+            echo "::warning title=Missing CODACY_PROJECT_TOKEN::Codacy coverage report job will be skipped."
+            echo "skip_status=true" >> $GITHUB_OUTPUT
+            exit 1 
+          fi
+          echo "skip_status=false" >> $GITHUB_OUTPUT
+
   build:
     runs-on: ubuntu-latest
+    needs: verify
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: recursive
-        token: ${{ secrets.PAT_TOKEN }}
-    - uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 17
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Upload Jacoco report artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: jacoco-report
-        path: target/site/jacoco/jacoco.xml
-  
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          token: ${{ secrets.PAT_TOKEN }}
+      - uses: actions/cache@v5
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Upload Jacoco report artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/jacoco.xml
+
+  # Report job
+  # Will be only executed if CODACY_PROJECT_TOKEN is set
   report:
     runs-on: ubuntu-latest
     needs: build
+    if: ${{ needs.verify.outputs.skip_report_status == 'false' }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Download Jacoco report artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: jacoco-report
-        path: target/site/jacoco
-    - uses: codecov/codecov-action@v3
-      name: Send coverage to Codecov
-      with:
-        file: ./**/target/site/jacoco/jacoco.xml
-        name: codecov
-    - name: Send coverage to Codacy
-      uses: codacy/codacy-coverage-reporter-action@master
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - uses: actions/checkout@v6
+      - name: Download Jacoco report artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
+      - name: Send coverage to Codacy
+        uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
