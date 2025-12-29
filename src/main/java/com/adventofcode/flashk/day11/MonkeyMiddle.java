@@ -3,8 +3,8 @@ package com.adventofcode.flashk.day11;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Gatherers;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class MonkeyMiddle {
@@ -16,8 +16,7 @@ public class MonkeyMiddle {
 		
 		// Nº monos = número de filas en el fichero / 7
 		// Es necesario añadir una fila vacía al final del fichero.
-		
-		List<List<String>> monkeyInputs = Lists.partition(inputs, INPUT_LINES_PER_MONKEY);
+		List<List<String>> monkeyInputs = inputs.stream().gather(Gatherers.windowFixed(INPUT_LINES_PER_MONKEY)).toList();
 		monkeys = new Monkey[monkeyInputs.size()];
 	
 		int i = 0;
