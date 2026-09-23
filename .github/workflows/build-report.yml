@@ -16,17 +16,18 @@ on:
     branches:
       - '**'
     #tags-ignore:
-    #  - '**'
+     # - '**'
     #paths-ignore:
     #  - '.github/**'
   schedule:
     - cron: '0 3 * * *' # Every day at 03:00 UTC
+
 jobs:
 
   verify:
     # Don't run just after creating repo from template
     if: github.run_number != 1
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       skip_report_status: ${{ steps.check_codacy_token.outputs.skip_status }}
     steps:
@@ -74,7 +75,7 @@ jobs:
           if [ "$HTTP_CODE" -ge 400 ]; then
             echo -e "::group::\e[91m❌ Error: Unexpected HTTP status code ($HTTP_CODE).\e[0m" >&2
             log_pat_error
-            echo "::error title=Unexpected HTTP Status Code::Found: $HTTP_CODE."
+            echo "::error title=Unexpected HTTP Status Code::Found: $HTTPCODE."
             echo "::endgroup::"
             exit 1
           fi
@@ -101,7 +102,7 @@ jobs:
           echo "skip_status=false" >> $GITHUB_OUTPUT
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: verify
     steps:
       - uses: actions/checkout@v7
@@ -117,7 +118,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: 25
+          java-version: 27
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Upload Jacoco report artifact
@@ -129,7 +130,7 @@ jobs:
   # Report job
   # Will be only executed if CODACY_PROJECT_TOKEN is set
   report:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: build
     if: ${{ needs.verify.outputs.skip_report_status == 'false' }}
     steps:
